@@ -1,22 +1,58 @@
-# What's Cookin'? Starter Kit 
+# What's Cookin'?
 
-The details of this project are outlined in the <a href="https://frontend.turing.edu/projects/What%27sCookin-PartOne.html" target="\__blank">project spec</a>.
+Intention Timer is a web app that allows users to create tasks, set a timer for the task's duration, and log completed activities.
 
-## Set Up 
+## Installation
 
-1. Within your group, decide on one person to have the project repository on their Github account. This person will *fork* this repository - on the top right corner of the page, click the fork button. 
-2. All group members should then clone down the forked repository (make sure that everyone is added as a collaborator as well). Since you don't want your project to be named "whats-cookin-starter-kit", add an optional argument after the repo url when cloning. The command should look like this: `git clone [remote-address] [what you want to name the repo]`.
-3. Once you have cloned the repo, change into the directory and install the project dependencies. Run `npm install` or `npm i` to install project dependencies.
-4. Run `npm start` and visit `localhost:8080`
-5. Make sure both members of your team are collaborators on the forked repo.
+Intention Timer requires no installation. All features are contained within the web app, which leverages local storage to keep track of the user's activities across visits.
 
-## Testing 
+[Click here to access Intention Timer.](https://nzambonivergara.github.io/intention-timer/)
 
-Mocha and chai are already set up, with a boilerplate test for you. 
+## Usage and Demonstration
 
-## Linting Your Code 
+**How to use Intention Timer:**
 
-Run the command in your terminal `npm run lint` to run the linter on your JavaScript code. There will be errors and warnings right from the start in this starter kit, but that's ok - the linter is still running successfully.
+- On initial page load, no previous activities will be listed.
+- To add an activity, the user must select a category: Study, Meditate, or Exercise.
+  - Once a category has been selected, the user must add a brief activity description, as well as a time value of minutes and seconds.
+  
+- Once the form has been filled, clicking 'Start Activity' will take the user to a page with a timer.
+  - Clicking 'Start' will make the timer run down until the task has been completed.
+  
+- Once the timer reaches 0:00, a 'Log Activity' button will appear which will return the user to the form view.
+  - A summary of the completed activity in the form of a miniature card will be added to the Past Activities section on the right side of the page.
 
-Your linter will look only at the JavaScript files you have within the src and the test directories.
+![recording (6)](https://user-images.githubusercontent.com/82003147/128073117-51d7538e-037a-42b7-8df8-9a46c72e1b40.gif)
+
+
+**Error Handling:**
+
+If the user does not enter a category, description, or a time value, an error message will display beneath the empty section(s), prompting the user to complete the form.
+
+- These messages will disappear as soon as a category is selected, or as soon as the user types in a field.
+
+![recording (7)](https://user-images.githubusercontent.com/82003147/128073130-549e8ccb-f5b5-4d09-8900-e544962c7224.gif)
+
+## Programming Languages and Dependencies
+
+**This app was developed using:**
+
+- HTML
+- CSS
+- JavaScript
+  - Local Storage
+
+## Contributions
+
+**Developers:**
+
+_This app was developed by:_
+
+- [Bei Zhang](https://github.com/lokiandfengshui)
+- [Raquel Hill](https://github.com/Raquelhill)
+- [Nolan Caine](https://github.com/n0land0)
+
+_Bei, Raquel, and Nolan are students of front-end engineering at the Turing School of Software & Design._
+
+Project spec and assets provided by the [Turing School of Software & Design](https://turing.edu/).
 
