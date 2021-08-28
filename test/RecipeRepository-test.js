@@ -4,11 +4,11 @@ import Recipe from '../src/classes/Recipe';
 import recipeData from '../src/data/recipes';
 
 describe('RecipeRepository', () => {
-  let recipe;
+  // let recipe;
   let recipeRepository;
 
   beforeEach(function () {
-    recipe = new Recipe();
+    // recipe = new Recipe();
     recipeRepository = new RecipeRepository(recipeData);
   });
   it('Should be a function', () => {
@@ -19,15 +19,26 @@ describe('RecipeRepository', () => {
     assert.instanceOf(recipeRepository, RecipeRepository);
   });
 
+  it('Should take in recipe data', () => {
+    assert.property(recipeRepository.recipes[0], 'id');
+  });
+
   it('Should hold recipe objects', () => {
-    // console.log(recipeRepository);
+    recipeRepository.makeRecipes();
+
     assert.instanceOf(recipeRepository.recipes[0], Recipe);
   });
 
-  it('Should take in recipe data');
+  it('Should be able to return a list of recipes based on tags', () => {
+    let snacks = recipeRepository.returnCriteria('tags', 'snack'); 
+    console.log(snacks)
+    // console.log(recipeRepository.returnCriteria('tags', 'snack'));
+    // console.log(recipeRepository.recipes[0]['tags'].includes('snack'));
+    // console.log(recipeRepository.recipes[0]['tags']);
 
-  it('Should be able to return a list of recipes based on tags');
-
+    assert.includeMembers(snacks[0].tags, ['snack'])
+  });
+    
   it('Should be able to return a list of recipes based on name');
 
   it('Should be able to return a list of recipes based on ingredients');
