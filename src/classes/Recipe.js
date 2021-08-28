@@ -7,11 +7,11 @@ class Recipe {
     this.name = name;
     this.tags = tags;
   }
-  showIngredientsNeeded()
+  // showIngredientsNeeded()
 
-  calculateRecipeCost()
+  // calculateRecipeCost()
 
-  showInstructions()
+  // showInstructions()
 }
 
 export default Recipe;
