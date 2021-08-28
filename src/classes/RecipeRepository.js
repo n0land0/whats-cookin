@@ -1,13 +1,22 @@
 import Recipe from './Recipe';
+
 class RecipeRepository {
   constructor(recipeData) {
-    // this.id = recipeData.id;
-    // this.image = recipeData.image;
-    // this.ingredients = recipeData.ingredients;
-    // this.instructions = recipeData.ingredients;
-    // this.name = recipeData.name;
-    // this.tags = recipeData.tags;
-    this.recipes = recipeData.map(
+    this.recipes = recipeData;
+    // this.recipes = recipeData.map(
+    //   (recipe) =>
+    //     new Recipe(
+    //       recipe.id,
+    //       recipe.image,
+    //       recipe.ingredients,
+    //       recipe.instructions,
+    //       recipe.name,
+    //       recipe.tags
+    //     )
+    // )
+  }
+  makeRecipes() {
+    this.recipes = this.recipes.map(
       (recipe) =>
         new Recipe(
           recipe.id,
@@ -17,12 +26,12 @@ class RecipeRepository {
           recipe.name,
           recipe.tags
         )
-    );
+    )
+  }
+  returnCriteria(property, criterion) {
+    return this.recipes.filter(recipe => recipe[property].includes(criterion));
   }
 }
 
-// returnRecipeByTags()
-
-// returnRecipeByNames()
 
 export default RecipeRepository;
