@@ -36,8 +36,6 @@ class Recipe {
       });
       */
     let ingredientArray = idArray.map((id) => ingredientsData.find((data) => data.id === id));
-    console.log(typeof ingredientArray[0].estimatedCostInCents);
-    console.log(typeof this.ingredients[0].quantity.amount);
 
     return ingredientArray.reduce(
       (acc, ingredient) =>
