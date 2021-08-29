@@ -16,19 +16,20 @@ class RecipeRepository {
           recipe.name,
           recipe.tags
         )
-    )
+    );
   }
 
   returnCriteria(property, criterion) {
-    return this.recipes.filter(recipe => recipe[property].includes(criterion));
+    return this.recipes.filter((recipe) =>
+      recipe[property].includes(criterion)
+    );
   }
 
   returnRecipesByIngredient(ingredientId) {
-    return this.recipes.filter(recipe =>
-      recipe.ingredients.some(ingredient => ingredient.id === ingredientId)  
+    return this.recipes.filter((recipe) =>
+      recipe.ingredients.some((ingredient) => ingredient.id === ingredientId)
     );
   }
 }
-
 
 export default RecipeRepository;
