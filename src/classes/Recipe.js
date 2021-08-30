@@ -9,6 +9,7 @@ class Recipe {
     this.instructions = instructions;
     this.name = name;
     this.tags = tags;
+    this.isFaved = false;
   }
 
   showIngredientsByName() {
