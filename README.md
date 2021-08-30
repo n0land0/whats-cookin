@@ -1,4 +1,4 @@
-# What's Cookin'? Starter Kit
+# What's Cookin'?
 
 Intention Timer is a web app that allows users to create tasks, set a timer for the task's duration, and log completed activities.
 
@@ -14,9 +14,10 @@ Intention Timer requires no installation. All features are contained within the 
 
 - On initial page load, no previous activities will be listed.
 - To add an activity, the user must select a category: Study, Meditate, or Exercise.
-  - Once a category has been selected, the user must add a brief activity description, as well as a time value of minutes and seconds.
+  - Once a category has been selected, the user must add a brief activity description, as well as a time value of minutes and seconds. 
 - Once the form has been filled, clicking 'Start Activity' will take the user to a page with a timer.
   - Clicking 'Start' will make the timer run down until the task has been completed.
+  
 - Once the timer reaches 0:00, a 'Log Activity' button will appear which will return the user to the form view.
   - A summary of the completed activity in the form of a miniature card will be added to the Past Activities section on the right side of the page.
 
