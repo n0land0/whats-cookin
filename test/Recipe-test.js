@@ -85,7 +85,7 @@ describe("Recipe", () => {
   });
 
   it("Should be able to return its instructions", () => {
-    let recipeInstructions = showInstructions();
+    let recipeInstructions = recipe.showInstructions();
 
     assert.deepEqual(
       recipeInstructions["1"],

@@ -45,27 +45,19 @@ class Recipe {
     );
   }
 
-  // (ingredient.quantity.amount * costArray) / 100
-
   // showInstructions()
   // return obj with step # as key, instruction text as value?
   // .reduce()?
+  showInstructions() {
+    let instructionText = this.instructions.reduce((acc, instr) => {
+      {
+        acc[instr.number] = instr.instruction;
+      }
+      return acc;
+    }, {});
+
+    return instructionText;
+  }
 }
 
 export default Recipe;
-
-// let idArray = this.ingredients.map((ele) => ele.id);
-
-// let amountArray = this.ingredients.map((ele) => ele.quantity.amount)
-
-// let costArray = idArray.map((id) =>
-// ingredientsData.find((data) =>
-// data.id === id
-// ).estimatedCostInCents);
-
-// costArray.map((costInCents, index) =>
-// costInCents * amountArray[index]
-// ).reduce((accumulator, current) => {
-// accumulator += current;
-// return accumulator;
-// })
