@@ -21,7 +21,7 @@ class Recipe {
 
   calculateRecipeCost() {
     let idArray = this.ingredients.map((ele) => ele.id);
-    /*
+    /* Another way of doing this method
     let amountArray = this.ingredients.map((ele) => ele.quantity.amount);
 
     let costArray = idArray.map((id) => ingredientsData.find((data) => data.id === id).estimatedCostInCents);
@@ -45,9 +45,6 @@ class Recipe {
     );
   }
 
-  // showInstructions()
-  // return obj with step # as key, instruction text as value?
-  // .reduce()?
   showInstructions() {
     let instructionText = this.instructions.reduce((acc, instr) => {
       {
