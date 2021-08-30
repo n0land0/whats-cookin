@@ -14,8 +14,7 @@ Intention Timer requires no installation. All features are contained within the 
 
 - On initial page load, no previous activities will be listed.
 - To add an activity, the user must select a category: Study, Meditate, or Exercise.
-  - Once a category has been selected, the user must add a brief activity description, as well as a time value of minutes and seconds.
-  
+  - Once a category has been selected, the user must add a brief activity description, as well as a time value of minutes and seconds. 
 - Once the form has been filled, clicking 'Start Activity' will take the user to a page with a timer.
   - Clicking 'Start' will make the timer run down until the task has been completed.
   
@@ -23,7 +22,6 @@ Intention Timer requires no installation. All features are contained within the 
   - A summary of the completed activity in the form of a miniature card will be added to the Past Activities section on the right side of the page.
 
 ![recording (6)](https://user-images.githubusercontent.com/82003147/128073117-51d7538e-037a-42b7-8df8-9a46c72e1b40.gif)
-
 
 **Error Handling:**
 
@@ -55,4 +53,3 @@ _This app was developed by:_
 _Bei, Raquel, and Nolan are students of front-end engineering at the Turing School of Software & Design._
 
 Project spec and assets provided by the [Turing School of Software & Design](https://turing.edu/).
-
