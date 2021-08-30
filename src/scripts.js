@@ -1,7 +1,7 @@
 import "./styles.css";
 import apiCalls from "./apiCalls";
-// import RecipeRepository from "../src/classes/RecipeRepository";
-// import recipeData from "../src/data/recipes.js";
+import RecipeRepository from "../src/classes/RecipeRepository";
+import recipeData from "../src/data/recipes.js";
 
 const showAllRecipeBtn = document.getElementById("show-all-recipes");
 const showRecipeByTagBtn = document.getElementById("show-recipe-by-tag");
