@@ -10,7 +10,11 @@ const recipeContainer = document.getElementById("recipe-container");
 const recipeTagCheckboxes = document.getElementById("recipe-tag-checkboxes");
 var recipePool;
 
-window.addEventListener("load", generateRecipes);
+window.addEventListener("load", function() {
+  generateRecipes();
+  generateTags();
+})
+  
 showAllRecipeBtn.addEventListener("click", showAllRecipes);
 
 function generateRecipes() {
@@ -18,10 +22,22 @@ function generateRecipes() {
   let recipeRepository = new RecipeRepository(recipeData);
   recipeRepository.makeRecipes();
   recipePool = recipeRepository.recipes;
-  generateTags();
+  // generateTags();
 }
 
-// console.log(recipePool);
+function generateTags() {
+  let recipeTags = [];
+  recipeData.forEach(recipe => {
+    recipeTags.push(recipe.tags)
+  })
+  let tagSet = [...new Set(recipeTags.flat())];
+  tagSet.forEach(tag => {
+    recipeTagCheckboxes.innerHTML += `
+      <input type="checkbox" id="${tag}" value="${tag}></input>
+      <label for="${tag}">${tag}</label>
+    `
+  })
+}
 
 function showAllRecipes() {
   // console.log(recipePool);
@@ -38,16 +54,3 @@ function showAllRecipes() {
   })
 }
 
-function generateTags() {
-  let recipeTags = [];
-  recipeData.forEach(recipe => {
-    recipeTags.push(recipe.tags)
-  })
-  let tagSet = [...new Set(recipeTags.flat())];
-  tagSet.forEach(tag => {
-    recipeTagCheckboxes.innerHTML += `
-      <input type="checkbox" id="${tag}" value="${tag}></input>
-      <label for="${tag}">${tag}</label>
-    `
-  })
-}
