@@ -7,6 +7,7 @@ const showAllRecipeBtn = document.getElementById("show-all-recipes");
 const showRecipeByTagBtn = document.getElementById("show-recipe-by-tag");
 const searchRecipeByNameBtn = document.getElementById("search-recipe-by-name");
 const recipeContainer = document.getElementById("recipe-container");
+const recipeTagCheckboxes = document.getElementById("recipe-tag-checkboxes");
 var recipePool;
 
 window.addEventListener("load", generateRecipes);
@@ -17,12 +18,36 @@ function generateRecipes() {
   let recipeRepository = new RecipeRepository(recipeData);
   recipeRepository.makeRecipes();
   recipePool = recipeRepository.recipes;
-  //   console.log(recipePool);
+  generateTags();
 }
 
 // console.log(recipePool);
 
 function showAllRecipes() {
-  console.log(recipePool);
+  // console.log(recipePool);
   // appendChild to recipe container - card for each recipe w/ pic & name
+  
+  // recipeContainer.appendChild();
+  recipeData.forEach(recipe => {
+    recipeContainer.innerHTML += `
+      <article>
+        <img src=${recipe.image}>
+        <p>${recipe.name}</p>
+      </article>
+    `
+  })
+}
+
+function generateTags() {
+  let recipeTags = [];
+  recipeData.forEach(recipe => {
+    recipeTags.push(recipe.tags)
+  })
+  let tagSet = [...new Set(recipeTags.flat())];
+  tagSet.forEach(tag => {
+    recipeTagCheckboxes.innerHTML += `
+      <input type="checkbox" id="${tag}" value="${tag}></input>
+      <label for="${tag}">${tag}</label>
+    `
+  })
 }
