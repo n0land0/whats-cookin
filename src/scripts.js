@@ -40,10 +40,6 @@ function generateTags() {
 }
 
 function showAllRecipes() {
-  // console.log(recipePool);
-  // appendChild to recipe container - card for each recipe w/ pic & name
-  
-  // recipeContainer.appendChild();
   recipeData.forEach(recipe => {
     recipeContainer.innerHTML += `
       <article>
@@ -51,6 +47,18 @@ function showAllRecipes() {
         <p>${recipe.name}</p>
       </article>
     `
+    //Give article an ID, 
+    // add event listener to that ID 
+      // so that when the user clicks,
+      // a new page loads with the recipe image, name, ingredients, total cost and instructions.  
   })
 }
 
+//When we search by ingredients, we call the recipeRepository.returnRecipesByIngredient method in order to do so.  
+
+  // let ingredientID = ingredientRepository.getIngredientId("wheat flour") ==> 20081
+  // recipeRepository.returnRecipesByIngredient(ingredientId)
+
+//When searching by name we call the recipeReposity.returnCriteria("name", 'name of ingredient')
+
+  // recipeRepository.returnCriteria("name", <user input>) ==> Recipe instance
