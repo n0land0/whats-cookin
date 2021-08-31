@@ -54,9 +54,11 @@ function showAllRecipes() {
   })
 }
 
+// USE SAME CONTAINER AS SHOWALLRECIPES VVV
+
 //When we search by ingredients, we call the recipeRepository.returnRecipesByIngredient method in order to do so.  
 
-  // let ingredientID = ingredientRepository.getIngredientId("wheat flour") ==> 20081
+  // let ingredientID = ingredientRepository.getIngredientId(<user input> "wheat flour") ==> 20081
   // recipeRepository.returnRecipesByIngredient(ingredientId)
 
 //When searching by name we call the recipeReposity.returnCriteria("name", 'name of ingredient')
