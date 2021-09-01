@@ -33,3 +33,10 @@ class RecipeRepository {
 }
 
 export default RecipeRepository;
+
+// returnCriteria(property, criterion = []) {
+//   return this.recipes.filter((recipe) =>
+//     criterion.forEach(crt => )
+//     recipe[property].includes(criterion)
+//   );
+// }
