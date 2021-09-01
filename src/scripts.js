@@ -1,29 +1,40 @@
-import './styles.css';
-import apiCalls from './apiCalls';
-import RecipeRepository from './classes/RecipeRepository';
-import recipeData from './data/recipes.js';
+// IMPORTS
+import "./styles.css";
+import apiCalls from "./apiCalls";
+import RecipeRepository from "./classes/RecipeRepository";
+import recipeData from "./data/recipes.js";
 
-const showAllRecipeBtn = document.getElementById('show-all-recipes');
-const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
-const searchRecipeByNameBtn = document.getElementById('search-recipe-by-name');
-const recipeContainer = document.getElementById('recipe-container');
-const recipeTagForm = document.getElementById('recipe-tag-form');
-var recipeRepository;
-var recipePool;
-var selectedTags;
+// SELECTORS
+const showAllRecipeBtn = document.getElementById("show-all-recipes");
+const showRecipeByTagBtn = document.getElementById("show-recipe-by-tag");
 
-window.addEventListener('load', function () {
+const recipeTagForm = document.getElementById("recipe-tag-form");
+const searchInputField = document.getElementById("search-input-field");
+const searchBtn = document.getElementById("search-button");
+
+const recipeContainer = document.getElementById("recipe-container");
+
+// GLOBAL VARIABLES
+let recipeRepository;
+let recipePool;
+let selectedTags = [];
+
+// LISTENERS
+window.addEventListener("load", function () {
   generateAllRecipes();
   generateAllTags();
 });
 
-showAllRecipeBtn.addEventListener('click', showRecipePool);
-recipeTagForm.addEventListener('click', function () {
+showAllRecipeBtn.addEventListener("click", showRecipePool);
+recipeTagForm.addEventListener("click", function () {
   collectTags();
   showRecipesByTag();
   showRecipePool();
 });
 
+searchBtn.addEventListener("click");
+
+// FUNCTIONS
 function generateAllRecipes() {
   event.preventDefault();
   recipeRepository = new RecipeRepository(recipeData);
@@ -65,8 +76,7 @@ function showRecipePool() {
 // Add event listener to entire form
 // if target is checked, run handler to filter recipes & repopulate container
 function collectTags() {
-  let checkBoxes = document.querySelectorAll('input[type=checkbox]:checked');
-  selectedTags = [];
+  let checkBoxes = document.querySelectorAll("input[type=checkbox]:checked");
   for (let i = 0; i < checkBoxes.length; i++) {
     selectedTags.push(checkBoxes[i].value);
   }
@@ -74,71 +84,32 @@ function collectTags() {
 }
 
 function showRecipesByTag() {
-  if (event.target.type === 'checkbox') {
+  if (event.target.type === "checkbox") {
     if (selectedTags.length > 0) {
-      selectedTags.forEach(
-        (tag) => (recipePool = recipeRepository.returnCriteria('tags', tag))
-      );
+      selectedTags.forEach((tag) => (recipePool = recipeRepository.returnCriteria("tags", tag)));
     } else {
       recipePool = recipeRepository.recipes;
     }
   }
 }
-// recipePool.forEach((recipe, index) => {
-//   let counter = 0;
-//   selectedTags.forEach((tag) => {
-//     if (recipe.tags.includes(tag)) {
-//       counter++;
-//     }
-//   });
-//   if (counter === 0) {
-//     recipePool.splice(index, 1);
-//   }
-// });
-// var elems = document.getElementsByID("recipe-tag-checkboxes");
-// var list = [];
-// for(var i=0; elems[i]; ++i){
-//       if(elems[i].checked){
-//            list.push(elems[i].value);
-//       }
-// }
-// var getRecipes = recipes.filter(function (recipe) {
-//     return list.indexOf(recipe.recipeType) >= 0;
-// });
 
-// In the whole array if the number checked is not equal to 0 that means we have at least 1 tag selected.  Instead, if the number checked is greater than the existing checked box that means we have checked a new box and we append the new result to our old container.
-
-// check for checked inputs
-// populate the recipe display container with those checked inputs
-
-// recipeData.returnCriteria("tag", event.target.id)
-
-// recipeData.forEach((recipe) => {
-//   recipeContainer.innerHTML += `
-//     <article>
-//       <img src=${recipe.image}>
-//       <p>${recipe.name}</p>
-//     </article>
-//   `;
-// }
-// USE SAME CONTAINER AS SHOWALLRECIPES VVV
+// SEARCH RECIPES BY INGREDIDIENT
 
 //When we search by ingredients, we call the recipeRepository.returnRecipesByIngredient method in order to do so.
+// grab ingredient search term from user input - <<search bar>>.value
 
-// let ingredientID = ingredientRepository.getIngredientId(<user input> "wheat flour") ==> 20081
-// recipeRepository.returnRecipesByIngredient(ingredientId)
+// function searchByIngredient() {
+//  let ingredientID = ingredientRepository.getIngredientId(searchInputField.value) ==> 20081
+//  let recipesContainingIngredient = recipeRepository.returnRecipesByIngredient(ingredientId)
+//  recipePool = recipesContainingIngredient;
+// }
+//
+//
+//
 
-//When searching by name we call the recipeReposity.returnCriteria("name", 'name of ingredient')
+//When searching by name we call the recipeRepository.returnCriteria("name", 'name of ingredient')
 
 // recipeRepository.returnCriteria("name", <user input>) ==> Recipe instance
-
-// recipeTagCheckboxes.childNodes.forEach((ele) => {
-//   let selectedTags = [];
-//   if (ele.type === 'checkbox') {
-//     selectedTags.push(ele.id);
-//   }
-// });
-
 
 // UTILITY FUNCTIONS
 function show(element) {
