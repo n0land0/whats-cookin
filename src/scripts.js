@@ -17,10 +17,11 @@ window.addEventListener('load', function () {
   generateAllTags();
 });
 
-showAllRecipeBtn.addEventListener('click', showAllRecipes);
+showAllRecipeBtn.addEventListener('click', showRecipePool);
 recipeTagForm.addEventListener('click', function () {
   collectTags();
   showRecipesByTag();
+  showRecipePool();
 });
 
 function generateAllRecipes() {
@@ -45,16 +46,8 @@ function generateAllTags() {
   });
 }
 
-function collectTags() {
-  let checkBoxes = document.querySelectorAll('input[type=checkbox]:checked');
-  let selectedTags = [];
-  for (let i = 0; i < checkBoxes.length; i++) {
-    selectedTags.push(checkBoxes[i].value);
-  }
-  console.log(selectedTags);
-}
-
-function showAllRecipes() {
+function showRecipePool() {
+  recipeContainer.innerHTML = "";
   recipePool.forEach((recipe) => {
     recipeContainer.innerHTML += `
       <article>
@@ -71,14 +64,25 @@ function showAllRecipes() {
 
 // Add event listener to entire form
 // if target is checked, run handler to filter recipes & repopulate container
+function collectTags() {
+  let checkBoxes = document.querySelectorAll('input[type=checkbox]:checked');
+  selectedTags = [];
+  for (let i = 0; i < checkBoxes.length; i++) {
+    selectedTags.push(checkBoxes[i].value);
+  }
+  console.log(selectedTags);
+}
+
 function showRecipesByTag() {
   if (event.target.type === 'checkbox') {
-    // console.log(event.target);
-    selectedTags.forEach(
-      (tag) => (recipePool = recipeRepository.returnCriteria('tags', tag))
-    );
+    if (selectedTags.length > 0) {
+      selectedTags.forEach(
+        (tag) => (recipePool = recipeRepository.returnCriteria('tags', tag))
+      );
+    } else {
+      recipePool = recipeRepository.recipes;
+    }
   }
-  console.log(recipePool);
 }
 // recipePool.forEach((recipe, index) => {
 //   let counter = 0;
@@ -134,3 +138,13 @@ function showRecipesByTag() {
 //     selectedTags.push(ele.id);
 //   }
 // });
+
+
+// UTILITY FUNCTIONS
+function show(element) {
+  element.classList.remove("hidden");
+}
+
+function hide(element) {
+  element.classList.add("hidden");
+}
