@@ -1,9 +1,9 @@
-import ingredientsData from "../data/ingredients";
-import Ingredient from "./Ingredient";
+import ingredientsData from '../data/ingredients';
+import Ingredient from './Ingredient';
 
 class IngredientRepository {
   constructor(ingredientsData) {
-    this.ingredients = ingredientsData
+    this.ingredients = ingredientsData;
   }
 
   makeIngredients() {
@@ -18,15 +18,10 @@ class IngredientRepository {
   }
 
   getIngredientId(ingredientName) {
-    // tried changing find to filter - why is ingredient.name undefined?
-    const foundIngredients = this.ingredients.filter(
-      // (ingredient) => ingredientName === ingredient.name
-      (ingredient) => ingredient.name.includes(ingredientName)
+    const foundIngredients = this.ingredients.filter((ingredient) =>
+      ingredient.name.includes(ingredientName.toLowerCase())
     );
-// now we want an array of ids
-// search
-    // return foundIngredients.id;
-    return foundIngredients.map(ingredient => ingredient.id);
+    return foundIngredients.map((ingredient) => ingredient.id);
   }
 }
 

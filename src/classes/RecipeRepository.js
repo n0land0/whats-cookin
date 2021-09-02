@@ -21,14 +21,16 @@ class RecipeRepository {
 
   returnCriteria(property, criterion) {
     return this.recipes.filter((recipe) =>
-      recipe[property].includes(criterion)
+      recipe[property].toLowerCase().includes(criterion.toLowerCase())
     );
   }
 
   returnRecipesByIngredient(ingredientId) {
     return this.recipes.filter((recipe) =>
-    //   recipe.ingredients.some((ingredient) => ingredient.id === ingredientId)
-      recipe.ingredients.some((ingredient) => ingredientId.includes(ingredient.id))
+      //   recipe.ingredients.some((ingredient) => ingredient.id === ingredientId)
+      recipe.ingredients.some((ingredient) =>
+        ingredientId.includes(ingredient.id)
+      )
     );
   }
 }
