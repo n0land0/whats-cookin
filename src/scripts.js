@@ -3,6 +3,8 @@ import "./styles.css";
 import apiCalls from "./apiCalls";
 import RecipeRepository from "./classes/RecipeRepository";
 import recipeData from "./data/recipes.js";
+import IngredientRepository from "./classes/IngredientRepository";
+import ingredientsData from "./data/ingredients.js"
 
 // SELECTORS
 const showAllRecipeBtn = document.getElementById("show-all-recipes");
@@ -16,12 +18,15 @@ const recipeContainer = document.getElementById("recipe-container");
 
 // GLOBAL VARIABLES
 let recipeRepository;
+let ingredientRepository;
 let recipePool;
-let selectedTags = [];
+let ingredientPool;
+let selectedTags = []; // <= this needs to be in a function
 
 // LISTENERS
 window.addEventListener("load", function () {
   generateAllRecipes();
+  generateAllIngredients();
   generateAllTags();
 });
 
@@ -32,7 +37,10 @@ recipeTagForm.addEventListener("click", function () {
   showRecipePool();
 });
 
-searchBtn.addEventListener("click");
+searchBtn.addEventListener("click", function() {
+  searchByIngredient();
+  showRecipePool();
+});
 
 // FUNCTIONS
 function generateAllRecipes() {
@@ -41,6 +49,13 @@ function generateAllRecipes() {
   recipeRepository.makeRecipes();
   recipePool = recipeRepository.recipes;
   // generateTags();
+}
+
+function generateAllIngredients() {
+  event.preventDefault();
+  ingredientRepository = new IngredientRepository(ingredientsData);
+  ingredientRepository.makeIngredients();
+  ingredientPool = ingredientRepository.ingredients;
 }
 
 function generateAllTags() {
@@ -98,14 +113,14 @@ function showRecipesByTag() {
 //When we search by ingredients, we call the recipeRepository.returnRecipesByIngredient method in order to do so.
 // grab ingredient search term from user input - <<search bar>>.value
 
-// function searchByIngredient() {
-//  let ingredientID = ingredientRepository.getIngredientId(searchInputField.value) ==> 20081
-//  let recipesContainingIngredient = recipeRepository.returnRecipesByIngredient(ingredientId)
-//  recipePool = recipesContainingIngredient;
-// }
-//
-//
-//
+function searchByIngredient() {
+  event.preventDefault();
+  let ingredientIds = ingredientRepository.getIngredientId(searchInputField.value);
+  let recipesContainingIngredient = recipeRepository.returnRecipesByIngredient(ingredientIds);
+  recipePool = recipesContainingIngredient;
+}
+
+
 
 //When searching by name we call the recipeRepository.returnCriteria("name", 'name of ingredient')
 

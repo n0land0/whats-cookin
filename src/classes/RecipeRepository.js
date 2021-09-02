@@ -27,7 +27,8 @@ class RecipeRepository {
 
   returnRecipesByIngredient(ingredientId) {
     return this.recipes.filter((recipe) =>
-      recipe.ingredients.some((ingredient) => ingredient.id === ingredientId)
+    //   recipe.ingredients.some((ingredient) => ingredient.id === ingredientId)
+      recipe.ingredients.some((ingredient) => ingredientId.includes(ingredient.id))
     );
   }
 }
