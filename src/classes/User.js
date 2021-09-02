@@ -2,6 +2,7 @@ class User {
   constructor() {
     this.favoriteRecipes = [];
     this.favoriteRecipeTags = [];
+    this.selectedFavTags = []; // updates as dom changes
     this.recipesToCook = [];
     this.recipesToCookTags = [];
   }
@@ -22,9 +23,7 @@ class User {
 
   removeFromFavorites(recipe) {
     recipe.isFaved = false;
-    let recipeIndex = this.favoriteRecipes.findIndex(
-      (ele) => ele.id === recipe.id
-    );
+    let recipeIndex = this.favoriteRecipes.findIndex((ele) => ele.id === recipe.id);
 
     this.favoriteRecipes.splice(recipeIndex, 1);
   }
@@ -35,13 +34,30 @@ class User {
     });
     let tagSet = [...new Set(this.favoriteRecipeTags.flat())];
     this.favoriteRecipeTags = tagSet;
+    return this.favoriteRecipeTags;
   }
 
-  filterFavoriteRecipesByTag(tag) {
-    return this.favoriteRecipes.filter((recipe) => recipe.tags.includes(tag));
+  filterFavoriteRecipesByTag() {
+    let filteredRecipes = [];
+    if (this.selectedFavTags.length > 0) {
+      this.selectedFavTags.forEach((tag) => {
+        filteredRecipes = this.favoriteRecipes.filter((ele) => ele.tags.includes(tag));
+      });
+    }
+    return filteredRecipes;
   }
 
-  filterFavoriteRecipesByingredient() {}
+  filterFavoriteRecipesByIngredient(ingredientId) {
+    return this.favoriteRecipes.filter((recipe) =>
+      recipe.ingredients.some((ingredient) => ingredientId.includes(ingredient.id))
+    );
+  }
+
+  filterFavoriteRecipesByName(name) {
+    //We should go back in and refactor returnCriteria method in recipeRespository to be more specific to the recipe name.
+
+    return this.favoriteRecipes.filter((recipe) => recipe.name.toLowerCase().includes(name.toLowerCase()));
+  }
 }
 
 export default User;
