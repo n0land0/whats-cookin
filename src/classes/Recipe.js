@@ -9,6 +9,7 @@ class Recipe {
     this.instructions = instructions;
     this.name = name;
     this.tags = tags;
+    this.isFaved = false;
   }
 
   showIngredientsByName() {
@@ -19,7 +20,7 @@ class Recipe {
     return nameArray;
   }
 
-  calculateRecipeCost() {
+  calculateRecipeCostInDollars() {
     let idArray = this.ingredients.map((ele) => ele.id);
     /* Another way of doing this method
     let amountArray = this.ingredients.map((ele) => ele.quantity.amount);
@@ -37,21 +38,23 @@ class Recipe {
       */
     let ingredientArray = idArray.map((id) => ingredientsData.find((data) => data.id === id));
 
-    return ingredientArray.reduce(
-      (acc, ingredient) =>
-        (acc +=
-          ingredient.estimatedCostInCents * this.ingredients.find((data) => data.id === ingredient.id).quantity.amount),
-      0
-    );
+    return (
+      ingredientArray.reduce(
+        (acc, ingredient) =>
+          (acc +=
+            ingredient.estimatedCostInCents *
+            this.ingredients.find((data) => data.id === ingredient.id).quantity.amount),
+        0
+      ) / 100
+    ).toFixed(2);
   }
 
   showInstructions() {
-    let instructionText = this.instructions.reduce((acc, instr) => {
-      {
-        acc[instr.number] = instr.instruction;
-      }
-      return acc;
-    }, {});
+    let instructionText = this.instructions.map((ele) => {
+      let step = {};
+      step[ele.number] = ele.instruction;
+      return step;
+    });
 
     return instructionText;
   }

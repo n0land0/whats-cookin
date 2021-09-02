@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>Whats Cookin</title>
+    <meta charset="UTF-8" />
+    <title>What's Cookin'?</title>
   </head>
   <body>
-    <h1>Whats Cookin</h1>
+    <h1>What's Cookin'?</h1>
+    <button id="show-all-recipes">Show All Recipes</button>
+    <!-- <button id="show-recipe-by-tag">Show Recipes By Tags</button> -->
+    <h3 id="show-recipe-by-tag">Show Recipes By Tags</h3>
+    <form id="recipe-tag-form"></form>
+    <form id="search-box-form">
+      <input type="text" id="search-input-field" placeholder="Search by recipe name or ingredients" />
+      <button id="search-button">Search</button>
+    </form>
+
+    <section id="recipe-container">
+      <div class="recipe-pool-view"></div>
+      <div class="recipe-detail-view"></div>
+    </section>
+
+    <script src="./scripts.js"></script>
   </body>
 </html>

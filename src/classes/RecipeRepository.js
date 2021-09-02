@@ -1,4 +1,4 @@
-import Recipe from './Recipe';
+import Recipe from "./Recipe";
 
 class RecipeRepository {
   constructor(recipeData) {
@@ -7,29 +7,31 @@ class RecipeRepository {
 
   makeRecipes() {
     this.recipes = this.recipes.map(
-      (recipe) =>
-        new Recipe(
-          recipe.id,
-          recipe.image,
-          recipe.ingredients,
-          recipe.instructions,
-          recipe.name,
-          recipe.tags
-        )
+      (recipe) => new Recipe(recipe.id, recipe.image, recipe.ingredients, recipe.instructions, recipe.name, recipe.tags)
     );
   }
 
   returnCriteria(property, criterion) {
-    return this.recipes.filter((recipe) =>
-      recipe[property].includes(criterion)
-    );
+    return this.recipes.filter((recipe) => recipe[property].toLowerCase().includes(criterion.toLowerCase()));
+  }
+
+  returnRecipesByTag(tag) {
+    return this.recipes.filter((recipe) => recipe.tags.includes(tag));
   }
 
   returnRecipesByIngredient(ingredientId) {
     return this.recipes.filter((recipe) =>
-      recipe.ingredients.some((ingredient) => ingredient.id === ingredientId)
+      //   recipe.ingredients.some((ingredient) => ingredient.id === ingredientId)
+      recipe.ingredients.some((ingredient) => ingredientId.includes(ingredient.id))
     );
   }
 }
 
 export default RecipeRepository;
+
+// returnCriteria(property, criterion = []) {
+//   return this.recipes.filter((recipe) =>
+//     criterion.forEach(crt => )
+//     recipe[property].includes(criterion)
+//   );
+// }
