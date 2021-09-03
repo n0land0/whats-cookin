@@ -1,5 +1,5 @@
-import recipeData from "../data/recipes";
-import ingredientsData from "../data/ingredients";
+import recipeData from '../data/recipes';
+import ingredientsData from '../data/ingredients';
 
 class Recipe {
   constructor(id, image, ingredients, instructions, name, tags) {
@@ -10,12 +10,15 @@ class Recipe {
     this.name = name;
     this.tags = tags;
     this.isFaved = false;
+    this.toBeCooked = false;
   }
 
   showIngredientsByName() {
     let idArray = this.ingredients.map((ele) => ele.id);
 
-    let nameArray = idArray.map((id) => ingredientsData.find((data) => data.id === id).name);
+    let nameArray = idArray.map(
+      (id) => ingredientsData.find((data) => data.id === id).name
+    );
 
     return nameArray;
   }
@@ -36,14 +39,17 @@ class Recipe {
         return accumulator;
       });
       */
-    let ingredientArray = idArray.map((id) => ingredientsData.find((data) => data.id === id));
+    let ingredientArray = idArray.map((id) =>
+      ingredientsData.find((data) => data.id === id)
+    );
 
     return (
       ingredientArray.reduce(
         (acc, ingredient) =>
           (acc +=
             ingredient.estimatedCostInCents *
-            this.ingredients.find((data) => data.id === ingredient.id).quantity.amount),
+            this.ingredients.find((data) => data.id === ingredient.id).quantity
+              .amount),
         0
       ) / 100
     ).toFixed(2);

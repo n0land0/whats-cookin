@@ -11,8 +11,8 @@ class RecipeRepository {
     );
   }
 
-  returnCriteria(property, criterion) {
-    return this.recipes.filter((recipe) => recipe[property].toLowerCase().includes(criterion.toLowerCase()));
+  returnRecipesByName(name) {
+    return this.recipes.filter((recipe) => recipe.name.toLowerCase().includes(name.toLowerCase()));
   }
 
   returnRecipesByTag(tag) {
@@ -21,17 +21,9 @@ class RecipeRepository {
 
   returnRecipesByIngredient(ingredientId) {
     return this.recipes.filter((recipe) =>
-      //   recipe.ingredients.some((ingredient) => ingredient.id === ingredientId)
       recipe.ingredients.some((ingredient) => ingredientId.includes(ingredient.id))
     );
   }
 }
 
 export default RecipeRepository;
-
-// returnCriteria(property, criterion = []) {
-//   return this.recipes.filter((recipe) =>
-//     criterion.forEach(crt => )
-//     recipe[property].includes(criterion)
-//   );
-// }

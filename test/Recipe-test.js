@@ -75,7 +75,7 @@ describe("Recipe", () => {
   });
 
   it("Should be able to get the costs of its ingredients", () => {
-    assert.equal(recipe.calculateRecipeCost(), 17776);
+    assert.equal(recipe.calculateRecipeCostInDollars(), 177.76);
   });
 
   it("Should be able to return its instructions", () => {

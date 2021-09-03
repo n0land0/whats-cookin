@@ -47,7 +47,7 @@ recipeTagForm.addEventListener("click", function () {
 
 searchBtn.addEventListener("click", function () {
   recipePool = [];
-  generateRecipesByName();
+  searchByName();
   searchByIngredient();
 
   showRecipePool();
@@ -126,10 +126,10 @@ function deselectCheckboxes() {
   });
 }
 
-function generateRecipesByName() {
+function searchByName() {
   event.preventDefault();
   if (searchInputField.value) {
-    recipePool = recipeRepository.returnCriteria("name", searchInputField.value);
+    recipePool = recipeRepository.returnRecipesByName("name", searchInputField.value);
   }
 }
 
