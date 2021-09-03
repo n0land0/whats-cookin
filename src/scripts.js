@@ -1,10 +1,14 @@
 // IMPORTS
 import "./styles.css";
 import apiCalls from "./apiCalls";
+
 import RecipeRepository from "./classes/RecipeRepository";
-import recipeData from "./data/recipes.js";
 import IngredientRepository from "./classes/IngredientRepository";
+import User from "./classes/User";
+
+import recipeData from "./data/recipes.js";
 import ingredientsData from "./data/ingredients.js";
+
 
 // SELECTORS
 const showAllRecipeBtn = document.getElementById("show-all-recipes");
@@ -24,6 +28,7 @@ let ingredientRepository;
 let recipePool;
 let ingredientPool;
 let selectedTags;
+let user;
 
 // LISTENERS
 window.addEventListener("load", function () {
@@ -31,6 +36,7 @@ window.addEventListener("load", function () {
   recipePool = recipeRepository.recipes;
   generateAllIngredients();
   generateAllTags();
+  user = new User();
 });
 
 showAllRecipeBtn.addEventListener("click", function () {
@@ -120,7 +126,7 @@ function showRecipesByTag() {
 
 function deselectCheckboxes() {
   let checkboxes = document.querySelectorAll("input[type=checkbox]");
-  console.log(checkboxes);
+  // console.log(checkboxes);
   checkboxes.forEach((ele) => {
     ele.checked = false;
   });
@@ -144,27 +150,31 @@ function searchByIngredient() {
   });
 }
 
+// As a user, I should be able to favorite / unfavorite recipes that I like and can easily find again.
+
 function showRecipeDetails(event) {
-  console.log("im working");
   let recipeId = event.target.parentNode.id;
-  console.log(event.target.parentNode);
-  console.log("recipeId", recipeId);
   let recipeClicked = recipePool.find((ele) => ele.id == recipeId);
-  console.log("recipeClicked", recipeClicked);
-  console.log("recipe pool", recipePool);
   let ingredients = recipeClicked.showIngredientsByName().join(", ");
   let instructions = recipeClicked.showInstructions();
   let cost = recipeClicked.calculateRecipeCostInDollars();
+
   hide(recipePoolView);
   show(recipeDetailView);
+
   recipeDetailView.innerHTML = `
     <article class="recipe-detail-container">
       <h3>${recipeClicked.name}</h3>
       <img src="${recipeClicked.image}">
-      <p>Ingredients: <span>${ingredients}</span></p> 
+      <button id="fave-button">
+        <span id="fave-text">Add to favorites</span>
+        <span id="unfave-text" class="hidden">Remove from favorites</span>
+      </button>
+      <p>Ingredients: <span>${ingredients}</span></p>
       <p>Total cost: <span>$${cost}</span></p>
     </article>
   `;
+
   instructions.forEach((ele) => {
     let key = Object.keys(ele).toString();
     let instruction = Object.values(ele).toString();
@@ -173,8 +183,46 @@ function showRecipeDetails(event) {
     <p>${instruction}</p>
     `;
   });
+
+  activateFaveButton(recipeClicked);
 }
 
+function activateFaveButton(recipeClicked) {
+  let faveButton = document.getElementById("fave-button");
+  let faveText = document.getElementById("fave-text");
+  let unFaveText = document.getElementById("unfave-text");
+
+  if (user.favoriteRecipes.includes(recipeClicked)) {
+    resetClassList(faveText);
+    resetClassList(unFaveText);
+    hide(faveText);
+  }
+
+  faveButton.addEventListener("click", function() {
+    if (!user.favoriteRecipes.includes(recipeClicked)) {
+      user.favoriteRecipes.push(recipeClicked);
+      hide(faveText);
+      show(unFaveText);
+    } else {
+      let indexOfRecipeClicked = user.favoriteRecipes.indexOf(recipeClicked);
+      user.favoriteRecipes.splice(indexOfRecipeClicked, 1);
+      toggle(faveText);
+      toggle(unFaveText);
+    }
+    console.log(user.favoriteRecipes);
+  });
+}
+
+// // from raquel
+function showFavRecipesByTag() {
+  if (event.target.type === 'checkbox') {
+    if (selectedTags.length > 0) {
+      selectedTags.forEach((tag) => (recipePool = user.filterFavoriteRecipesByTag(tag)))
+    } else {
+      recipePool = user.favoriteRecipes;
+    }
+  }
+}
 // UTILITY FUNCTIONS
 function show(element) {
   element.classList.remove("hidden");
@@ -182,4 +230,12 @@ function show(element) {
 
 function hide(element) {
   element.classList.add("hidden");
+}
+
+function toggle(element) {
+  element.classList.toggle("hidden");
+}
+
+function resetClassList(element) {
+  element.classList = "";
 }
