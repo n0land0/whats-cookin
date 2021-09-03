@@ -5,14 +5,15 @@ import apiCalls from "./apiCalls";
 import RecipeRepository from "./classes/RecipeRepository";
 import IngredientRepository from "./classes/IngredientRepository";
 import User from "./classes/User";
-
+import userData from "./data/users.js";
 import recipeData from "./data/recipes.js";
 import ingredientsData from "./data/ingredients.js";
-
 
 // SELECTORS
 const showAllRecipeBtn = document.getElementById("show-all-recipes");
 const showRecipeByTagBtn = document.getElementById("show-recipe-by-tag");
+const showFavBtn = document.getElementById("show-favorites");
+const showQueueBtn = document.getElementById("show-queue");
 
 const recipeTagForm = document.getElementById("recipe-tag-form");
 const searchInputField = document.getElementById("search-input-field");
@@ -36,15 +37,21 @@ window.addEventListener("load", function () {
   recipePool = recipeRepository.recipes;
   generateAllIngredients();
   generateAllTags();
-  user = new User();
+  generateRandomUser();
 });
 
+// BUTTONS
 showAllRecipeBtn.addEventListener("click", function () {
   recipePool = recipeRepository.recipes;
   deselectCheckboxes();
   showRecipePool();
 });
 
+showFavBtn.addEventListener("click", showFavorite);
+
+showQueueBtn.addEventListener("click", showQueue);
+
+// FORM
 recipeTagForm.addEventListener("click", function () {
   collectTags();
   showRecipesByTag();
@@ -60,7 +67,28 @@ searchBtn.addEventListener("click", function () {
 });
 
 recipeContainer.addEventListener("click", showRecipeDetails);
+
 // FUNCTIONS
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+// function userFunction() {
+//   document.getElementById("myDropdown").classList.toggle("show");
+// }
+
+// // Close the dropdown menu if the user clicks outside of it
+// window.onclick = function (event) {
+//   if (!event.target.matches(".dropbtn")) {
+//     var dropdowns = document.getElementsByClassName("dropdown-content");
+//     var i;
+//     for (i = 0; i < dropdowns.length; i++) {
+//       var openDropdown = dropdowns[i];
+//       if (openDropdown.classList.contains("show")) {
+//         openDropdown.classList.remove("show");
+//       }
+//     }
+//   }
+// };
 function generateAllRecipes() {
   event.preventDefault();
   recipeRepository = new RecipeRepository(recipeData);
@@ -78,17 +106,23 @@ function generateAllIngredients() {
 
 function generateAllTags() {
   let recipeTags = [];
-
   recipePool.forEach((recipe) => {
     recipeTags.push(recipe.tags);
   });
   let tagSet = [...new Set(recipeTags.flat())];
+  recipeTagForm.innerHTML = "";
   tagSet.forEach((tag) => {
     recipeTagForm.innerHTML += `
       <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}"></input>
       <label for="${tag}">${tag}</label>
     `;
   });
+}
+
+function generateRandomUser() {
+  let rIndex = Math.floor(Math.random() * userData.length);
+  let rUser = userData[rIndex];
+  user = new User(rUser);
 }
 
 function showRecipePool() {
@@ -170,6 +204,10 @@ function showRecipeDetails(event) {
         <span id="fave-text">Add to favorites</span>
         <span id="unfave-text" class="hidden">Remove from favorites</span>
       </button>
+      <button id="add-to-recipes-to-cook-button">
+        <span id="add-to-cook-text">Add to Recipes to Cook</span>
+        <span id="remove-from-cook-text" class="hidden">Remove From Recipes to Cook</span>
+      </button>
       <p>Ingredients: <span>${ingredients}</span></p>
       <p>Total cost: <span>$${cost}</span></p>
     </article>
@@ -185,6 +223,7 @@ function showRecipeDetails(event) {
   });
 
   activateFaveButton(recipeClicked);
+  activateAddToRecipesToCookButton(recipeClicked);
 }
 
 function activateFaveButton(recipeClicked) {
@@ -198,7 +237,7 @@ function activateFaveButton(recipeClicked) {
     hide(faveText);
   }
 
-  faveButton.addEventListener("click", function() {
+  faveButton.addEventListener("click", function () {
     if (!user.favoriteRecipes.includes(recipeClicked)) {
       user.favoriteRecipes.push(recipeClicked);
       hide(faveText);
@@ -212,17 +251,76 @@ function activateFaveButton(recipeClicked) {
     console.log(user.favoriteRecipes);
   });
 }
+function showFavorite() {
+  console.log(user);
+  hide(recipeDetailView);
+  show(recipePoolView);
+  if (user.favoriteRecipes.length === 0) {
+    recipePoolView.innerHTML = `
+    <h3>Sorry you don't have any favorite recipes yet</h3
+    `;
+  } else {
+    console.log("im if else working");
+    recipePool = user.favoriteRecipes;
+    console.log(recipePool);
+    showRecipePool();
+  }
+  generateAllTags();
+}
+
+function activateAddToRecipesToCookButton(recipeClicked) {
+  let addToRecipesToCookButton = document.getElementById("add-to-recipes-to-cook-button");
+  let addToCookText = document.getElementById("add-to-cook-text");
+  let removeFromCookText = document.getElementById("remove-from-cook-text");
+
+  if (user.recipesToCook.includes(recipeClicked)) {
+    resetClassList(addToCookText);
+    resetClassList(removeFromCookText);
+    hide(addToCookText);
+  }
+
+  addToRecipesToCookButton.addEventListener("click", function () {
+    if (!user.recipesToCook.includes(recipeClicked)) {
+      user.recipesToCook.push(recipeClicked);
+      hide(addToCookText);
+      show(removeFromCookText);
+    } else {
+      let indexOfRecipeClicked = user.recipesToCook.indexOf(recipeClicked);
+      user.recipesToCook.splice(indexOfRecipeClicked, 1);
+      toggle(addToCookText);
+      toggle(removeFromCookText);
+    }
+    console.log(user.recipesToCook);
+  });
+}
+
+function showQueue() {
+  console.log(user);
+  hide(recipeDetailView);
+  show(recipePoolView);
+  if (user.recipesToCook.length === 0) {
+    console.log("im empty");
+    recipePoolView.innerHTML = `
+    <h3>Sorry, you haven't added any recipes to your queue!</h3>
+    `;
+  } else {
+    recipePool = user.recipesToCook;
+    console.log(recipePool);
+    showRecipePool();
+  }
+  generateAllTags();
+}
 
 // // from raquel
-function showFavRecipesByTag() {
-  if (event.target.type === 'checkbox') {
-    if (selectedTags.length > 0) {
-      selectedTags.forEach((tag) => (recipePool = user.filterFavoriteRecipesByTag(tag)))
-    } else {
-      recipePool = user.favoriteRecipes;
-    }
-  }
-}
+// function showFavRecipesByTag() {
+//   if (event.target.type === "checkbox") {
+//     if (selectedTags.length > 0) {
+//       selectedTags.forEach((tag) => (recipePool = user.filterFavoriteRecipesByTag(tag)));
+//     } else {
+//       recipePool = user.favoriteRecipes;
+//     }
+//   }
+// }
 // UTILITY FUNCTIONS
 function show(element) {
   element.classList.remove("hidden");

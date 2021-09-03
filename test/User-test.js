@@ -84,18 +84,19 @@ describe("User", () => {
     user.selectedFavTags = ["antipasti"];
     let filteredRecipes = user.filterFavoriteRecipesByTag();
 
-    console.log(filteredRecipes);
+    // console.log(filteredRecipes);
 
     assert.deepEqual(filteredRecipes[0], recipe1);
   });
 
   it("Should allow a user to filter favorite recipes by multiple tags", () => {
-    user.selectedFavTags = ["lunch", "main course"];
+    user.selectedFavTags = ["snack", "dinner"];
     let filteredRecipes = user.filterFavoriteRecipesByTag();
 
-    console.log(filteredRecipes);
+    // console.log(filteredRecipes);
 
-    assert.deepEqual(filteredRecipes[0], recipe2);
+    assert.deepEqual(filteredRecipes[0], recipe1);
+    assert.deepEqual(filteredRecipes[1], recipe2);
   });
 
   it("Should allow a user to filter favorite recipes by name", () => {
