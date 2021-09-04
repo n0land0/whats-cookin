@@ -30,7 +30,7 @@ describe("RecipeRepository", () => {
   });
 
   it("Should be able to return a list of recipes based on tags", () => {
-    let snacks = recipeRepository.returnRecipesByTag("snack");
+    let snacks = recipeRepository.returnRecipesByTag(["snack"]);
 
     assert.includeMembers(snacks[0].tags, ["snack"]);
   });

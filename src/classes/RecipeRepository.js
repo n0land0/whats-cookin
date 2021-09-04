@@ -15,8 +15,18 @@ class RecipeRepository {
     return this.recipes.filter((recipe) => recipe.name.toLowerCase().includes(name.toLowerCase()));
   }
 
-  returnRecipesByTag(tag) {
-    return this.recipes.filter((recipe) => recipe.tags.includes(tag));
+  returnRecipesByTag(tags) {
+    let filteredRecipes = [];
+
+    tags.forEach((tag) => {
+      let tempResult = this.recipes.filter((ele) => ele.tags.includes(tag));
+      filteredRecipes = [...filteredRecipes, ...tempResult];
+    });
+
+    let uniqFilteredRecipes = Array.from(new Set(filteredRecipes.map((ele) => ele.id))).map((id) => {
+      return filteredRecipes.find((ele) => ele.id == id);
+    });
+    return uniqFilteredRecipes;
   }
 
   returnRecipesByIngredient(ingredientId) {

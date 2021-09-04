@@ -6,17 +6,30 @@
   </head>
   <body>
     <h1>What's Cookin'?</h1>
+    <div class="dropdown">
+      <button class="dropbtn">Welcome, user.name</button>
+      <div class="dropdown-content">
+        <a href="#" id="show-favorites">Show My Favorite Recipes</a>
+        <a href="#" id="show-queue">Show My Recipes To Cook</a>
+      </div>
+    </div>
     <button id="show-all-recipes">Show All Recipes</button>
+    <!-- <button id="show-favorites">Show My Favorite Recipes</button> -->
+    <!-- <button id="show-queue">Show My Recipes To Cook</button> -->
     <!-- <button id="show-recipe-by-tag">Show Recipes By Tags</button> -->
-    <h3 id="show-recipe-by-tag">Show Recipes By Tags</h3>
-    <form id="recipe-tag-form"></form>
-    <form id="search-box-form">
-      <input type="text" id="search-input-field" placeholder="Search by recipe name or ingredients" />
-      <button id="search-button">Search</button>
-    </form>
 
     <section id="recipe-container">
-      <div class="recipe-pool-view"></div>
+      <div id="pool-and-search-parent">
+        <div class="search-and-filter">
+          <h3 id="show-recipe-by-tag">Show Recipes By Tags</h3>
+          <form id="recipe-tag-form"></form>
+          <form id="search-box-form">
+            <input type="text" id="search-input-field" placeholder="Search by recipe name or ingredients" />
+            <button id="search-button">Search</button>
+          </form>
+        </div>
+        <div class="recipe-pool-view"></div>
+      </div>
       <div class="recipe-detail-view"></div>
     </section>
 

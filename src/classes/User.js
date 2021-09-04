@@ -1,5 +1,8 @@
 class User {
-  constructor() {
+  constructor(user) {
+    this.name = user.name;
+    this.userId = user.id;
+    this.userPantry = user.pantry;
     this.favoriteRecipes = [];
     this.favoriteRecipeTags = [];
     this.selectedFavTags = []; // updates as dom changes
@@ -41,10 +44,15 @@ class User {
     let filteredRecipes = [];
     if (this.selectedFavTags.length > 0) {
       this.selectedFavTags.forEach((tag) => {
-        filteredRecipes = this.favoriteRecipes.filter((ele) => ele.tags.includes(tag));
+        let tempResult = this.favoriteRecipes.filter((ele) => ele.tags.includes(tag));
+        filteredRecipes = [...filteredRecipes, ...tempResult];
       });
     }
-    return filteredRecipes;
+    //remove duplicates in filteredRecipes below
+    let uniqFilteredRecipes = Array.from(new Set(filteredRecipes.map((ele) => ele.id))).map((id) => {
+      return filteredRecipes.find((ele) => ele.id == id);
+    });
+    return uniqFilteredRecipes;
   }
 
   filterFavoriteRecipesByIngredient(ingredientId) {
@@ -54,8 +62,6 @@ class User {
   }
 
   filterFavoriteRecipesByName(name) {
-    //We should go back in and refactor returnCriteria method in recipeRespository to be more specific to the recipe name.
-
     return this.favoriteRecipes.filter((recipe) => recipe.name.toLowerCase().includes(name.toLowerCase()));
   }
 }
