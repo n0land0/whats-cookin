@@ -1,5 +1,5 @@
-import recipeData from '../data/recipes';
-import ingredientsData from '../data/ingredients';
+import recipeData from "../data/recipes";
+import ingredientsData from "../data/ingredients";
 
 class Recipe {
   constructor(id, image, ingredients, instructions, name, tags) {
@@ -16,15 +16,13 @@ class Recipe {
   showIngredientsByName() {
     let idArray = this.ingredients.map((ele) => ele.id);
 
-    let nameArray = idArray.map(
-      (id) => ingredientsData.find((data) => data.id === id).name
-    );
+    let nameArray = idArray.map((id) => ingredientsData.find((data) => data.id === id).name);
 
     return nameArray;
   }
 
   calculateRecipeCostInDollars() {
-    let idArray = this.ingredients.map((ele) => ele.id);
+    let idArray = this.ingredients.map((ingredient) => ingredient.id);
     /* Another way of doing this method
     let amountArray = this.ingredients.map((ele) => ele.quantity.amount);
 
@@ -39,17 +37,14 @@ class Recipe {
         return accumulator;
       });
       */
-    let ingredientArray = idArray.map((id) =>
-      ingredientsData.find((data) => data.id === id)
-    );
+    let ingredientArray = idArray.map((id) => ingredientsData.find((data) => data.id === id));
 
     return (
       ingredientArray.reduce(
-        (acc, ingredient) =>
-          (acc +=
+        (total, ingredient) =>
+          (total +=
             ingredient.estimatedCostInCents *
-            this.ingredients.find((data) => data.id === ingredient.id).quantity
-              .amount),
+            this.ingredients.find((data) => data.id === ingredient.id).quantity.amount),
         0
       ) / 100
     ).toFixed(2);

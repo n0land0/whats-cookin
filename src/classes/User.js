@@ -62,8 +62,6 @@ class User {
   }
 
   filterFavoriteRecipesByName(name) {
-    //We should go back in and refactor returnCriteria method in recipeRespository to be more specific to the recipe name.
-
     return this.favoriteRecipes.filter((recipe) => recipe.name.toLowerCase().includes(name.toLowerCase()));
   }
 }

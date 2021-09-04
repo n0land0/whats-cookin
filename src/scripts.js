@@ -1,5 +1,6 @@
 // IMPORTS
 import "./styles.css";
+// import "./loader.js";
 import apiCalls from "./apiCalls";
 
 import RecipeRepository from "./classes/RecipeRepository";
@@ -9,7 +10,7 @@ import userData from "./data/users.js";
 import recipeData from "./data/recipes.js";
 import ingredientsData from "./data/ingredients.js";
 
-// SELECTORS
+// SELECTORS;
 const showAllRecipeBtn = document.getElementById("show-all-recipes");
 const showRecipeByTagBtn = document.getElementById("show-recipe-by-tag");
 const showFavBtn = document.getElementById("show-favorites");
@@ -20,6 +21,7 @@ const searchInputField = document.getElementById("search-input-field");
 const searchBtn = document.getElementById("search-button");
 
 const recipeContainer = document.getElementById("recipe-container");
+const poolAndSearchView = document.getElementById("pool-and-search-parent");
 const recipePoolView = document.querySelector(".recipe-pool-view");
 const recipeDetailView = document.querySelector(".recipe-detail-view");
 
@@ -27,24 +29,28 @@ const recipeDetailView = document.querySelector(".recipe-detail-view");
 let recipeRepository;
 let ingredientRepository;
 let recipePool;
+// let recipePoolTags;
 let ingredientPool;
 let selectedTags;
 let user;
 
-// LISTENERS
+// LISTENERS;
 window.addEventListener("load", function () {
+  // recipeRepository = new RecipeRepository(recipeData);
   generateAllRecipes();
-  recipePool = recipeRepository.recipes;
   generateAllIngredients();
-  generateAllTags();
+  // generateAllTags();
   generateRandomUser();
+  recipePool = recipeRepository.recipes;
 });
 
 // BUTTONS
 showAllRecipeBtn.addEventListener("click", function () {
   recipePool = recipeRepository.recipes;
-  deselectCheckboxes();
+  // deselectCheckboxes();
   showRecipePool();
+  generateAllTags();
+  // showTags();
 });
 
 showFavBtn.addEventListener("click", showFavorite);
@@ -54,7 +60,7 @@ showQueueBtn.addEventListener("click", showQueue);
 // FORM
 recipeTagForm.addEventListener("click", function () {
   collectTags();
-  showRecipesByTag();
+  // showRecipesByTag();
   showRecipePool();
 });
 
@@ -66,35 +72,13 @@ searchBtn.addEventListener("click", function () {
   showRecipePool();
 });
 
-recipeContainer.addEventListener("click", showRecipeDetails);
+recipePoolView.addEventListener("click", showRecipeDetails);
 
 // FUNCTIONS
-
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-// function userFunction() {
-//   document.getElementById("myDropdown").classList.toggle("show");
-// }
-
-// // Close the dropdown menu if the user clicks outside of it
-// window.onclick = function (event) {
-//   if (!event.target.matches(".dropbtn")) {
-//     var dropdowns = document.getElementsByClassName("dropdown-content");
-//     var i;
-//     for (i = 0; i < dropdowns.length; i++) {
-//       var openDropdown = dropdowns[i];
-//       if (openDropdown.classList.contains("show")) {
-//         openDropdown.classList.remove("show");
-//       }
-//     }
-//   }
-// };
 function generateAllRecipes() {
   event.preventDefault();
   recipeRepository = new RecipeRepository(recipeData);
   recipeRepository.makeRecipes();
-  // recipePool = recipeRepository.recipes;
-  // generateTags();
 }
 
 function generateAllIngredients() {
@@ -109,9 +93,9 @@ function generateAllTags() {
   recipePool.forEach((recipe) => {
     recipeTags.push(recipe.tags);
   });
-  let tagSet = [...new Set(recipeTags.flat())];
+  let uniqRecipeTags = [...new Set(recipeTags.flat())];
   recipeTagForm.innerHTML = "";
-  tagSet.forEach((tag) => {
+  uniqRecipeTags.forEach((tag) => {
     recipeTagForm.innerHTML += `
       <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}"></input>
       <label for="${tag}">${tag}</label>
@@ -127,8 +111,9 @@ function generateRandomUser() {
 
 function showRecipePool() {
   hide(recipeDetailView);
-  show(recipePoolView);
+  show(poolAndSearchView);
   recipePoolView.innerHTML = "";
+  console.log("showrecipepool fn recipepool", recipePool);
   recipePool.forEach((recipe) => {
     recipePoolView.innerHTML += `
       <article id="${recipe.id}">
@@ -145,26 +130,33 @@ function collectTags() {
   for (let i = 0; i < checkBoxes.length; i++) {
     selectedTags.push(checkBoxes[i].value);
   }
-  console.log(selectedTags);
-}
-
-function showRecipesByTag() {
-  if (event.target.type === "checkbox") {
-    if (selectedTags.length > 0) {
-      selectedTags.forEach((tag) => (recipePool = recipeRepository.returnRecipesByTag(tag)));
-    } else {
-      recipePool = recipeRepository.recipes;
-    }
+  if (selectedTags.length === 0) {
+    recipePool = recipeRepository.recipes;
+    showRecipePool();
+  } else {
+    showRecipesByTag();
   }
 }
 
-function deselectCheckboxes() {
-  let checkboxes = document.querySelectorAll("input[type=checkbox]");
-  // console.log(checkboxes);
-  checkboxes.forEach((ele) => {
-    ele.checked = false;
-  });
+function showRecipesByTag() {
+  // if (event.target.type === "checkbox") {
+  // if recipePool = recipeRespository, call recipeRepository function
+  if (user.favoriteRecipes.length === 0) {
+    recipePool = recipeRepository.returnRecipesByTag(selectedTags);
+  } else {
+    //if recipePool = user.favorties. call user function
+    user.selectedFavTags = selectedTags;
+    recipePool = user.filterFavoriteRecipesByTag();
+  }
 }
+
+// function deselectCheckboxes() {
+//   let checkboxes = document.querySelectorAll("input[type=checkbox]");
+//   // console.log(checkboxes);
+//   checkboxes.forEach((ele) => {
+//     ele.checked = false;
+//   });
+// }
 
 function searchByName() {
   event.preventDefault();
@@ -187,13 +179,19 @@ function searchByIngredient() {
 // As a user, I should be able to favorite / unfavorite recipes that I like and can easily find again.
 
 function showRecipeDetails(event) {
+  console.log("fires up");
+  console.log(recipePool);
   let recipeId = event.target.parentNode.id;
   let recipeClicked = recipePool.find((ele) => ele.id == recipeId);
+  console.log("recipeclicked", recipeClicked);
   let ingredients = recipeClicked.showIngredientsByName().join(", ");
   let instructions = recipeClicked.showInstructions();
   let cost = recipeClicked.calculateRecipeCostInDollars();
 
-  hide(recipePoolView);
+  console.log("recipeId", recipeId);
+  console.log("recipeClicked)", recipeClicked);
+
+  hide(poolAndSearchView);
   show(recipeDetailView);
 
   recipeDetailView.innerHTML = `
@@ -248,24 +246,22 @@ function activateFaveButton(recipeClicked) {
       toggle(faveText);
       toggle(unFaveText);
     }
-    console.log(user.favoriteRecipes);
   });
 }
+
 function showFavorite() {
-  console.log(user);
   hide(recipeDetailView);
-  show(recipePoolView);
+  show(poolAndSearchView);
   if (user.favoriteRecipes.length === 0) {
     recipePoolView.innerHTML = `
     <h3>Sorry you don't have any favorite recipes yet</h3
     `;
   } else {
-    console.log("im if else working");
     recipePool = user.favoriteRecipes;
-    console.log(recipePool);
+    console.log("favorite recipe pool", recipePool);
     showRecipePool();
+    generateAllTags();
   }
-  generateAllTags();
 }
 
 function activateAddToRecipesToCookButton(recipeClicked) {
@@ -295,17 +291,14 @@ function activateAddToRecipesToCookButton(recipeClicked) {
 }
 
 function showQueue() {
-  console.log(user);
   hide(recipeDetailView);
-  show(recipePoolView);
+  show(poolAndSearchView);
   if (user.recipesToCook.length === 0) {
-    console.log("im empty");
     recipePoolView.innerHTML = `
     <h3>Sorry, you haven't added any recipes to your queue!</h3>
     `;
   } else {
     recipePool = user.recipesToCook;
-    console.log(recipePool);
     showRecipePool();
   }
   generateAllTags();
