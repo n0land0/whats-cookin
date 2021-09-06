@@ -1,14 +1,20 @@
 // IMPORTS
 import "./styles.css";
-// import "./loader.js";
-import apiCalls from "./apiCalls";
 
 import RecipeRepository from "./classes/RecipeRepository";
 import IngredientRepository from "./classes/IngredientRepository";
 import User from "./classes/User";
-import userData from "./data/users.js";
-import recipeData from "./data/recipes.js";
-import ingredientsData from "./data/ingredients.js";
+
+// import { hootieHoo } from "./apiCalls";
+
+// import userData from "./data/users.js";
+// import userData from "./apiCalls";
+// import recipeData from "./data/recipes.js";
+// import recipeData from "./apiCalls";
+// import ingredientsData from "./data/ingredients.js";
+// import ingredientsData from "./apiCalls";
+
+import { fetchUsers, fetchIngredients, fetchRecipes, userData, ingredientsData, recipeData } from "./apiCalls";
 
 // SELECTORS;
 const showAllRecipeBtn = document.getElementById("show-all-recipes");
@@ -35,14 +41,48 @@ let selectedTags;
 let user;
 
 // LISTENERS;
-window.addEventListener("load", function () {
-  // recipeRepository = new RecipeRepository(recipeData);
+// window.addEventListener("load", function () {
+//   fetchUsers();
+//   fetchIngredients();
+//   fetchRecipes();
+//   console.log(userData);
+//   console.log(ingredientsData)
+//   console.log(recipeData);
+//   // console.log(userData);
+//   // console.log(ingredientsData);
+//   // console.log(recipeData);
+//
+//   // recipeRepository = new RecipeRepository(recipeData);
+//   generateAllRecipes();
+//   generateAllIngredients();
+//   // generateAllTags();
+//   // generateRandomUser();
+//   user = new User(userData[0]);
+//   console.log(user)
+//   recipePool = recipeRepository.recipes;
+// });
+
+window.addEventListener("load", getApis);
+
+function getApis() {
+  Promise.all([fetchUsers(), fetchIngredients(), fetchRecipes()]).then(allArrays => storeData(allArrays));
+}
+
+function storeData(arrays) {
+  arrays[0].forEach(user => userData.push(user));
+  arrays[1].forEach(ingredient => ingredientsData.push(ingredient));
+  arrays[2].forEach(recipe => recipeData.push(recipe));
+  createUserAndRecipePool();
+}
+
+function createUserAndRecipePool() {
+  generateRandomUser();
   generateAllRecipes();
   generateAllIngredients();
-  // generateAllTags();
-  generateRandomUser();
-  recipePool = recipeRepository.recipes;
-});
+  console.log(user);
+  console.log(recipePool);
+  console.log(ingredientPool);
+}
 
 // BUTTONS
 showAllRecipeBtn.addEventListener("click", function () {
@@ -76,13 +116,14 @@ recipePoolView.addEventListener("click", showRecipeDetails);
 
 // FUNCTIONS
 function generateAllRecipes() {
-  event.preventDefault();
+  // event.preventDefault();
   recipeRepository = new RecipeRepository(recipeData);
   recipeRepository.makeRecipes();
+  recipePool = recipeRepository.recipes;
 }
 
 function generateAllIngredients() {
-  event.preventDefault();
+  // event.preventDefault();
   ingredientRepository = new IngredientRepository(ingredientsData);
   ingredientRepository.makeIngredients();
   ingredientPool = ingredientRepository.ingredients;
@@ -104,9 +145,12 @@ function generateAllTags() {
 }
 
 function generateRandomUser() {
-  let rIndex = Math.floor(Math.random() * userData.length);
-  let rUser = userData[rIndex];
-  user = new User(rUser);
+  let randomIndex = Math.floor(Math.random() * userData.length);
+
+  let randomUser = userData[randomIndex];
+
+  // user = new User(randomUser);
+  user = new User(randomUser);
 }
 
 function showRecipePool() {
