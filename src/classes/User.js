@@ -26,7 +26,9 @@ class User {
 
   removeFromFavorites(recipe) {
     recipe.isFaved = false;
-    let recipeIndex = this.favoriteRecipes.findIndex((ele) => ele.id === recipe.id);
+    let recipeIndex = this.favoriteRecipes.findIndex(
+      (ele) => ele.id === recipe.id
+    );
 
     this.favoriteRecipes.splice(recipeIndex, 1);
   }
@@ -44,12 +46,15 @@ class User {
     let filteredRecipes = [];
     if (this.selectedFavTags.length > 0) {
       this.selectedFavTags.forEach((tag) => {
-        let tempResult = this.favoriteRecipes.filter((ele) => ele.tags.includes(tag));
+        let tempResult = this.favoriteRecipes.filter((ele) =>
+          ele.tags.includes(tag)
+        );
         filteredRecipes = [...filteredRecipes, ...tempResult];
       });
     }
-    //remove duplicates in filteredRecipes below
-    let uniqFilteredRecipes = Array.from(new Set(filteredRecipes.map((ele) => ele.id))).map((id) => {
+    let uniqFilteredRecipes = Array.from(
+      new Set(filteredRecipes.map((ele) => ele.id))
+    ).map((id) => {
       return filteredRecipes.find((ele) => ele.id == id);
     });
     return uniqFilteredRecipes;
@@ -57,12 +62,16 @@ class User {
 
   filterFavoriteRecipesByIngredient(ingredientId) {
     return this.favoriteRecipes.filter((recipe) =>
-      recipe.ingredients.some((ingredient) => ingredientId.includes(ingredient.id))
+      recipe.ingredients.some((ingredient) =>
+        ingredientId.includes(ingredient.id)
+      )
     );
   }
 
   filterFavoriteRecipesByName(name) {
-    return this.favoriteRecipes.filter((recipe) => recipe.name.toLowerCase().includes(name.toLowerCase()));
+    return this.favoriteRecipes.filter((recipe) =>
+      recipe.name.toLowerCase().includes(name.toLowerCase())
+    );
   }
 }
 
