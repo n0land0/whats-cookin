@@ -7,7 +7,7 @@ class IngredientRepository {
   }
 
   makeIngredients() {
-    this.ingredients = this.ingredients.map(
+    this.ingredients = this.ingredients.filter(ingredient => ingredient.name).map(
       (ingredient) =>
         new Ingredient(
           ingredient.id,
