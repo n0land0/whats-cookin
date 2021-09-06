@@ -1,35 +1,34 @@
 // IMPORTS
-import "./styles.css";
+import './styles.css';
+import MicroModal from 'micromodal';
 
-import RecipeRepository from "./classes/RecipeRepository";
-import IngredientRepository from "./classes/IngredientRepository";
-import User from "./classes/User";
-
-// import { hootieHoo } from "./apiCalls";
-
-// import userData from "./data/users.js";
-// import userData from "./apiCalls";
-// import recipeData from "./data/recipes.js";
-// import recipeData from "./apiCalls";
-// import ingredientsData from "./data/ingredients.js";
-// import ingredientsData from "./apiCalls";
-
-import { fetchUsers, fetchIngredients, fetchRecipes, userData, ingredientsData, recipeData } from "./apiCalls";
+import RecipeRepository from './classes/RecipeRepository';
+import IngredientRepository from './classes/IngredientRepository';
+import User from './classes/User';
+import {
+  fetchUsers,
+  fetchIngredients,
+  fetchRecipes,
+  userData,
+  ingredientsData,
+  recipeData,
+} from './apiCalls';
 
 // SELECTORS;
-const showAllRecipeBtn = document.getElementById("show-all-recipes");
-const showRecipeByTagBtn = document.getElementById("show-recipe-by-tag");
-const showFavBtn = document.getElementById("show-favorites");
-const showQueueBtn = document.getElementById("show-queue");
+const showAllRecipeBtn = document.getElementById('show-all-recipes');
+const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
+const showFavBtn = document.getElementById('show-favorites');
+const showQueueBtn = document.getElementById('show-queue');
 
-const recipeTagForm = document.getElementById("recipe-tag-form");
-const searchInputField = document.getElementById("search-input-field");
-const searchBtn = document.getElementById("search-button");
+const recipeTagForm = document.getElementById('recipe-tag-form');
+const searchInputField = document.getElementById('search-input-field');
+const searchBtn = document.getElementById('search-button');
 
-const recipeContainer = document.getElementById("recipe-container");
-const poolAndSearchView = document.getElementById("pool-and-search-parent");
-const recipePoolView = document.querySelector(".recipe-pool-view");
-const recipeDetailView = document.querySelector(".recipe-detail-view");
+const recipeContainer = document.getElementById('recipe-container');
+const poolAndSearchView = document.getElementById('pool-and-search-parent');
+const recipePoolView = document.querySelector('.recipe-pool-view');
+const recipeDetailView = document.querySelector('.recipe-detail-view');
+let favoriteModal = document.getElementById('favorite-recipe-modal');
 
 // GLOBAL VARIABLES
 let recipeRepository;
@@ -40,38 +39,18 @@ let ingredientPool;
 let selectedTags;
 let user;
 
-// LISTENERS;
-// window.addEventListener("load", function () {
-//   fetchUsers();
-//   fetchIngredients();
-//   fetchRecipes();
-//   console.log(userData);
-//   console.log(ingredientsData)
-//   console.log(recipeData);
-//   // console.log(userData);
-//   // console.log(ingredientsData);
-//   // console.log(recipeData);
-//
-//   // recipeRepository = new RecipeRepository(recipeData);
-//   generateAllRecipes();
-//   generateAllIngredients();
-//   // generateAllTags();
-//   // generateRandomUser();
-//   user = new User(userData[0]);
-//   console.log(user)
-//   recipePool = recipeRepository.recipes;
-// });
-
-window.addEventListener("load", getApis);
+window.addEventListener('load', getApis);
 
 function getApis() {
-  Promise.all([fetchUsers(), fetchIngredients(), fetchRecipes()]).then(allArrays => storeData(allArrays));
+  Promise.all([fetchUsers(), fetchIngredients(), fetchRecipes()]).then(
+    (allArrays) => storeData(allArrays)
+  );
 }
 
 function storeData(arrays) {
-  arrays[0].forEach(user => userData.push(user));
-  arrays[1].forEach(ingredient => ingredientsData.push(ingredient));
-  arrays[2].forEach(recipe => recipeData.push(recipe));
+  arrays[0].forEach((user) => userData.push(user));
+  arrays[1].forEach((ingredient) => ingredientsData.push(ingredient));
+  arrays[2].forEach((recipe) => recipeData.push(recipe));
   createUserAndRecipePool();
 }
 
@@ -79,51 +58,42 @@ function createUserAndRecipePool() {
   generateRandomUser();
   generateAllRecipes();
   generateAllIngredients();
-  console.log(user);
-  console.log(recipePool);
-  console.log(ingredientPool);
 }
 
 // BUTTONS
-showAllRecipeBtn.addEventListener("click", function () {
+showAllRecipeBtn.addEventListener('click', function () {
   recipePool = recipeRepository.recipes;
-  // deselectCheckboxes();
   showRecipePool();
   generateAllTags();
-  // showTags();
 });
 
-showFavBtn.addEventListener("click", showFavorite);
+showFavBtn.addEventListener('click', showFavorite);
 
-showQueueBtn.addEventListener("click", showQueue);
+showQueueBtn.addEventListener('click', showQueue);
 
 // FORM
-recipeTagForm.addEventListener("click", function () {
+recipeTagForm.addEventListener('click', function () {
   collectTags();
-  // showRecipesByTag();
   showRecipePool();
 });
 
-searchBtn.addEventListener("click", function () {
+searchBtn.addEventListener('click', function () {
   recipePool = [];
   searchByName();
   searchByIngredient();
-
   showRecipePool();
 });
 
-recipePoolView.addEventListener("click", showRecipeDetails);
+recipePoolView.addEventListener('click', showRecipeDetails);
 
 // FUNCTIONS
 function generateAllRecipes() {
-  // event.preventDefault();
   recipeRepository = new RecipeRepository(recipeData);
   recipeRepository.makeRecipes();
   recipePool = recipeRepository.recipes;
 }
 
 function generateAllIngredients() {
-  // event.preventDefault();
   ingredientRepository = new IngredientRepository(ingredientsData);
   ingredientRepository.makeIngredients();
   ingredientPool = ingredientRepository.ingredients;
@@ -135,7 +105,7 @@ function generateAllTags() {
     recipeTags.push(recipe.tags);
   });
   let uniqRecipeTags = [...new Set(recipeTags.flat())];
-  recipeTagForm.innerHTML = "";
+  recipeTagForm.innerHTML = '';
   uniqRecipeTags.forEach((tag) => {
     recipeTagForm.innerHTML += `
       <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}"></input>
@@ -146,18 +116,14 @@ function generateAllTags() {
 
 function generateRandomUser() {
   let randomIndex = Math.floor(Math.random() * userData.length);
-
   let randomUser = userData[randomIndex];
-
-  // user = new User(randomUser);
   user = new User(randomUser);
 }
 
 function showRecipePool() {
   hide(recipeDetailView);
   show(poolAndSearchView);
-  recipePoolView.innerHTML = "";
-  console.log("showrecipepool fn recipepool", recipePool);
+  recipePoolView.innerHTML = '';
   recipePool.forEach((recipe) => {
     recipePoolView.innerHTML += `
       <article id="${recipe.id}">
@@ -170,7 +136,7 @@ function showRecipePool() {
 
 function collectTags() {
   selectedTags = [];
-  let checkBoxes = document.querySelectorAll("input[type=checkbox]:checked");
+  let checkBoxes = document.querySelectorAll('input[type=checkbox]:checked');
   for (let i = 0; i < checkBoxes.length; i++) {
     selectedTags.push(checkBoxes[i].value);
   }
@@ -183,36 +149,31 @@ function collectTags() {
 }
 
 function showRecipesByTag() {
-  // if (event.target.type === "checkbox") {
-  // if recipePool = recipeRespository, call recipeRepository function
   if (user.favoriteRecipes.length === 0) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags);
   } else {
-    //if recipePool = user.favorties. call user function
     user.selectedFavTags = selectedTags;
     recipePool = user.filterFavoriteRecipesByTag();
   }
 }
 
-// function deselectCheckboxes() {
-//   let checkboxes = document.querySelectorAll("input[type=checkbox]");
-//   // console.log(checkboxes);
-//   checkboxes.forEach((ele) => {
-//     ele.checked = false;
-//   });
-// }
-
 function searchByName() {
   event.preventDefault();
   if (searchInputField.value) {
-    recipePool = recipeRepository.returnRecipesByName("name", searchInputField.value);
+    recipePool = recipeRepository.returnRecipesByName(
+      'name',
+      searchInputField.value
+    );
   }
 }
 
 function searchByIngredient() {
   event.preventDefault();
-  let ingredientIds = ingredientRepository.getIngredientId(searchInputField.value);
-  let recipesContainingIngredient = recipeRepository.returnRecipesByIngredient(ingredientIds);
+  let ingredientIds = ingredientRepository.getIngredientId(
+    searchInputField.value
+  );
+  let recipesContainingIngredient =
+    recipeRepository.returnRecipesByIngredient(ingredientIds);
   recipesContainingIngredient.forEach((recipe) => {
     if (!recipePool.some((el) => el.name === recipe.name)) {
       recipePool.push(recipe);
@@ -220,21 +181,12 @@ function searchByIngredient() {
   });
 }
 
-// As a user, I should be able to favorite / unfavorite recipes that I like and can easily find again.
-
 function showRecipeDetails(event) {
-  console.log("fires up");
-  console.log(recipePool);
   let recipeId = event.target.parentNode.id;
   let recipeClicked = recipePool.find((ele) => ele.id == recipeId);
-  console.log("recipeclicked", recipeClicked);
-  let ingredients = recipeClicked.showIngredientsByName().join(", ");
+  let ingredients = recipeClicked.showIngredientsByName().join(', ');
   let instructions = recipeClicked.showInstructions();
   let cost = recipeClicked.calculateRecipeCostInDollars();
-
-  console.log("recipeId", recipeId);
-  console.log("recipeClicked)", recipeClicked);
-
   hide(poolAndSearchView);
   show(recipeDetailView);
 
@@ -269,9 +221,9 @@ function showRecipeDetails(event) {
 }
 
 function activateFaveButton(recipeClicked) {
-  let faveButton = document.getElementById("fave-button");
-  let faveText = document.getElementById("fave-text");
-  let unFaveText = document.getElementById("unfave-text");
+  let faveButton = document.getElementById('fave-button');
+  let faveText = document.getElementById('fave-text');
+  let unFaveText = document.getElementById('unfave-text');
 
   if (user.favoriteRecipes.includes(recipeClicked)) {
     resetClassList(faveText);
@@ -279,7 +231,7 @@ function activateFaveButton(recipeClicked) {
     hide(faveText);
   }
 
-  faveButton.addEventListener("click", function () {
+  faveButton.addEventListener('click', function () {
     if (!user.favoriteRecipes.includes(recipeClicked)) {
       user.favoriteRecipes.push(recipeClicked);
       hide(faveText);
@@ -297,21 +249,35 @@ function showFavorite() {
   hide(recipeDetailView);
   show(poolAndSearchView);
   if (user.favoriteRecipes.length === 0) {
-    recipePoolView.innerHTML = `
-    <h3>Sorry you don't have any favorite recipes yet</h3
-    `;
+    let span = document.getElementsByClassName('close')[0];
+    showFavBtn.onclick = function () {
+      favoriteModal.style.display = 'block';
+    };
+    span.onclick = function () {
+      favoriteModal.style.display = 'none';
+    };
+    window.onclick = function (event) {
+      if (event.target == favoriteModal) {
+        favoriteModal.style.display = 'none';
+      }
+    };
   } else {
+    showFavBtn.onclick = function () {
+      favoriteModal.style.display = 'none';
+    };
     recipePool = user.favoriteRecipes;
-    console.log("favorite recipe pool", recipePool);
+    console.log(recipePool);
     showRecipePool();
     generateAllTags();
   }
 }
 
 function activateAddToRecipesToCookButton(recipeClicked) {
-  let addToRecipesToCookButton = document.getElementById("add-to-recipes-to-cook-button");
-  let addToCookText = document.getElementById("add-to-cook-text");
-  let removeFromCookText = document.getElementById("remove-from-cook-text");
+  let addToRecipesToCookButton = document.getElementById(
+    'add-to-recipes-to-cook-button'
+  );
+  let addToCookText = document.getElementById('add-to-cook-text');
+  let removeFromCookText = document.getElementById('remove-from-cook-text');
 
   if (user.recipesToCook.includes(recipeClicked)) {
     resetClassList(addToCookText);
@@ -319,7 +285,7 @@ function activateAddToRecipesToCookButton(recipeClicked) {
     hide(addToCookText);
   }
 
-  addToRecipesToCookButton.addEventListener("click", function () {
+  addToRecipesToCookButton.addEventListener('click', function () {
     if (!user.recipesToCook.includes(recipeClicked)) {
       user.recipesToCook.push(recipeClicked);
       hide(addToCookText);
@@ -330,7 +296,6 @@ function activateAddToRecipesToCookButton(recipeClicked) {
       toggle(addToCookText);
       toggle(removeFromCookText);
     }
-    console.log(user.recipesToCook);
   });
 }
 
@@ -338,9 +303,14 @@ function showQueue() {
   hide(recipeDetailView);
   show(poolAndSearchView);
   if (user.recipesToCook.length === 0) {
-    recipePoolView.innerHTML = `
-    <h3>Sorry, you haven't added any recipes to your queue!</h3>
-    `;
+    var modal = document.getElementById('recipes-to-cook-modal');
+    var span = document.getElementsByClassName('close-recipe-to-cook-modal')[0];
+    showQueueBtn.onclick = function () {
+      modal.style.display = 'block';
+    };
+    span.onclick = function () {
+      modal.style.display = 'none';
+    };
   } else {
     recipePool = user.recipesToCook;
     showRecipePool();
@@ -348,29 +318,19 @@ function showQueue() {
   generateAllTags();
 }
 
-// // from raquel
-// function showFavRecipesByTag() {
-//   if (event.target.type === "checkbox") {
-//     if (selectedTags.length > 0) {
-//       selectedTags.forEach((tag) => (recipePool = user.filterFavoriteRecipesByTag(tag)));
-//     } else {
-//       recipePool = user.favoriteRecipes;
-//     }
-//   }
-// }
 // UTILITY FUNCTIONS
 function show(element) {
-  element.classList.remove("hidden");
+  element.classList.remove('hidden');
 }
 
 function hide(element) {
-  element.classList.add("hidden");
+  element.classList.add('hidden');
 }
 
 function toggle(element) {
-  element.classList.toggle("hidden");
+  element.classList.toggle('hidden');
 }
 
 function resetClassList(element) {
-  element.classList = "";
+  element.classList = '';
 }

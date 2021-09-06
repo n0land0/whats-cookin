@@ -10,14 +10,24 @@
       <button class="dropbtn">Welcome, user.name</button>
       <div class="dropdown-content">
         <a href="#" id="show-favorites">Show My Favorite Recipes</a>
+        <div id="favorite-recipe-modal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>You currently do not have any recipes in your favorite list..</p>
+          </div>
+        
+        </div>
         <a href="#" id="show-queue">Show My Recipes To Cook</a>
+        <div id="recipes-to-cook-modal" class="modal">
+          <div class="modal-content">
+            <span class="close-recipe-to-cook-modal">&times;</span>
+            <p>You currently do not have any recipes in your recipes to cook list..</p>
+          </div>
+        
+        </div>
       </div>
     </div>
     <button id="show-all-recipes">Show All Recipes</button>
-    <!-- <button id="show-favorites">Show My Favorite Recipes</button> -->
-    <!-- <button id="show-queue">Show My Recipes To Cook</button> -->
-    <!-- <button id="show-recipe-by-tag">Show Recipes By Tags</button> -->
-
     <section id="recipe-container">
       <div id="pool-and-search-parent">
         <div class="search-and-filter">
@@ -34,5 +44,7 @@
     </section>
 
     <script src="./scripts.js"></script>
-  </body>
-</html>
+
+    
+
+
