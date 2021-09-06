@@ -19,6 +19,7 @@ const showAllRecipeBtn = document.getElementById('show-all-recipes');
 const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
 const showFavBtn = document.getElementById('show-favorites');
 const showQueueBtn = document.getElementById('show-queue');
+const dropBtn = document.querySelector('.dropbtn');
 
 const recipeTagForm = document.getElementById('recipe-tag-form');
 const searchInputField = document.getElementById('search-input-field');
@@ -29,6 +30,9 @@ const poolAndSearchView = document.getElementById('pool-and-search-parent');
 const recipePoolView = document.querySelector('.recipe-pool-view');
 const recipeDetailView = document.querySelector('.recipe-detail-view');
 let favoriteModal = document.getElementById('favorite-recipe-modal');
+let recipesToCookModal = document.getElementById('recipes-to-cook-modal');
+let closeSpanFavorites = document.querySelectorAll('.close')[0];
+let closeSpanQueue = document.querySelectorAll('.close')[1];
 
 // GLOBAL VARIABLES
 let recipeRepository;
@@ -39,8 +43,55 @@ let ingredientPool;
 let selectedTags;
 let user;
 
+// EVENTLISTENERS
 window.addEventListener('load', getApis);
 
+showAllRecipeBtn.addEventListener('click', function () {
+  recipePool = recipeRepository.recipes;
+  showRecipePool();
+  generateAllTags();
+});
+
+showFavBtn.addEventListener('click', function () {
+  recipePool = user.favoriteRecipes;
+  showFavorite();
+});
+
+showQueueBtn.addEventListener('click', function () {
+  recipePool = user.recipesToCook;
+  showQueue();
+});
+
+// FORM EVENTLISTENERS
+recipeTagForm.addEventListener('click', function () {
+  collectTags();
+  showRecipePool();
+});
+
+searchBtn.addEventListener('click', function () {
+  recipePool = [];
+  searchByName();
+  searchByIngredient();
+  showRecipePool();
+});
+
+recipePoolView.addEventListener('click', showRecipeDetails);
+
+closeSpanFavorites.addEventListener('click', function () {
+  favoriteModal.style.display = 'none';
+});
+
+closeSpanQueue.addEventListener('click', function () {
+  recipesToCookModal.style.display = 'none';
+});
+
+window.addEventListener('click', function (event) {
+  if (event.target == favoriteModal) {
+    favoriteModal.style.display = 'none';
+  }
+});
+
+// FUNCTIONS
 function getApis() {
   Promise.all([fetchUsers(), fetchIngredients(), fetchRecipes()]).then(
     (allArrays) => storeData(allArrays)
@@ -58,35 +109,9 @@ function createUserAndRecipePool() {
   generateRandomUser();
   generateAllRecipes();
   generateAllIngredients();
+  dropBtn.innerText = `Welcome, ${user.name}!`;
 }
 
-// BUTTONS
-showAllRecipeBtn.addEventListener('click', function () {
-  recipePool = recipeRepository.recipes;
-  showRecipePool();
-  generateAllTags();
-});
-
-showFavBtn.addEventListener('click', showFavorite);
-
-showQueueBtn.addEventListener('click', showQueue);
-
-// FORM
-recipeTagForm.addEventListener('click', function () {
-  collectTags();
-  showRecipePool();
-});
-
-searchBtn.addEventListener('click', function () {
-  recipePool = [];
-  searchByName();
-  searchByIngredient();
-  showRecipePool();
-});
-
-recipePoolView.addEventListener('click', showRecipeDetails);
-
-// FUNCTIONS
 function generateAllRecipes() {
   recipeRepository = new RecipeRepository(recipeData);
   recipeRepository.makeRecipes();
@@ -140,7 +165,7 @@ function collectTags() {
   for (let i = 0; i < checkBoxes.length; i++) {
     selectedTags.push(checkBoxes[i].value);
   }
-  if (selectedTags.length === 0) {
+  if (!selectedTags.length) {
     recipePool = recipeRepository.recipes;
     showRecipePool();
   } else {
@@ -149,7 +174,7 @@ function collectTags() {
 }
 
 function showRecipesByTag() {
-  if (user.favoriteRecipes.length === 0) {
+  if (!user.favoriteRecipes.length) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags);
   } else {
     user.selectedFavTags = selectedTags;
@@ -245,33 +270,6 @@ function activateFaveButton(recipeClicked) {
   });
 }
 
-function showFavorite() {
-  hide(recipeDetailView);
-  show(poolAndSearchView);
-  if (user.favoriteRecipes.length === 0) {
-    let span = document.getElementsByClassName('close')[0];
-    showFavBtn.onclick = function () {
-      favoriteModal.style.display = 'block';
-    };
-    span.onclick = function () {
-      favoriteModal.style.display = 'none';
-    };
-    window.onclick = function (event) {
-      if (event.target == favoriteModal) {
-        favoriteModal.style.display = 'none';
-      }
-    };
-  } else {
-    showFavBtn.onclick = function () {
-      favoriteModal.style.display = 'none';
-    };
-    recipePool = user.favoriteRecipes;
-    console.log(recipePool);
-    showRecipePool();
-    generateAllTags();
-  }
-}
-
 function activateAddToRecipesToCookButton(recipeClicked) {
   let addToRecipesToCookButton = document.getElementById(
     'add-to-recipes-to-cook-button'
@@ -299,23 +297,32 @@ function activateAddToRecipesToCookButton(recipeClicked) {
   });
 }
 
+function showFavorite() {
+  hide(recipeDetailView);
+  show(poolAndSearchView);
+  if (!user.favoriteRecipes.length) {
+    recipePoolView.innerHTML = '';
+    favoriteModal.style.display = 'block';
+    generateAllTags();
+  } else {
+    favoriteModal.style.display = 'none';
+    showRecipePool();
+    generateAllTags();
+  }
+}
+
 function showQueue() {
   hide(recipeDetailView);
   show(poolAndSearchView);
-  if (user.recipesToCook.length === 0) {
-    var modal = document.getElementById('recipes-to-cook-modal');
-    var span = document.getElementsByClassName('close-recipe-to-cook-modal')[0];
-    showQueueBtn.onclick = function () {
-      modal.style.display = 'block';
-    };
-    span.onclick = function () {
-      modal.style.display = 'none';
-    };
+  if (!user.recipesToCook.length) {
+    recipePoolView.innerHTML = '';
+    recipesToCookModal.style.display = 'block';
+    generateAllTags();
   } else {
-    recipePool = user.recipesToCook;
+    recipesToCookModal.style.display = 'none';
     showRecipePool();
+    generateAllTags();
   }
-  generateAllTags();
 }
 
 // UTILITY FUNCTIONS

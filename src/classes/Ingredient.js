@@ -1,4 +1,4 @@
-import ingredientsData from "../data/ingredients";
+import ingredientsData from '../data/ingredients';
 
 class Ingredient {
   constructor(id, name, estimatedCostInCents) {
@@ -6,14 +6,6 @@ class Ingredient {
     this.name = name;
     this.estimatedCostInCents = estimatedCostInCents;
   }
-
-  // getIngredientId(ingredientName) {
-  //   const foundIngredient = ingredientsData.find(
-  //     (ingredient) => ingredientName === ingredient.name
-  //   );
-
-  //   return foundIngredient.id;
-  // }
 }
 
 export default Ingredient;

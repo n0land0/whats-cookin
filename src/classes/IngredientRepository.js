@@ -1,6 +1,4 @@
-// import ingredientsData from '../data/ingredients';
 import Ingredient from './Ingredient';
-
 class IngredientRepository {
   constructor(ingredientsData) {
     this.ingredients = ingredientsData;
