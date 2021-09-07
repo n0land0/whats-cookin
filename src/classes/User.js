@@ -4,10 +4,10 @@ class User {
     this.userId = user.id;
     this.userPantry = user.pantry;
     this.favoriteRecipes = [];
-    this.favoriteRecipeTags = [];
-    this.selectedFavTags = []; // updates as dom changes
+    // this.favoriteRecipeTags = [];
+    // this.selectedFavTags = []; //s
     this.recipesToCook = [];
-    this.recipesToCookTags = [];
+    // this.recipesToCookTags = [];
   }
 
   addToFavorites(recipe) {
@@ -42,23 +42,20 @@ class User {
     return this.favoriteRecipeTags;
   }
 
-  filterFavoriteRecipesByTag() {
+  filterRecipesByTag(recipeSet,tags) {
     let filteredRecipes = [];
-    if (this.selectedFavTags.length > 0) {
-      this.selectedFavTags.forEach((tag) => {
-        let tempResult = this.favoriteRecipes.filter((ele) =>
-          ele.tags.includes(tag)
-        );
-        filteredRecipes = [...filteredRecipes, ...tempResult];
-      });
-    }
-    let uniqFilteredRecipes = Array.from(
-      new Set(filteredRecipes.map((ele) => ele.id))
-    ).map((id) => {
+
+    tags.forEach((tag) => {
+      let tempResult = recipeSet.filter((ele) => ele.tags.includes(tag));
+      filteredRecipes = [...filteredRecipes, ...tempResult];
+    });
+
+    let uniqFilteredRecipes = Array.from(new Set(filteredRecipes.map((ele) => ele.id))).map((id) => {
       return filteredRecipes.find((ele) => ele.id == id);
     });
     return uniqFilteredRecipes;
   }
+
 
   filterFavoriteRecipesByIngredient(ingredientId) {
     return this.favoriteRecipes.filter((recipe) =>

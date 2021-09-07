@@ -12,7 +12,14 @@ class RecipeRepository {
   }
 
   returnRecipesByName(name) {
-    return this.recipes.filter((recipe) => recipe.name.toLowerCase().includes(name.toLowerCase()));
+    return this.recipes.filter((recipe) => 
+      recipe.name.toLowerCase().includes(name.toLowerCase()));
+  }
+
+  returnRecipesByIngredient(ingredientId) {
+    return this.recipes.filter((recipe) =>
+      recipe.ingredients.some((ingredient) => ingredientId.includes(ingredient.id))
+    );
   }
 
   returnRecipesByTag(tags) {
@@ -27,12 +34,6 @@ class RecipeRepository {
       return filteredRecipes.find((ele) => ele.id == id);
     });
     return uniqFilteredRecipes;
-  }
-
-  returnRecipesByIngredient(ingredientId) {
-    return this.recipes.filter((recipe) =>
-      recipe.ingredients.some((ingredient) => ingredientId.includes(ingredient.id))
-    );
   }
 }
 

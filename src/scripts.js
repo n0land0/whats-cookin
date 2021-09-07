@@ -34,6 +34,9 @@ const searchBtn = document.getElementById('search-button');
 const recipeContainer = document.getElementById('recipe-container');
 const poolAndSearchView = document.getElementById('pool-and-search-parent');
 const recipePoolView = document.querySelector('.recipe-pool-view');
+const favoriteView = document.querySelector('.favorite-view')
+const cookbookView = document.querySelector('.cookbook-view')
+
 const recipeDetailView = document.querySelector('.recipe-detail-view');
 let favoriteModal = document.getElementById('favorite-recipe-modal');
 let recipesToCookModal = document.getElementById('recipes-to-cook-modal');
@@ -54,7 +57,8 @@ window.addEventListener('load', getApis);
 
 showAllRecipeBtn.addEventListener('click', function () {
   recipePool = recipeRepository.recipes;
-  showRecipePool();
+  // showRecipePool();
+  showAllRecipes()
   generateAllTags();
 });
 
@@ -71,7 +75,7 @@ showQueueBtn.addEventListener('click', function () {
 // FORM EVENTLISTENERS
 recipeTagForm.addEventListener('click', function () {
   collectTags();
-  showRecipePool();
+  // showRecipePool();
 });
 
 searchBtn.addEventListener('click', function () {
@@ -84,6 +88,8 @@ searchBtn.addEventListener('click', function () {
 });
 
 recipePoolView.addEventListener('click', showRecipeDetails);
+favoriteView.addEventListener('click', showRecipeDetails);
+cookbookView.addEventListener('click', showRecipeDetails);
 
 closeSpanFavorites.addEventListener('click', function () {
   favoriteModal.style.display = 'none';
@@ -175,6 +181,51 @@ function generateRandomUser() {
 function showRecipePool() {
   hide(recipeDetailView);
   show(poolAndSearchView);
+  
+  if(!recipePoolView.classList.contains('hidden')){
+    recipePool = recipeRepository.recipes;
+    allRecipesDomUpdate();
+    // recipePoolView.innerHTML = '';
+    // recipePool.forEach((recipe) => {
+    //   recipePoolView.innerHTML += `
+    //     <article class="recipe-card" id="${recipe.id}">
+    //       <img src=${recipe.image}>
+    //       <p>${recipe.name}</p>
+    //     </article>
+    //   `;
+    // })
+  };
+
+  if(!favoriteView.classList.contains('hidden')){
+    recipePool = user.favoriteRecipes;
+    favoritesDomUpdate();
+    // favoriteView.innerHTML = '';
+    // recipePool.forEach((recipe) => {
+    //   favoriteView.innerHTML += `
+    //     <article class="recipe-card" id="${recipe.id}">
+    //       <img src=${recipe.image}>
+    //       <p>${recipe.name}</p>
+    //     </article>
+    //   `;
+    //  })
+  }
+
+  if(!cookbookView.classList.contains('hidden')){
+    recipePool = user.recipesToCook;
+    cookbookDomUpdate();
+    // cookbookView.innerHTML = '';
+    // recipePool.forEach((recipe) => {
+    //   cookbookView.innerHTML += `
+    //     <article class="recipe-card" id="${recipe.id}">
+    //       <img src=${recipe.image}>
+    //       <p>${recipe.name}</p>
+    //     </article>
+    //   `;
+    //  })
+  }
+}
+
+function allRecipesDomUpdate() {
   recipePoolView.innerHTML = '';
   recipePool.forEach((recipe) => {
     recipePoolView.innerHTML += `
@@ -183,12 +234,31 @@ function showRecipePool() {
         <p>${recipe.name}</p>
       </article>
     `;
-    // recipePoolView.innerHTML += `
-    //   <article class="recipe-card" id="${recipe.id}" style="background-image: url(${recipe.image})">
-    //     <p>${recipe.name}</p>
-    //   </article>
-    // `;
-  });
+  })
+}
+
+function favoritesDomUpdate() {
+  favoriteView.innerHTML = '';
+  recipePool.forEach((recipe) => {
+    favoriteView.innerHTML += `
+      <article class="recipe-card" id="${recipe.id}">
+        <img src=${recipe.image}>
+        <p>${recipe.name}</p>
+      </article>
+    `;
+    })
+}
+
+function cookbookDomUpdate() {
+  cookbookView.innerHTML = '';
+  recipePool.forEach((recipe) => {
+    cookbookView.innerHTML += `
+      <article class="recipe-card" id="${recipe.id}">
+        <img src=${recipe.image}>
+        <p>${recipe.name}</p>
+      </article>
+    `;
+    })
 }
 
 function collectTags() {
@@ -198,29 +268,46 @@ function collectTags() {
     selectedTags.push(checkBoxes[i].value);
   }
   if (!selectedTags.length) {
-    recipePool = recipeRepository.recipes;
+    // recipePool = recipeRepository.recipes;
     showRecipePool();
   } else {
-    showRecipesByTag();
+    showRecipesByTag(selectedTags);
   }
 }
 
-function showRecipesByTag() {
-  if (!user.favoriteRecipes.length) {
-    recipePool = recipeRepository.returnRecipesByTag(selectedTags);
-  } else {
-    user.selectedFavTags = selectedTags;
-    recipePool = user.filterFavoriteRecipesByTag();
+function showRecipesByTag(selectedTags) {
+  // showRecipePool();
+  // if (!user.favoriteRecipes.length) {
+  //   recipePool = recipeRepository.returnRecipesByTag(selectedTags);
+  // } else {
+  //   user.selectedFavTags = selectedTags;
+  //   recipePool = user.filterFavoriteRecipesByTag();
+  // }
+
+  if(!recipePoolView.classList.contains('hidden')){
+    // recipePool = recipeRepository.recipes;
+    // recipePool.returnRecipesByTag(selectedTags)
+    recipePool = recipeRepository.returnRecipesByTag(selectedTags)
+    allRecipesDomUpdate();
+  };
+
+  if(!favoriteView.classList.contains('hidden')){
+    recipePool = user.filterRecipesByTag(user.favoriteRecipes,selectedTags);
+    favoritesDomUpdate()
+  }
+
+  if(!cookbookView.classList.contains('hidden')){
+    recipePool = user.filterRecipesByTag(user.recipesToCook,selectedTags);
+    cookbookDomUpdate()
+
   }
 }
 
 function searchByName() {
   event.preventDefault();
   if (searchInputField.value) {
-    recipePool = recipeRepository.returnRecipesByName(
-      'name',
-      searchInputField.value
-    );
+    // recipePool = recipeRepository.returnRecipesByName('name', searchInputField.value);
+    recipePool = recipeRepository.returnRecipesByName(searchInputField.value);
   }
 }
 
@@ -333,11 +420,26 @@ function activateAddToRecipesToCookButton(recipeClicked) {
   });
 }
 
+function showAllRecipes(){
+  hide(recipeDetailView);
+  show(poolAndSearchView);
+  hide(favoriteView) //new code
+  hide(cookbookView) //new code
+  show(recipePoolView)//new code
+  showRecipePool();
+  generateAllTags()
+}
+
+
 function showFavorite() {
   hide(recipeDetailView);
   show(poolAndSearchView);
+  show(favoriteView) //new code
+  hide(recipePoolView)//new code
+  hide(cookbookView) //new code
   if (!user.favoriteRecipes.length) {
-    recipePoolView.innerHTML = '';
+    // recipePoolView.innerHTML = ''; //change
+    favoriteView.innerHTML = '';
     favoriteModal.style.display = 'block';
     generateAllTags();
   } else {
@@ -350,8 +452,12 @@ function showFavorite() {
 function showQueue() {
   hide(recipeDetailView);
   show(poolAndSearchView);
+  hide(favoriteView) //new code
+  hide(recipePoolView)//new code
+  show(cookbookView)// new code
+  
   if (!user.recipesToCook.length) {
-    recipePoolView.innerHTML = '';
+    cookbookView.innerHTML = '';
     recipesToCookModal.style.display = 'block';
     generateAllTags();
   } else {
