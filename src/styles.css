@@ -3,20 +3,31 @@ html {
   font-size: 1vw;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
 body {
   margin: 0;
   background-color: #723E5F;
   font-family: 'Montserrat', sans-serif;
+  color: #D1D1DB
 }
 
-button:hover {
+button:hover,
+input[type="checkbox"]:hover {
   cursor: pointer;
-  transform: scale(1.025);
+}
+
+label:hover {
+  color: #FFD689;
 }
 
 header {
   position: fixed;
   width: 100%;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   background-color: #6F9B92;
@@ -156,7 +167,7 @@ header {
 /* MAIN DISPLAY */
 
 .container-show-btn {
-  width: 66.6%;
+  width: 66.9%;
   display: flex;
   justify-content: center;
   padding: 6rem 5rem 1rem 5rem;
@@ -166,7 +177,7 @@ header {
   display: grid;
   grid-template-columns: 75% 20%;
   /* column-gap: 10%; */
-  padding: 5rem;
+  padding: 0 5rem 0 5rem;
   background-color: #723E5F;
 }
 
@@ -181,9 +192,13 @@ header {
   align-items: center;
 }
 
+.recipe-card img {
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
 .recipe-card:hover {
   color: #FDC0D3;
-  transform: scale(1.025);
+  transform: scale(1.0025);
   cursor: pointer;
 }
 
@@ -192,6 +207,7 @@ header {
   background: none;
   font-family: 'Caveat Brush', cursive;
   font-size: 2rem;
+  color: #FDC0D3;
 }
 
 #show-all-recipes:hover {
@@ -201,15 +217,36 @@ header {
 }
 
 .search-and-filter {
+  position: fixed;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  right: 15rem
+  justify-content: center;
+  right: 7.5rem
+}
+
+#show-recipe-by-tag {
+  margin: 0 0 .5rem 0;
+  /* padding: 0 0 0 1rem; */
+  text-align: center;
 }
 
 .recipe-tag-form {
   display: flex;
   flex-direction: column;
+}
+
+input[type="checkbox"] {
+  margin: .5rem 0;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+#search-input-field {
+  box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.12);
+}
+
+#search-button {
+  margin: .5rem 0;
+  box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
 /* UTILITY */

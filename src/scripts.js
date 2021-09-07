@@ -138,7 +138,7 @@ function generateAllTags() {
     // `;
     recipeTagForm.innerHTML += `
       <label for="${tag}">
-        <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}">${tag}
+        <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}"> ${tag}
       </label>
     `;
   });
