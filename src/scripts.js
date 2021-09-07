@@ -1,6 +1,6 @@
 // IMPORTS
 import './styles.css';
-import MicroModal from 'micromodal';
+// import MicroModal from 'micromodal';
 
 import RecipeRepository from './classes/RecipeRepository';
 import IngredientRepository from './classes/IngredientRepository';
@@ -132,9 +132,14 @@ function generateAllTags() {
   let uniqRecipeTags = [...new Set(recipeTags.flat())];
   recipeTagForm.innerHTML = '';
   uniqRecipeTags.forEach((tag) => {
+    // recipeTagForm.innerHTML += `
+    //   <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}"></input>
+    //   <label for="${tag}">${tag}</label>
+    // `;
     recipeTagForm.innerHTML += `
-      <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}"></input>
-      <label for="${tag}">${tag}</label>
+      <label for="${tag}">
+        <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}">${tag}
+      </label>
     `;
   });
 }
@@ -151,11 +156,16 @@ function showRecipePool() {
   recipePoolView.innerHTML = '';
   recipePool.forEach((recipe) => {
     recipePoolView.innerHTML += `
-      <article id="${recipe.id}">
+      <article class="recipe-card" id="${recipe.id}">
         <img src=${recipe.image}>
         <p>${recipe.name}</p>
       </article>
     `;
+    // recipePoolView.innerHTML += `
+    //   <article class="recipe-card" id="${recipe.id}" style="background-image: url(${recipe.image})">
+    //     <p>${recipe.name}</p>
+    //   </article>
+    // `;
   });
 }
 

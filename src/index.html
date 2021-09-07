@@ -2,49 +2,74 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>What's Cookin'?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Montserrat&display=swap" rel="stylesheet">
+    <title>GIMME SOME OVEN</title>
   </head>
   <body>
-    <h1>What's Cookin'?</h1>
-    <div class="dropdown">
+    <header>
+      <div class="title-container">
+        <h1 class="title">GIMME SOME OVEN!</h1>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn"></button>
+        <div class="dropdown-content">
+          <a href="#" id="show-favorites">Show My Favorite Recipes</a>
+          <div id="favorite-recipe-modal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <p>You currently do not have any recipes in your favorite list.</p>
+            </div>
+          </div>
+          <a href="#" id="show-queue">Show My Recipes To Cook</a>
+          <div id="recipes-to-cook-modal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <p>You currently do not have any recipes in your recipes to cook list.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- <div class="dropdown">
       <button class="dropbtn">Welcome, user.name</button>
       <div class="dropdown-content">
         <a href="#" id="show-favorites">Show My Favorite Recipes</a>
         <div id="favorite-recipe-modal" class="modal">
           <div class="modal-content">
             <span class="close">&times;</span>
-            <p>You currently do not have any recipes in your favorite list..</p>
+            <p>You currently do not have any recipes in your favorite list.</p>
           </div>
-        
+
         </div>
         <a href="#" id="show-queue">Show My Recipes To Cook</a>
         <div id="recipes-to-cook-modal" class="modal">
           <div class="modal-content">
             <span class="close">&times;</span>
-            <p>You currently do not have any recipes in your recipes to cook list..</p>
+            <p>You currently do not have any recipes in your recipes to cook list.</p>
           </div>
-        
+
         </div>
       </div>
+    </div> -->
+    <div class="container-show-btn">
+      <button id="show-all-recipes">Show All Recipes</button>
     </div>
-    <button id="show-all-recipes">Show All Recipes</button>
     <section id="recipe-container">
-      <div id="pool-and-search-parent">
+      <div class="pool-and-search-parent" id="pool-and-search-parent">
+        <div class="recipe-pool-view"></div>
         <div class="search-and-filter">
           <h3 id="show-recipe-by-tag">Show Recipes By Tags</h3>
-          <form id="recipe-tag-form"></form>
+          <form class="recipe-tag-form" id="recipe-tag-form"></form>
           <form id="search-box-form">
             <input type="text" id="search-input-field" placeholder="Search by recipe name or ingredients" />
             <button id="search-button">Search</button>
           </form>
         </div>
-        <div class="recipe-pool-view"></div>
       </div>
       <div class="recipe-detail-view"></div>
     </section>
 
     <script src="./scripts.js"></script>
-
-    
-
-
