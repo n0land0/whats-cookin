@@ -20,6 +20,12 @@ const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
 const showFavBtn = document.getElementById('show-favorites');
 const showQueueBtn = document.getElementById('show-queue');
 const dropBtn = document.querySelector('.dropbtn');
+const addRecipeFromCookBookModal = document.getElementById(
+  'show-all-recipes-cookbook'
+);
+const addRecipeFromFavoritesModal = document.getElementById(
+  'show-all-recipes-favorites'
+);
 
 const recipeTagForm = document.getElementById('recipe-tag-form');
 const searchInputField = document.getElementById('search-input-field');
@@ -70,6 +76,8 @@ recipeTagForm.addEventListener('click', function () {
 
 searchBtn.addEventListener('click', function () {
   recipePool = [];
+  collectTags();
+  generateAllTags();
   searchByName();
   searchByIngredient();
   showRecipePool();
@@ -83,6 +91,18 @@ closeSpanFavorites.addEventListener('click', function () {
 
 closeSpanQueue.addEventListener('click', function () {
   recipesToCookModal.style.display = 'none';
+});
+
+addRecipeFromCookBookModal.addEventListener('click', function () {
+  recipePool = recipeRepository.recipes;
+  showRecipePool();
+  generateAllTags();
+});
+
+addRecipeFromFavoritesModal.addEventListener('click', function () {
+  recipePool = recipeRepository.recipes;
+  showRecipePool();
+  generateAllTags();
 });
 
 window.addEventListener('click', function (event) {
@@ -109,6 +129,7 @@ function createUserAndRecipePool() {
   generateRandomUser();
   generateAllRecipes();
   generateAllIngredients();
+  hide(showRecipeByTagBtn);
   dropBtn.innerText = `Welcome, ${user.name}!`;
 }
 
@@ -125,6 +146,7 @@ function generateAllIngredients() {
 }
 
 function generateAllTags() {
+  show(showRecipeByTagBtn);
   let recipeTags = [];
   recipePool.forEach((recipe) => {
     recipeTags.push(recipe.tags);
@@ -232,13 +254,13 @@ function showRecipeDetails(event) {
       <div class="container-fave-queue-btns">
         <button id="fave-button">
           <!-- <span id="fave-text">Add to Favorites</span> -->
-          <span id="fave-text">💜</span>
+          <span id="fave-text">🤍</span>
           <!-- <span id="unfave-text" class="hidden">Remove from favorites</span> -->
-          <span id="unfave-text" class="hidden">💔</span>
+          <span id="unfave-text" class="hidden">❤️</span>
         </button>
         <button id="add-to-recipes-to-cook-button">
-          <span id="add-to-cook-text">Add to Queue</span>
-          <span id="remove-from-cook-text" class="hidden">Remove from Queue</span>
+          <span id="add-to-cook-text">Add to My Cookbook</span>
+          <span id="remove-from-cook-text" class="hidden">Remove from My Cookbook</span>
         </button>
       </div>
       <p>Ingredients: <span>${ingredients}</span></p>
