@@ -170,7 +170,7 @@ header {
   width: 66.9%;
   display: flex;
   justify-content: center;
-  padding: 6rem 5rem 1rem 5rem;
+  padding: 6.5rem 5rem 1rem 5rem;
 }
 
 .pool-and-search-parent {
@@ -186,13 +186,14 @@ header {
 }
 
 .recipe-card {
-  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-repeat: no-repeat;
 }
 
 .recipe-card img {
+  border-radius: 5px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
@@ -214,6 +215,88 @@ header {
   /* cursor: pointer; */
   color: #FFD689;
   transform: scale(1.025);
+}
+
+.recipe-detail-view {
+  display: grid;
+  grid-template-columns: 70%;
+  /* column-gap: 10%; */
+  padding: 0 23.4rem 0 0;
+}
+
+.recipe-detail-view,
+.recipe-detail-container {
+  text-align: center;
+  justify-content: center;
+}
+
+.recipe-detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 5px double #CACAF0;
+  border-width: 35%;
+}
+
+.recipe-detail-container h3 {
+  margin: 0;
+}
+
+.recipe-detail-container img {
+  margin-top: 1rem;
+  width: 35%;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+#total-cost {
+  margin-bottom: 1rem;
+}
+
+.steps {
+  margin: 0;
+  color: #CACAF0;
+}
+
+.recipe-detail-view p {
+  margin: .5rem;
+  width: 50%;
+  justify-self: center;
+  font-size: .8rem;
+  color: #F6E5C6;
+}
+
+.container-fave-queue-btns {
+  margin-bottom: 1rem;
+  width: 35%;
+  height: 3rem;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+#fave-button,
+#add-to-recipes-to-cook-button {
+  border: none;
+  background-color: #FFD689;
+  font-family: 'Montserrat', sans-serif;
+  font-size: .9rem;
+  color: #A9608E;
+}
+
+#fave-button:hover,
+#add-to-recipes-to-cook-button:hover {
+  filter: hue-rotate(15deg)
+}
+
+#fave-button {
+  border-radius: 0 0 0 3px;
+  border-right: .5px solid #723E5F;
+}
+
+#add-to-recipes-to-cook-button {
+  border-radius: 0 0 3px 0;
 }
 
 .search-and-filter {

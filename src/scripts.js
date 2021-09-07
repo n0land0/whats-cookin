@@ -229,16 +229,20 @@ function showRecipeDetails(event) {
     <article class="recipe-detail-container">
       <h3>${recipeClicked.name}</h3>
       <img src="${recipeClicked.image}">
-      <button id="fave-button">
-        <span id="fave-text">Add to favorites</span>
-        <span id="unfave-text" class="hidden">Remove from favorites</span>
-      </button>
-      <button id="add-to-recipes-to-cook-button">
-        <span id="add-to-cook-text">Add to Recipes to Cook</span>
-        <span id="remove-from-cook-text" class="hidden">Remove From Recipes to Cook</span>
-      </button>
+      <div class="container-fave-queue-btns">
+        <button id="fave-button">
+          <!-- <span id="fave-text">Add to Favorites</span> -->
+          <span id="fave-text">💜</span>
+          <!-- <span id="unfave-text" class="hidden">Remove from favorites</span> -->
+          <span id="unfave-text" class="hidden">💔</span>
+        </button>
+        <button id="add-to-recipes-to-cook-button">
+          <span id="add-to-cook-text">Add to Queue</span>
+          <span id="remove-from-cook-text" class="hidden">Remove from Queue</span>
+        </button>
+      </div>
       <p>Ingredients: <span>${ingredients}</span></p>
-      <p>Total cost: <span>$${cost}</span></p>
+      <p id="total-cost">Total cost: <span>$${cost}</span></p>
     </article>
   `;
 
@@ -246,7 +250,7 @@ function showRecipeDetails(event) {
     let key = Object.keys(ele).toString();
     let instruction = Object.values(ele).toString();
     recipeDetailView.innerHTML += `
-    <span>Step ${key}</span>
+    <span class="steps">Step ${key}</span>
     <p>${instruction}</p>
     `;
   });
