@@ -1,35 +1,30 @@
 # What's Cookin'?
 
-Intention Timer is a web app that allows users to create tasks, set a timer for the task's duration, and log completed activities.
+What's Cookin' is a recipe tracking / meal planning application that allows users to view their favorite recipes and plan shopping trips around them. The idea is similar to sites like All Recipes or New York Times Cooking. Users should view a list of recipes, favorite their own recipes, and choose recipes to cook.
 
 ## Installation
 
-Intention Timer requires no installation. All features are contained within the web app, which leverages local storage to keep track of the user's activities across visits.
-
-[Click here to access Intention Timer.](https://nzambonivergara.github.io/intention-timer/)
+1. Clone down [this repo](https://github.com/n0land0/whats-cookin) to your local machine.
+2. Run `npm install` on your root folder of cloned down repo.
+3. Run `npm start` to launch local server.
+4. Copy and paste the address following ` Project is running at:` in your browser.
+5. Start messing around on the page!
 
 ## Usage and Demonstration
 
-**How to use Intention Timer:**
+**How to use What's Cookin':**
 
-- On initial page load, no previous activities will be listed.
-- To add an activity, the user must select a category: Study, Meditate, or Exercise.
-  - Once a category has been selected, the user must add a brief activity description, as well as a time value of minutes and seconds. 
-- Once the form has been filled, clicking 'Start Activity' will take the user to a page with a timer.
-  - Clicking 'Start' will make the timer run down until the task has been completed.
-  
-- Once the timer reaches 0:00, a 'Log Activity' button will appear which will return the user to the form view.
-  - A summary of the completed activity in the form of a miniature card will be added to the Past Activities section on the right side of the page.
-
-![recording (6)](https://user-images.githubusercontent.com/82003147/128073117-51d7538e-037a-42b7-8df8-9a46c72e1b40.gif)
+- On initial page load, a random user is generated.
+- That user can search recipes by tags, name, and ingredients.
+- If a user sees a recipe image they like, they can click on the image to get a detailed view of the recipe that includes ingredients, instructions, and cost.
+- The user can then choose to add that recipe to their favorites list or to their cookbook.
+- The user can view their lists of favorite recipes or their cookbook recipes and filter those by ingredients that they have in their pantry.
 
 **Error Handling:**
 
-If the user does not enter a category, description, or a time value, an error message will display beneath the empty section(s), prompting the user to complete the form.
-
-- These messages will disappear as soon as a category is selected, or as soon as the user types in a field.
-
-![recording (7)](https://user-images.githubusercontent.com/82003147/128073130-549e8ccb-f5b5-4d09-8900-e544962c7224.gif)
+- If the user tries to view an empty list of their favorite recipes or their cookbook, a modal that prompts the user to search recipes will generate.
+- The modal will disappear if the user clicks to 'x' to get out of it.
+- API data with formatting errors is screened out to avoid breaking data-dependent functionality.
 
 ## Programming Languages and Dependencies
 
@@ -38,7 +33,9 @@ If the user does not enter a category, description, or a time value, an error me
 - HTML
 - CSS
 - JavaScript
-  - Local Storage
+- Fetch API
+- Webpack
+- Micromodal
 
 ## Contributions
 
@@ -52,4 +49,8 @@ _This app was developed by:_
 
 _Bei, Raquel, and Nolan are students of front-end engineering at the Turing School of Software & Design._
 
-Project spec and assets provided by the [Turing School of Software & Design](https://turing.edu/).
+**Project Manager**
+
+- [Nik Seif](https://github.com/niksseif)
+
+[Project spec](https://frontend.turing.edu/projects/What%27sCookin-PartOne.html) and assets provided by the [Turing School of Software & Design](https://turing.edu/).
