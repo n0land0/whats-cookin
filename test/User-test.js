@@ -5,6 +5,7 @@ import Recipe from "../src/classes/Recipe";
 import Ingredient from "../src/classes/Ingredient";
 
 import recipeData from "../src/data/recipes";
+import usersData from "../src/data/users";
 import ingredientsData from "../src/data/ingredients";
 
 describe("User", () => {
@@ -15,7 +16,7 @@ describe("User", () => {
   let appleCider;
   let apple;
   beforeEach(function () {
-    user = new User();
+    user = new User(usersData[0]);
     recipe1 = new Recipe(
       recipeData[0].id,
       recipeData[0].image,
@@ -63,67 +64,39 @@ describe("User", () => {
     assert.deepEqual(user.recipesToCook[0], recipe2);
   });
 
-  it("Should collect all tags from favorite recipes", () => {
-    let result = user.collectTagsFromFavorites();
-
-    assert.deepEqual(result, [
-      "antipasti",
-      "starter",
-      "snack",
-      "appetizer",
-      "antipasto",
-      "hor d'oeuvre",
-      "lunch",
-      "main course",
-      "main dish",
-      "dinner",
-    ]);
-  });
-
+  
   it("Should allow a user to filter favorite recipes by one tag", () => {
-    user.selectedFavTags = ["antipasti"];
-    let filteredRecipes = user.filterFavoriteRecipesByTag();
-
-    // console.log(filteredRecipes);
-
+    let tags = ["antipasti"];
+    let filteredRecipes = user.filterRecipesByTag(user.favoriteRecipes,tags)
     assert.deepEqual(filteredRecipes[0], recipe1);
   });
 
   it("Should allow a user to filter favorite recipes by multiple tags", () => {
-    user.selectedFavTags = ["snack", "dinner"];
-    let filteredRecipes = user.filterFavoriteRecipesByTag();
-
-    // console.log(filteredRecipes);
-
+    let tags = ["snack", "dinner"];
+    let filteredRecipes = user.filterRecipesByTag(user.favoriteRecipes, tags);
     assert.deepEqual(filteredRecipes[0], recipe1);
     assert.deepEqual(filteredRecipes[1], recipe2);
   });
 
-  it("Should allow a user to filter favorite recipes by name", () => {
+  it("Should allow a user to filter recipes by name", () => {
     let name1 = "chocolate chip";
-    let result1 = user.filterFavoriteRecipesByName(name1);
+    let result1 = user.filterRecipesByName(user.favoriteRecipes, name1);
     let name2 = "Apple Cider";
-    let result2 = user.filterFavoriteRecipesByName(name2);
+    let result2 = user.filterRecipesByName(user.favoriteRecipes, name2);
     assert.deepEqual(result1, [recipe1]);
     assert.deepEqual(result2, [recipe2]);
   });
 
-  it("Should allow a user to filter favorite recipes by one ingredient", () => {
-    let glutens = user.filterFavoriteRecipesByIngredient([wheatFlour.id]);
+  // it("Should allow a user to filter recipes by one ingredient", () => {
+  //   let glutens = user.filterRecipesByIngredient(user.favoriteRecipes, [wheatFlour.id]);
+  //   assert.equal(glutens[0].ingredients[0].id, wheatFlour.id);
+  //   assert.equal(glutens.length, 1);
+  // });
 
-    // console.log("favorite recipes: ", user.favoriteRecipes);
-    // console.log("user recipes using wheat flour: ", glutens);
+  // it("Should allow a user to filter favorite recipes by multiple ingredients", () => {
+  //   let appleys = user.filterRecipesByIngredient([appleCider.id, apple.id]);
 
-    assert.equal(glutens[0].ingredients[0].id, wheatFlour.id);
-    assert.equal(glutens.length, 1);
-  });
-
-  it("Should allow a user to filter favorite recipes by multiple ingredients", () => {
-    let appleys = user.filterFavoriteRecipesByIngredient([appleCider.id, apple.id]);
-
-    // console.log("user recipes using apple cider and apple: ", appleys);
-
-    assert.equal(appleys[0].ingredients[0].id, appleCider.id);
-    assert.equal(appleys[0].ingredients[1].id, apple.id);
-  });
+  //   assert.equal(appleys[0].ingredients[0].id, appleCider.id);
+  //   assert.equal(appleys[0].ingredients[1].id, apple.id);
+  // });
 });
