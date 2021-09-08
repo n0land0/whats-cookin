@@ -49,11 +49,8 @@ header {
 /* DROPDOWN MENU */
 .dropdown {
   width: 30%;
-  /* margin-top: .5rem; */
   position: relative;
-  /* display: flex; */
   display: inline-block;
-  /* font-family: 'Montserrat', sans-serif; */
 }
 
 .dropbtn {
@@ -65,7 +62,6 @@ header {
   font-size: 1rem;
   color: #e8e8ed;
   font-family: 'Montserrat', sans-serif;
-  /* cursor: pointer; */
 }
 
 .dropdown-content {
@@ -98,13 +94,8 @@ header {
 }
 
 .dropdown:hover .dropdown-content {
-  /* display: block; */
   display: flex;
   z-index: 1;
-}
-
-.dropdown:hover .dropbtn {
-  /* background-color: #3e8e41; */
 }
 
 /* MODALS */
@@ -129,7 +120,6 @@ header {
   right: 36%;
   background-color: #e8e8ed;
   margin: auto;
-  /* padding: 20px; */
   border: 1px solid #888;
   text-align: center;
   align-content: center;
@@ -151,20 +141,6 @@ header {
   cursor: pointer;
 }
 
-/* .close-recipe-to-cook-modal {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close-recipe-to-cook-modal:hover,
-.close-recipe-to-cook-modal:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-} */
-
 /* MAIN DISPLAY */
 
 .container-show-btn {
@@ -180,10 +156,6 @@ header {
   /* column-gap: 10%; */
   padding: 0 5rem 0 5rem;
   background-color: white;
-}
-
-.recipe-pool-view {
-  /* grid-template-columns:  */
 }
 
 .recipe-card {
@@ -214,7 +186,6 @@ header {
 }
 
 #show-all-recipes:hover {
-  /* cursor: pointer; */
   color: #57696c;
   transform: scale(1.025);
 }
@@ -229,7 +200,6 @@ header {
 }
 
 #show-all-recipes-favorites:hover {
-  /* cursor: pointer; */
   color: #57696c;
   transform: scale(1.025);
 }
@@ -243,7 +213,6 @@ header {
 }
 
 #show-all-recipes-cookbook:hover {
-  /* cursor: pointer; */
   color: #57696c;
   transform: scale(1.025);
 }
@@ -259,7 +228,6 @@ header {
 .recipe-detail-view {
   display: grid;
   grid-template-columns: 70%;
-  /* column-gap: 10%; */
   padding: 0 23.4rem 0 0;
 }
 
@@ -275,7 +243,6 @@ header {
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
-  /* border-bottom: 5px double #57696c; */
   border-width: 35%;
 }
 
@@ -354,7 +321,6 @@ header {
 
 #show-recipe-by-tag {
   margin: 0 0 0.5rem 0;
-  /* padding: 0 0 0 1rem; */
   text-align: center;
 }
 

@@ -4,10 +4,7 @@ class User {
     this.userId = user.id;
     this.userPantry = user.pantry;
     this.favoriteRecipes = [];
-    // this.favoriteRecipeTags = [];
-    // this.selectedFavTags = []; //s
     this.recipesToCook = [];
-    // this.recipesToCookTags = [];
   }
 
   addToFavorites(recipe) {
@@ -47,15 +44,6 @@ class User {
     });
     return uniqFilteredRecipes;
   }
-
-
-  // filterRecipesByIngredient(recipeSet,ingredientId) {
-  //   return recipeSet.filter((recipe) =>{
-  //     recipe.ingredients.some((ingredient) =>
-  //       ingredientId.includes(ingredient.id))
-  //   }
-  //   );
-  // }
 
   filterRecipesByName(recipeSet, name) {
     return recipeSet.filter((recipe) =>
