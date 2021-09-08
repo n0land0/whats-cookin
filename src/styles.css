@@ -10,7 +10,9 @@ html {
 
 body {
   margin: 0;
-  /* background-color: white; */
+  /* background-image: url("https://e7.pngegg.com/pngimages/434/444/png-clipart-swedish-chef-sweden-t-shirt-swedish-cuisine-muppets-s-food-hand.png"); */
+  background-repeat: no-repeat;
+  background-size: auto;
   background-color: #E9EAEC;
   font-family: 'Montserrat', sans-serif;
   color: #57696c;
@@ -237,14 +239,6 @@ header {
   font-family: 'Nanum Brush Script', cursive;
 } */
 
-#search-button {
-  border: none;
-  background: none;
-  font-family: 'Caveat Brush', cursive;
-  font-size: 1.5rem;
-  color: #57696c;
-}
-
 .recipe-detail-view {
   display: grid;
   grid-template-columns: 70%;
@@ -343,19 +337,27 @@ header {
 
 #show-recipe-by-tag,
 #search-recipes {
-  margin: 1rem 0 0.5rem 1rem;
-  /* text-align: center; */
   font-family: 'Handlee', cursive;
 }
 
+#show-recipe-by-tag {
+  margin-top: 0;
+  margin-bottom: .5rem;
+}
+
 #search-recipes {
-  margin-top: 2rem;
-  margin-bottom: 0;
+  padding-left: 0.1rem;
+  /* margin-top: 2rem; */
+  padding-top: 1.5rem;
+  margin-bottom: .75rem;
+  /* border-top: 5px double #57696c; */
 }
 
 .recipe-tag-form {
   display: flex;
   flex-direction: column;
+  margin-left: -.9rem;
+  padding-bottom: .5rem;
 }
 
 input[type='checkbox'] {
@@ -363,22 +365,29 @@ input[type='checkbox'] {
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
 }
 
-.search-recipes-side-header {
+/* .search-recipes-side-header {
   margin-top: 8%;
-}
+} */
 
 #search-input-field {
   width: 10vw;
   height: 1.75vh;
-  /* margin-top: 3%; */
+  padding: .2rem;
   font-family: 'Montserrat', sans-serif;
-  font-size: medium;
+  text-align: center;
+  font-size: .75rem;
   box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.12);
+  border: none;
 }
 
 #search-button {
-  margin: 0.5rem 0;
-  box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.12);
+  display: none;
+  border: none;
+  background: none;
+  font-family: 'Caveat Brush', cursive;
+  font-size: 1.5rem;
+  color: #57696c;
+  /* box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.12); */
 }
 
 /* UTILITY */

@@ -188,7 +188,6 @@ function showRecipePool() {
 function collectTags() {
   selectedTags = [];
   let checkBoxes = document.querySelectorAll('input[type=checkbox]:checked');
-  // if (event.target.)
   for (let i = 0; i < checkBoxes.length; i++) {
     selectedTags.push(checkBoxes[i].value);
   }
