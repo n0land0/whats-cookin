@@ -269,13 +269,18 @@ header {
   justify-content: center;
 }
 
-.recipe-detail-container {
+.recipe-detail-container,
+.ingredient-list {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
-  border-bottom: 5px double #57696c;
+  /* border-bottom: 5px double #57696c; */
   border-width: 35%;
+}
+
+.ingredient-list {
+  border-bottom: 5px double #57696c;
 }
 
 .recipe-detail-container h3 {
@@ -298,7 +303,8 @@ header {
   color: black;
 }
 
-.recipe-detail-view p {
+.recipe-detail-view p,
+.ingredient-list p {
   margin: 0.5rem;
   width: 50%;
   justify-self: center;

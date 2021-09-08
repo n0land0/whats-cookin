@@ -59,7 +59,7 @@ showAllRecipeBtn.addEventListener('click', function () {
   recipePool = recipeRepository.recipes;
   // showRecipePool();
   showAllRecipes()
-  generateAllTags();
+  // generateAllTags();
 });
 
 showFavBtn.addEventListener('click', function () {
@@ -84,7 +84,15 @@ searchBtn.addEventListener('click', function () {
   generateAllTags();
   searchByName();
   searchByIngredient();
-  showRecipePool();
+  hide(recipeDetailView);
+  show(poolAndSearchView);
+  hide(favoriteView) 
+  hide(cookbookView) 
+  show(recipePoolView)
+
+  allRecipesDomUpdate();
+  // showRecipePool();
+  console.log("recipePool:", recipePool)
 });
 
 recipePoolView.addEventListener('click', showRecipeDetails);
@@ -100,21 +108,24 @@ closeSpanQueue.addEventListener('click', function () {
 });
 
 addRecipeFromCookBookModal.addEventListener('click', function () {
-  recipePool = recipeRepository.recipes;
-  showRecipePool();
-  generateAllTags();
+  // recipePool = recipeRepository.recipes;
+  favoriteModal.style.display = 'none'; //issue
+  showAllRecipes();
+  // generateAllTags();
 });
 
 addRecipeFromFavoritesModal.addEventListener('click', function () {
-  recipePool = recipeRepository.recipes;
-  showRecipePool();
-  generateAllTags();
+  // recipePool = recipeRepository.recipes;
+  recipesToCookModal.style.display = 'none' //issue
+  showAllRecipes();
+  // generateAllTags();
 });
 
 window.addEventListener('click', function (event) {
   if (event.target == favoriteModal) {
     favoriteModal.style.display = 'none';
-  }
+  } else if (event.target == recipesToCookModal) { 
+    recipesToCookModal.style.display = 'none'} // 
 });
 
 // FUNCTIONS
@@ -328,7 +339,8 @@ function searchByIngredient() {
 function showRecipeDetails(event) {
   let recipeId = event.target.parentNode.id;
   let recipeClicked = recipePool.find((ele) => ele.id == recipeId);
-  let ingredients = recipeClicked.showIngredientsByName().join(', ');
+  // let ingredients = recipeClicked.showIngredientsByName().join(', ');
+  let ingredients = recipeClicked.ingredients.map((ingredient, index) => `${ingredient.quantity.amount} ${ingredient.quantity.unit} ${recipeClicked.showIngredientsByName()[index]}`);
   let instructions = recipeClicked.showInstructions();
   let cost = recipeClicked.calculateRecipeCostInDollars();
   hide(poolAndSearchView);
@@ -350,10 +362,22 @@ function showRecipeDetails(event) {
           <span id="remove-from-cook-text" class="hidden">Remove from My Cookbook</span>
         </button>
       </div>
-      <p>Ingredients: <span>${ingredients}</span></p>
+      <!-- <p>Ingredients: <span>${ingredients}</span></p> -->
       <p id="total-cost">Total cost: <span>$${cost}</span></p>
+      <section class="ingredient-list">
+        <p>Ingredients:</p> 
+      </section>
     </article>
   `;
+
+  let ingredientList = document.querySelector(".ingredient-list");
+
+  ingredients.forEach(ingredient => {
+    // recipeDetailView.innerHTML += `
+    ingredientList.innerHTML += `
+      <p>${ingredient}</p>
+    `
+  }) 
 
   instructions.forEach((ele) => {
     let key = Object.keys(ele).toString();
@@ -423,9 +447,9 @@ function activateAddToRecipesToCookButton(recipeClicked) {
 function showAllRecipes(){
   hide(recipeDetailView);
   show(poolAndSearchView);
-  hide(favoriteView) //new code
-  hide(cookbookView) //new code
-  show(recipePoolView)//new code
+  hide(favoriteView) 
+  hide(cookbookView) 
+  show(recipePoolView)
   showRecipePool();
   generateAllTags()
 }
@@ -434,9 +458,9 @@ function showAllRecipes(){
 function showFavorite() {
   hide(recipeDetailView);
   show(poolAndSearchView);
-  show(favoriteView) //new code
-  hide(recipePoolView)//new code
-  hide(cookbookView) //new code
+  show(favoriteView) 
+  hide(recipePoolView)
+  hide(cookbookView) 
   if (!user.favoriteRecipes.length) {
     // recipePoolView.innerHTML = ''; //change
     favoriteView.innerHTML = '';
@@ -452,9 +476,9 @@ function showFavorite() {
 function showQueue() {
   hide(recipeDetailView);
   show(poolAndSearchView);
-  hide(favoriteView) //new code
-  hide(recipePoolView)//new code
-  show(cookbookView)// new code
+  hide(favoriteView) 
+  hide(recipePoolView)
+  show(cookbookView)
   
   if (!user.recipesToCook.length) {
     cookbookView.innerHTML = '';

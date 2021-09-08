@@ -33,14 +33,6 @@ class User {
     this.favoriteRecipes.splice(recipeIndex, 1);
   }
 
-  collectTagsFromFavorites() {
-    this.favoriteRecipes.forEach((recipe) => {
-      this.favoriteRecipeTags.push(recipe.tags);
-    });
-    let tagSet = [...new Set(this.favoriteRecipeTags.flat())];
-    this.favoriteRecipeTags = tagSet;
-    return this.favoriteRecipeTags;
-  }
 
   filterRecipesByTag(recipeSet,tags) {
     let filteredRecipes = [];
@@ -57,16 +49,16 @@ class User {
   }
 
 
-  filterFavoriteRecipesByIngredient(ingredientId) {
-    return this.favoriteRecipes.filter((recipe) =>
-      recipe.ingredients.some((ingredient) =>
-        ingredientId.includes(ingredient.id)
-      )
-    );
-  }
+  // filterRecipesByIngredient(recipeSet,ingredientId) {
+  //   return recipeSet.filter((recipe) =>{
+  //     recipe.ingredients.some((ingredient) =>
+  //       ingredientId.includes(ingredient.id))
+  //   }
+  //   );
+  // }
 
-  filterFavoriteRecipesByName(name) {
-    return this.favoriteRecipes.filter((recipe) =>
+  filterRecipesByName(recipeSet, name) {
+    return recipeSet.filter((recipe) =>
       recipe.name.toLowerCase().includes(name.toLowerCase())
     );
   }
