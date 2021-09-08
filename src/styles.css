@@ -10,7 +10,8 @@ html {
 
 body {
   margin: 0;
-  background-color: white;
+  /* background-color: white; */
+  background-color: #E9EAEC;
   font-family: 'Montserrat', sans-serif;
   color: #57696c;
 }
@@ -21,7 +22,7 @@ input[type='checkbox']:hover {
 }
 
 label:hover {
-  color: #57696c;
+  color: #EECF95;
 }
 
 header {
@@ -155,17 +156,32 @@ header {
   grid-template-columns: 75% 20%;
   /* column-gap: 10%; */
   padding: 0 5rem 0 5rem;
-  background-color: white;
+  /* background-color: white; */
+}
+
+.recipe-pool-view,
+.favorite-view,
+.cookbook-view {
+  /* width: 100%; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .recipe-card {
+  width: 15rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-repeat: no-repeat;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .recipe-card img {
+  width: 10rem;
+  height: 6.66rem;
+  /* width: 35%; */
   border-radius: 5px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
@@ -177,7 +193,7 @@ header {
 }
 
 #show-all-recipes {
-  padding-right: 3%;
+  /* padding-right: 3%; */
   border: none;
   background: none;
   font-family: 'Caveat Brush', cursive;
@@ -216,6 +232,10 @@ header {
   color: #57696c;
   transform: scale(1.025);
 }
+
+/* #search-recipes {
+  font-family: 'Nanum Brush Script', cursive;
+} */
 
 #search-button {
   border: none;
@@ -299,7 +319,9 @@ header {
 
 #fave-button:hover,
 #add-to-recipes-to-cook-button:hover {
-  filter: hue-rotate(15deg);
+  /* filter: hue-rotate(15deg); */
+  background-color: #D6B271;
+  color: #2B2D42;
 }
 
 #fave-button {
@@ -316,12 +338,19 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  right: 7.5rem;
+  right: 5rem;
 }
 
-#show-recipe-by-tag {
-  margin: 0 0 0.5rem 0;
-  text-align: center;
+#show-recipe-by-tag,
+#search-recipes {
+  margin: 1rem 0 0.5rem 1rem;
+  /* text-align: center; */
+  font-family: 'Handlee', cursive;
+}
+
+#search-recipes {
+  margin-top: 2rem;
+  margin-bottom: 0;
 }
 
 .recipe-tag-form {
@@ -331,7 +360,7 @@ header {
 
 input[type='checkbox'] {
   margin: 0.5rem 0;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
 }
 
 .search-recipes-side-header {
@@ -339,10 +368,11 @@ input[type='checkbox'] {
 }
 
 #search-input-field {
-  margin-top: 3%;
+  width: 10vw;
+  height: 1.75vh;
+  /* margin-top: 3%; */
   font-family: 'Montserrat', sans-serif;
   font-size: medium;
-  width: 100%;
   box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
