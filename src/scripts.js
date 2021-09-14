@@ -217,16 +217,19 @@ function generateAllTags() {
 
 function showRecipesByTag(selectedTags) {
   if(!recipePoolView.classList.contains('hidden')) {
+  // if(!recipePoolView.classList.includes('hidden')) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags)
     allRecipesDomUpdate();
   };
 
   if(!favoriteView.classList.contains('hidden')){
+  // if(!favoriteView.classList.includes('hidden')){
     recipePool = user.filterRecipesByTag(user.favoriteRecipes,selectedTags);
     favoritesDomUpdate()
   }
 
   if(!cookbookView.classList.contains('hidden')){
+  // if(!cookbookView.classList.includes('hidden')){
     recipePool = user.filterRecipesByTag(user.recipesToCook,selectedTags);
     cookbookDomUpdate()
   }
