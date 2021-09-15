@@ -20,10 +20,13 @@ class Pantry {
     }, [])
     
     const result = recipeIngredients.every(ingredient => {
-      let isOnPantry = this.pantryShelf.some(pantryIng => pantryIng.ingredient === ingredient.id)
-      let foundIngredient = this.pantryShelf.find(pantryIng => pantryIng.ingredient === ingredient.id);
-      let isEnough = foundIngredient.amount >= ingredient.quantityRequired;
-      return isOnPantry && isEnough; 
+      let isOnPantry = this.pantryShelf.some(pantryIng => pantryIng.ingredient === ingredient.id);
+      let isEnough;
+      if (isOnPantry) {
+        let foundIngredient = this.pantryShelf.find(pantryIng => pantryIng.ingredient === ingredient.id);
+        isEnough = foundIngredient.amount >= ingredient.quantityRequired;
+      }
+      return isOnPantry && isEnough;
     }) 
     return result
   }
