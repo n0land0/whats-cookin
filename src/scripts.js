@@ -75,6 +75,7 @@ showQueueBtn.addEventListener('click', function () {
 
   // tag filtering
 recipeTagForm.addEventListener('click', function () {
+  console.log(event.target)
   collectTags();
 });
 
@@ -87,8 +88,8 @@ searchBtn.addEventListener('click', function () {
   searchByIngredient();
   hide(recipeDetailView);
   show(poolAndSearchView);
-  hide(favoriteView) 
-  hide(cookbookView) 
+  hide(favoriteView)
+  hide(cookbookView)
   show(recipePoolView)
   allRecipesDomUpdate();
 });
@@ -120,8 +121,8 @@ closeSpanQueue.addEventListener('click', function () {
 window.addEventListener('click', function (event) {
   if (event.target == favoriteModal) {
     favoriteModal.style.display = 'none';
-  } else if (event.target == recipesToCookModal) { 
-    recipesToCookModal.style.display = 'none'} // 
+  } else if (event.target == recipesToCookModal) {
+    recipesToCookModal.style.display = 'none'} //
 });
 
 // FUNCTIONS
@@ -181,7 +182,7 @@ function showRecipePool() {
     recipePool = user.recipesToCook;
     cookbookDomUpdate();
   }
-}  
+}
 
   // tag filtering
 function collectTags() {
@@ -208,7 +209,7 @@ function generateAllTags() {
   uniqRecipeTags.forEach((tag) => {
     recipeTagForm.innerHTML += `
       <label for="${tag}">
-        <input type="checkbox" class="recipe-tag' id="${tag}" value="${tag}"> ${tag}
+        <input type="checkbox" class="recipe-tag" id="${tag}" value="${tag}"> ${tag}
       </label>
     `;
   });
@@ -216,16 +217,19 @@ function generateAllTags() {
 
 function showRecipesByTag(selectedTags) {
   if(!recipePoolView.classList.contains('hidden')) {
+  // if(!recipePoolView.classList.includes('hidden')) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags)
     allRecipesDomUpdate();
   };
 
   if(!favoriteView.classList.contains('hidden')){
+  // if(!favoriteView.classList.includes('hidden')){
     recipePool = user.filterRecipesByTag(user.favoriteRecipes,selectedTags);
     favoritesDomUpdate()
   }
 
   if(!cookbookView.classList.contains('hidden')){
+  // if(!cookbookView.classList.includes('hidden')){
     recipePool = user.filterRecipesByTag(user.recipesToCook,selectedTags);
     cookbookDomUpdate()
   }
@@ -261,7 +265,7 @@ function showRecipeDetails(event) {
   let ingredients = recipeClicked.ingredients.map((ingredient, index) => `${ingredient.quantity.amount} ${ingredient.quantity.unit} ${recipeClicked.showIngredientsByName()[index]}`);
   let instructions = recipeClicked.showInstructions();
   let cost = recipeClicked.calculateRecipeCostInDollars();
-  
+
   hide(poolAndSearchView);
   show(recipeDetailView);
 
@@ -284,7 +288,7 @@ function showRecipeDetails(event) {
       <!-- <p>Ingredients: <span>${ingredients}</span></p> -->
       <p id="total-cost">Total cost: <span>$${cost}</span></p>
       <section class="ingredient-list">
-        <p>Ingredients:</p> 
+        <p>Ingredients:</p>
       </section>
     </article>
   `;
@@ -295,7 +299,7 @@ function showRecipeDetails(event) {
     ingredientList.innerHTML += `
       <p>${ingredient}</p>
     `
-  }) 
+  })
 
   instructions.forEach((ele) => {
     let key = Object.keys(ele).toString();
@@ -367,8 +371,8 @@ function activateAddToRecipesToCookButton(recipeClicked) {
 function showAllRecipes(){
   hide(recipeDetailView);
   show(poolAndSearchView);
-  hide(favoriteView) 
-  hide(cookbookView) 
+  hide(favoriteView)
+  hide(cookbookView)
   show(recipePoolView)
   showRecipePool();
   generateAllTags()
@@ -377,9 +381,9 @@ function showAllRecipes(){
 function showFavorite() {
   hide(recipeDetailView);
   show(poolAndSearchView);
-  show(favoriteView) 
+  show(favoriteView)
   hide(recipePoolView)
-  hide(cookbookView) 
+  hide(cookbookView)
   if (!user.favoriteRecipes.length) {
     favoriteView.innerHTML = '';
     favoriteModal.style.display = 'block';
@@ -394,7 +398,7 @@ function showFavorite() {
 function showQueue() {
   hide(recipeDetailView);
   show(poolAndSearchView);
-  hide(favoriteView) 
+  hide(favoriteView)
   hide(recipePoolView)
   show(cookbookView)
   if (!user.recipesToCook.length) {
@@ -420,7 +424,7 @@ function showQueue() {
       `;
     })
   }
-  
+
   function favoritesDomUpdate() {
     favoriteView.innerHTML = '';
     recipePool.forEach((recipe) => {
@@ -432,7 +436,7 @@ function showQueue() {
       `;
       })
   }
-  
+
   function cookbookDomUpdate() {
     cookbookView.innerHTML = '';
     recipePool.forEach((recipe) => {
