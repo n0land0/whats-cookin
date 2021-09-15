@@ -28,7 +28,7 @@ function fetchRecipes() {
 }
 
 function modifyPantry(userID, ingredientID, ingredientModification) {
-  fetch('http://localhost:3001/api/v1/users', {
+  return fetch('http://localhost:3001/api/v1/users', {
     method: 'POST',
     body: JSON.stringify({
       userID: userID,
