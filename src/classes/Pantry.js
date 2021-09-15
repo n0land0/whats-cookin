@@ -1,10 +1,4 @@
 /* eslint-disable max-len */
-/*
-It should take the user and stores it on a property
-Stores the user's pantry on a property
-It should have a method to check pantry property 
-*/
-
 class Pantry {
   constructor(pantry) {
     this.pantryShelf = pantry;
