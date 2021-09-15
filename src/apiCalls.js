@@ -27,24 +27,36 @@ function fetchRecipes() {
     // .then((parsedPromise) => parsedPromise.recipeData);
 }
 
-fetch('http://localhost:3001/api/v1/users', {
-  method: 'POST',
-  body: JSON.stringify({
-    userID: <number>,
-    ingredientID: <number>,
-    ingredientModification: <number> 
-  }),
-  headers: {
-    "Content-Type": "application/json"
-  }
-})
-.then(response => response.json())
-.then(json => `User # ${userID} has ${} units of item # ${}`)
+function modifyPantry(userID, ingredientID, ingredientModification) {
+  fetch('http://localhost:3001/api/v1/users', {
+    method: 'POST',
+    body: JSON.stringify({
+      userID: userID,
+      ingredientID: ingredientID,
+      ingredientModification: ingredientModification
+    }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => response.json())
+  // .then(json => `User # ${userID} has ${} units of item # ${}`)
+}
+
+// export {
+//   fetchUsers,
+//   fetchIngredients,
+//   fetchRecipes,
+//   userData,
+//   ingredientsData,
+//   recipeData,
+// };
 
 export {
   fetchUsers,
   fetchIngredients,
   fetchRecipes,
+  modifyPantry,
   userData,
   ingredientsData,
   recipeData,
