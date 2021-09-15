@@ -30,6 +30,28 @@ class Pantry {
     }) 
     return result
   }
+
+  determineMissingIngAmounts(recipe) {
+    let shoppingList = recipe.ingredients.reduce((acc, ingredient) => {
+      let missingIng = {}
+      let findResult = this.pantryShelf.find(pantryIng => pantryIng.ingredient === ingredient.id);
+      if (findResult) {
+        let amountGap = findResult.amount - ingredient.quantity.amount;
+        if (amountGap < 0) {
+          missingIng.id = ingredient.id;
+          missingIng.missingAmount = -1 * amountGap; 
+          acc.push(missingIng);
+        } 
+      } else {
+        missingIng.id = ingredient.id;
+        missingIng.missingAmount = ingredient.quantity.amount;
+        acc.push(missingIng);
+      } 
+      return acc;
+    }, [])
+
+    return shoppingList;
+  }
 }
 
 export default Pantry;

@@ -253,4 +253,14 @@ describe.only("Pantry class", function () {
   it("should return false if there isn't enough of the ingredient", () => {
     assert.equal(pantry2.checkIfIsPossibleToCookARecipe(recipe1), false);
   })
+
+  it("should return an array of missing ingredients with amount", () => {
+    let result = pantry1.determineMissingIngAmounts(recipe2);
+    assert.deepEqual(result, [{id: 6168, missingAmount: 8}]);
+  })
+
+  it("should return an array with the missing amount of existent ingredient", () => {
+    let result = pantry2.determineMissingIngAmounts(recipe1);
+    assert.deepEqual(result, [{id: 1002030, missingAmount: 3}]);
+  })
 })
