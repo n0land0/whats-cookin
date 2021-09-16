@@ -205,7 +205,7 @@ function generateAllIngredients() {
 
 
 function generatePantry() {
-  pantryInstance = new Pantry(user.userPantry);
+  pantryInstance = new Pantry(user);
 }
 
 
@@ -388,6 +388,12 @@ function activateCookingBtn(recipeClicked) {
         displayMessage2.innerHTML += `<p>${ingList.name}: ${ingList.amount} units</p>`;
       })
       show(buyIngredientsButton);
+      buyIngredientsButton.addEventListener('click', function() {
+        displayList.forEach(ingredient => {
+          modifyPantry(user.userId, ingredient.id, ingredient.amount)
+        })
+        
+      })
         //Show a button that will buy the ingredients => POST pantry and then GET"
       //Now everything disappear and the user should be able to cook the meal
     }
