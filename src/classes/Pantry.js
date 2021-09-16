@@ -46,6 +46,20 @@ class Pantry {
 
     return shoppingList;
   }
+
+  //bei start
+  addNamesToPantry (ingredientData) {
+    let newPantry = this.pantryShelf.map(ingredient => {
+      let foundIng = ingredientData.find(ele => ele.id === ingredient.ingredient)
+      let capitalizedName = foundIng.name.charAt(0).toUpperCase() + foundIng.name.slice(1)
+
+      ingredient.name = capitalizedName
+      return ingredient
+
+    })
+    return newPantry
+  } 
+// bei finish
 }
 
 export default Pantry;

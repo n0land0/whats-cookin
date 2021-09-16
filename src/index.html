@@ -2,10 +2,13 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Montserrat&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Merienda+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Merienda+One&display=swap" rel="stylesheet" />
     <title>GIMME SOME OVEN</title>
   </head>
   <body>
@@ -32,11 +35,12 @@
               <button id="show-all-recipes-cookbook">Add A Recipe</button>
             </div>
           </div>
+          <a href="#" id="show-pantry">My Pantry</a> <!--bei-->
         </div>
       </div>
     </header>
     <div class="container-show-btn">
-        <button id="show-all-recipes">All Recipes</button>
+      <button id="show-all-recipes">All Recipes</button>
     </div>
     <section id="recipe-container">
       <div class="pool-and-search-parent" id="pool-and-search-parent">
@@ -55,6 +59,12 @@
         </div>
       </div>
       <div class="recipe-detail-view"></div>
+      <div class="pantry-view hidden"> <!-- bei start -->
+        <h3 id="pantry-view-title">Here are all your ingredients!</h3>
+        <div id="pantry-container"></div>
+      </div>    <!-- bei finish -->
     </section>
 
     <script src="./scripts.js"></script>
+  </body>
+</html>
