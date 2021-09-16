@@ -17,4 +17,4 @@ Thank you for pushing your code!
 
 **Collaborators**
 
-@lokiandfengshui, @Raquelhill, @n0land0
+@lokiandfengshui, @Raquelhill, @n0land0, @karmacarlos
