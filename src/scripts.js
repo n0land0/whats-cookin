@@ -173,22 +173,22 @@ function generateAllIngredients() {
 }
 
 function generatePantry() {
-  pantryInstance = new Pantry(user.pantry);
+  pantryInstance = new Pantry(user.userPantry);
 }
 
 // data source switching
 function showRecipePool() {
   hide(recipeDetailView);
   show(poolAndSearchView);
-  if(!recipePoolView.classList.contains('hidden')){
+  if (!recipePoolView.classList.contains('hidden')) {
     recipePool = recipeRepository.recipes;
     allRecipesDomUpdate();
-  };
-  if(!favoriteView.classList.contains('hidden')){
+  }
+  if (!favoriteView.classList.contains('hidden')) {
     recipePool = user.favoriteRecipes;
     favoritesDomUpdate();
   }
-  if(!cookbookView.classList.contains('hidden')){
+  if (!cookbookView.classList.contains('hidden')) {
     recipePool = user.recipesToCook;
     cookbookDomUpdate();
   }
@@ -230,17 +230,17 @@ function showRecipesByTag(selectedTags) {
   // if(!recipePoolView.classList.includes('hidden')) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags)
     allRecipesDomUpdate();
-  };
+  }
 
-  if(!favoriteView.classList.contains('hidden')){
-  // if(!favoriteView.classList.includes('hidden')){
+  if (!favoriteView.classList.contains('hidden')) {
+  // if(!favoriteView.classList.includes('hidden')) {
     recipePool = user.filterRecipesByTag(user.favoriteRecipes,selectedTags);
     favoritesDomUpdate()
   }
 
-  if(!cookbookView.classList.contains('hidden')){
+  if (!cookbookView.classList.contains('hidden')) {
   // if(!cookbookView.classList.includes('hidden')){
-    recipePool = user.filterRecipesByTag(user.recipesToCook,selectedTags);
+    recipePool = user.filterRecipesByTag(user.recipesToCook, selectedTags);
     cookbookDomUpdate()
   }
 }
@@ -301,6 +301,9 @@ function showRecipeDetails(event) {
         <p>Ingredients:</p>
       </section>
       <button id="cook-button">GIMME OVEN!</button>
+      <p id="display-message"></p>
+      <section id="display-message2"></section>
+      <button id="buy-ingredients" class=" hidden">Buy Ingredients</button>
     </article>
   `;
 
@@ -323,20 +326,36 @@ function showRecipeDetails(event) {
 
   activateFaveButton(recipeClicked);
   activateAddToRecipesToCookButton(recipeClicked);
+  activateCookingBtn(recipeClicked);
 }
 
 // dynamic favorite/queue button activation
 function activateCookingBtn(recipeClicked) {
   let cookBtn = document.getElementById('cook-button');
+  let displayMessage = document.getElementById('display-message');
+  let displayMessage2 = document.getElementById('display-message2');
+  let buyIngredientsButton = document.getElementById('buy-ingredients');
 
   cookBtn.addEventListener('click', function () {
-    if(pantryInstance.checkIfIsPossibleToCookRecipe(recipecliked)) {
-      //"Success, You have given some Oven"
+    if (pantryInstance.checkIfIsPossibleToCookARecipe(recipeClicked)) {
+      displayMessage.innerText = 'Success! You\'ve given some oven';
+      
       //subtract ingredients from pantry => running POST and then GET
     } else {
-      //Display a message "Oh no, you need more ingredients. Do you want to buy them? 
-      //Display list of missing Ingredients
-      //Show a button that will buy the ingredients => POST pantry and then GET"
+      displayMessage.innerText = 'Oh no! You need more ingredients. Do you want to buy them?';
+      let shoppingList = pantryInstance.determineMissingIngAmounts(recipeClicked);
+      let displayList = shoppingList.map(ingredient => {
+        return {
+          id: ingredient.id, 
+          name: ingredientPool.find(ing => ing.id === ingredient.id).name,
+          amount: ingredient.missingAmount,
+        };
+      })
+      displayList.forEach(ingList => {
+        displayMessage2.innerHTML += `<p>${ingList.name}: ${ingList.amount} units</p>`;
+      })
+      show(buyIngredientsButton);
+        //Show a button that will buy the ingredients => POST pantry and then GET"
       //Now everything disappear and the user should be able to cook the meal
     }
   })
