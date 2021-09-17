@@ -40,7 +40,7 @@ function modifyPantry(userID, ingredientID, ingredientModification) {
     }
   })
   .then(response => response.json())
-  .then(promise => console.log(promise))
+  // .then(promise => console.log(promise))
   // .then(json => `User # ${userID} has ${} units of item # ${}`)
 }
 
