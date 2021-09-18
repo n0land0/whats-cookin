@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 // IMPORTS
 
-import './styles.css';
+// import './styles.css';
+import '../sass/index.scss';
 
 // classes
 import RecipeRepository from './classes/RecipeRepository';
@@ -26,7 +27,7 @@ const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
 const showFavBtn = document.getElementById('show-favorites');
 const showQueueBtn = document.getElementById('show-queue');
 const dropBtn = document.querySelector('.dropbtn');
-const showPantryBtn = document.getElementById("show-pantry"); 
+const showPantryBtn = document.getElementById("show-pantry");
 
 // modals
 const addRecipeFromCookBookModal = document.getElementById(
@@ -126,7 +127,7 @@ addRecipeFromCookBookModal.addEventListener('click', function () {
 });
 
 addRecipeFromFavoritesModal.addEventListener("click", function () {
-  recipesToCookModal.style.display = "none"; 
+  recipesToCookModal.style.display = "none";
   showAllRecipes();
 });
 
@@ -143,7 +144,7 @@ window.addEventListener("click", function (event) {
     favoriteModal.style.display = "none";
   } else if (event.target == recipesToCookModal) {
     recipesToCookModal.style.display = "none";
-  } 
+  }
 });
 
 
@@ -388,7 +389,7 @@ function activateCookingBtn(recipeClicked) {
         })).then( () => {
         fetchUsers()
           .then(users => users.find(userP => userP.id === user.userId))
-          .then(updatedUser => { 
+          .then(updatedUser => {
             user = new User(updatedUser)
             pantryInstance = new Pantry(user)
           })
@@ -399,7 +400,7 @@ function activateCookingBtn(recipeClicked) {
       let shoppingList = pantryInstance.determineMissingIngAmounts(recipeClicked);
       let displayList = shoppingList.map(ingredient => {
         return {
-          id: ingredient.id, 
+          id: ingredient.id,
           name: ingredientPool.find(ing => ing.id === ingredient.id).name,
           amount: ingredient.missingAmount,
         };
@@ -416,7 +417,7 @@ function activateCookingBtn(recipeClicked) {
           })).then( () => {
           fetchUsers()
             .then(users => users.find(userP => userP.id === user.userId))
-            .then(updatedUser => { 
+            .then(updatedUser => {
               user = new User(updatedUser)
               pantryInstance = new Pantry(user)
             })
@@ -424,7 +425,7 @@ function activateCookingBtn(recipeClicked) {
         show(cookBtn)
         hide(buyIngredientsButton)
         displayMessage.innerText = 'Now you have all the ingredients you need to give some oven!'
-        displayMessage2.innerHTML = '' 
+        displayMessage2.innerHTML = ''
       })
     }
   })
