@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 // IMPORTS
 
-import './styles.css';
+// import './styles.css';
+import '../sass/index.scss';
 
 // classes
 import RecipeRepository from './classes/RecipeRepository';
