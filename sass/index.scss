@@ -1,0 +1,394 @@
+@import "reset";
+@import "variables";
+
+/* ENTIRE SITE */
+html {
+  font-size: 1vw;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+body {
+  margin: 0;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color: $body-bkgd;
+  font-family: $main-font;
+  color: $title-font-color;
+}
+
+button:hover,
+input[type='checkbox']:hover {
+  cursor: pointer;
+}
+
+label:hover {
+  color: #EECF95;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  background-color: #dae4df;
+}
+
+.title-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  margin: 0;
+  font-family: $title-font;
+  font-size: 4rem;
+  color: $title-font-color;
+}
+
+/* DROPDOWN MENU */
+.dropdown {
+  width: 30%;
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  width: 100%;
+  height: 100%;
+  padding: 1.32rem;
+  border: none;
+  background-color: $dropdown-bkgd;
+  font-size: 1rem;
+  color: $background-color;
+  font-family: $main-font;
+}
+
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  width: 100%;
+  box-shadow: $card-shadow;
+}
+
+/* links - show favorite/queue */
+.dropdown-content a {
+  display: block;
+  width: 100%;
+  padding: 1.32rem 0;
+  background-color: $dropdown-bkgd;
+  text-decoration: none;
+  text-align: center;
+  font-family: $main-font;
+  color: $background-color;
+}
+
+.dropdown-content a:hover {
+  background-color: $background-color;
+  color: $dropdown-bkgd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  z-index: 1;
+}
+
+/* MODALS */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  align-items: center;
+}
+
+.modal-content {
+  width: 50%;
+  position: fixed;
+  right: 36%;
+  background-color: $background-color;
+  margin: auto;
+  border: 1px solid #888;
+  text-align: center;
+  align-content: center;
+}
+
+.close {
+  padding-right: 2%;
+  color: #aaaaaa;
+  float: right;
+  font-size: 45px;
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* MAIN DISPLAY */
+
+.container-show-btn {
+  width: 66.9%;
+  display: flex;
+  justify-content: center;
+  padding: 6.5rem 5rem 1rem 5rem;
+}
+
+.pool-and-search-parent {
+  display: grid;
+  grid-template-columns: 75% 20%;
+  /* column-gap: 10%; */
+  padding: 0 5rem 0 5rem;
+  /* background-color: white; */
+}
+
+.recipe-pool-view,
+.favorite-view,
+.cookbook-view {
+  /* width: 100%; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.recipe-card {
+  @include column-flex();
+  width: 15rem;
+  align-items: center;
+  background-repeat: no-repeat;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.recipe-card img {
+  width: 10rem;
+  height: 6.66rem;
+  /* width: 35%; */
+  border-radius: 5px;
+  box-shadow: $card-shadow;
+}
+
+.recipe-card:hover {
+  color: $recipe-button-text-color;
+  transform: scale(1.0025);
+  cursor: pointer;
+}
+
+#show-all-recipes {
+  /* padding-right: 3%; */
+  border: none;
+  background: none;
+  font-family: $title-font;
+  font-size: 2rem;
+  color: $recipe-button-text-color;
+}
+
+#show-all-recipes:hover {
+  color: $title-font-color;
+  transform: $hover-magnify;
+}
+
+#show-all-recipes-favorites {
+  padding-right: 3%;
+  border: none;
+  background: none;
+  font-family: $title-font;
+  font-size: 1.5rem;
+  color: $recipe-button-text-color;
+}
+
+#show-all-recipes-favorites:hover {
+  color: $title-font-color;
+  transform: $hover-magnify;
+}
+
+#show-all-recipes-cookbook {
+  border: none;
+  background: none;
+  font-family: $title-font;
+  font-size: 1.5rem;
+  color: $recipe-button-text-color;
+}
+
+#show-all-recipes-cookbook:hover {
+  color: $title-font-color;
+  transform: $hover-magnify;
+}
+
+/* #search-recipes {
+  font-family: 'Nanum Brush Script', cursive;
+} */
+
+.recipe-detail-view {
+  display: grid;
+  grid-template-columns: 70%;
+  padding: 0 23.4rem 0 0;
+}
+
+.recipe-detail-view,
+.recipe-detail-container {
+  text-align: center;
+  justify-content: center;
+}
+
+.recipe-detail-container,
+.ingredient-list {
+  @include column-flex();
+  align-items: center;
+  margin-bottom: 1rem;
+  border-width: 35%;
+}
+
+.ingredient-list {
+  border-bottom: 5px double $title-font-color;
+}
+
+.recipe-detail-container h3 {
+  margin: 0;
+}
+
+.recipe-detail-container img {
+  margin-top: 1rem;
+  width: 35%;
+  border-radius: 5px 5px 0 0;
+  box-shadow: $card-shadow;
+}
+
+#total-cost {
+  margin-bottom: 1rem;
+}
+
+.steps {
+  margin: 0;
+  color: black;
+}
+
+.recipe-detail-view p,
+.ingredient-list p {
+  margin: 0.5rem;
+  width: 50%;
+  justify-self: center;
+  font-size: 0.8rem;
+  color: $title-font-color;
+}
+
+.container-fave-queue-btns {
+  margin-bottom: 1rem;
+  width: 35%;
+  height: 3rem;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  box-shadow: $card-shadow;
+}
+
+#fave-button,
+#add-to-recipes-to-cook-button {
+  border: none;
+  background-color: $title-font-color;
+  font-family: $main-font;;
+  font-size: 0.9rem;
+  color: white;
+}
+
+#fave-button:hover,
+#add-to-recipes-to-cook-button:hover {
+  /* filter: hue-rotate(15deg); */
+  background-color: #D6B271;
+  color: $dropdown-bkgd;
+}
+
+#fave-button {
+  border-radius: 0 0 0 3px;
+  border-right: 0.5px solid white;
+}
+
+#add-to-recipes-to-cook-button {
+  border-radius: 0 0 3px 0;
+}
+
+.search-and-filter {
+  @include column-flex();
+  position: fixed;
+  justify-content: center;
+  right: 5rem;
+}
+
+#show-recipe-by-tag,
+#search-recipes {
+  font-family: 'Handlee', cursive;
+}
+
+#show-recipe-by-tag {
+  margin-top: 0;
+  margin-bottom: .5rem;
+}
+
+#search-recipes {
+  padding-left: 0.1rem;
+  /* margin-top: 2rem; */
+  padding-top: 1.5rem;
+  margin-bottom: .75rem;
+  /* border-top: 5px double $title-font-color; */
+}
+
+.recipe-tag-form {
+  @include column-flex();
+  margin-left: -.9rem;
+  padding-bottom: .5rem;
+}
+
+input[type='checkbox'] {
+  margin: 0.5rem 0;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* .search-recipes-side-header {
+  margin-top: 8%;
+} */
+
+#search-input-field {
+  width: 10vw;
+  height: 1.75vh;
+  padding: .2rem;
+  font-family: $main-font;
+  text-align: center;
+  font-size: .75rem;
+  box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.12);
+  border: none;
+}
+
+#search-button {
+  display: none;
+  border: none;
+  background: none;
+  font-family: $title-font;
+  font-size: 1.5rem;
+  color: $title-font-color;
+  /* box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.12); */
+}
+
+/* UTILITY */
+.hidden {
+  display: none;
+}
