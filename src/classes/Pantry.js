@@ -1,8 +1,12 @@
 /* eslint-disable max-len */
 class Pantry {
-  constructor(pantry) {
-    this.pantryShelf = pantry;
+  constructor(userInstance) {
+    this.userInstance = userInstance
+    this.pantryShelf = userInstance.userPantry;
   }
+  // constructor(pantry) {
+  //   this.pantryShelf = pantry;
+  // }
 
   checkIfIsPossibleToCookARecipe(recipe) {
     let recipeIngredients = recipe.ingredients.reduce((acc, ingredient) => {
