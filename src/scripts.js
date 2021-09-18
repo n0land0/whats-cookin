@@ -2,6 +2,7 @@
 // IMPORTS
 
 import './styles.css';
+//use scss file instead of css
 
 // classes
 import RecipeRepository from './classes/RecipeRepository';
@@ -16,44 +17,70 @@ import {
   fetchRecipes,
   modifyPantry,
 } from './apiCalls';
+import domUpdates from './domUpdates';
+
+const {
+  showAllRecipeBtn,
+  showRecipeByTagBtn,
+  showFavBtn,
+  showQueueBtn,
+  dropBtn,
+  showPantryBtn,
+  addRecipeFromCookBookModal,
+  addRecipeFromFavoritesModal,
+  favoriteModal,
+  recipesToCookModal,
+  closeSpanFavorites,
+  closeSpanQueue,
+  recipeTagForm,
+  searchInputField,
+  searchBtn,
+  poolAndSearchView,
+  recipePoolView,
+  favoriteView,
+  cookbookView,
+  recipeDetailView,
+  pantryView,
+  pantryContainer,
+} = domUpdates;
 
 // SELECTORS
 
 // buttons
-const showAllRecipeBtn = document.getElementById('show-all-recipes');
-const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
-const showFavBtn = document.getElementById('show-favorites');
-const showQueueBtn = document.getElementById('show-queue');
-// const dropBtn = document.querySelector('.dropbtn');
-const dropBtn = document.querySelector('.dropdown-button');
-const showPantryBtn = document.getElementById('show-pantry');
+// const showAllRecipeBtn = document.getElementById('show-all-recipes');
+// const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
+// const showFavBtn = document.getElementById('show-favorites');
+// const showQueueBtn = document.getElementById('show-queue');
+// // const dropBtn = document.querySelector('.dropbtn');
+// const dropBtn = document.querySelector('.dropdown-button');
+// const showPantryBtn = document.getElementById('show-pantry');
 
-// modals
-const addRecipeFromCookBookModal = document.getElementById(
-  'show-all-recipes-cookbook'
-);
-const addRecipeFromFavoritesModal = document.getElementById(
-  'show-all-recipes-favorites'
-);
-const favoriteModal = document.getElementById('favorite-recipe-modal');
-const recipesToCookModal = document.getElementById('recipes-to-cook-modal');
-const closeSpanFavorites = document.querySelectorAll('.close')[0];
-const closeSpanQueue = document.querySelectorAll('.close')[1];
+// // modals
+// const addRecipeFromCookBookModal = document.getElementById(
+//   'show-all-recipes-cookbook'
+// );
+// const addRecipeFromFavoritesModal = document.getElementById(
+//   'show-all-recipes-favorites'
+// );
+// const favoriteModal = document.getElementById('favorite-recipe-modal');
+// const recipesToCookModal = document.getElementById('recipes-to-cook-modal');
+// const closeSpanFavorites = document.querySelectorAll('.close')[0];
+// const closeSpanQueue = document.querySelectorAll('.close')[1];
 
-// search & filter
-const recipeTagForm = document.getElementById('recipe-tag-form');
-const searchInputField = document.getElementById('search-input-field');
-const searchBtn = document.getElementById('search-button');
+// // search & filter
+// const recipeTagForm = document.getElementById('recipe-tag-form');
+// const searchInputField = document.getElementById('search-input-field');
+// const searchBtn = document.getElementById('search-button');
 
-// containers
-const poolAndSearchView = document.getElementById('pool-and-search-parent');
-const recipePoolView = document.querySelector('.recipe-pool-view');
-const favoriteView = document.querySelector('.favorite-view');
-const cookbookView = document.querySelector('.cookbook-view');
-const recipeDetailView = document.querySelector('.recipe-detail-view');
-const pantryView = document.querySelector('.pantry-view');
-const pantryContainer = document.getElementById('pantry-container');
-// const recipeContainer = document.getElementById('recipe-container');
+// // containers
+// const poolAndSearchView = document.getElementById('pool-and-search-parent');
+// const recipePoolView = document.querySelector('.recipe-pool-view');
+// const favoriteView = document.querySelector('.favorite-view');
+// const cookbookView = document.querySelector('.cookbook-view');
+// const recipeDetailView = document.querySelector('.recipe-detail-view');
+// const pantryView = document.querySelector('.pantry-view');
+// const pantryContainer = document.getElementById('pantry-container');
+// // const recipeContainer = document.getElementById('recipe-container');
 
 // GLOBAL VARIABLES
 let recipeRepository;
@@ -108,7 +135,8 @@ searchBtn.addEventListener('click', function () {
   hide(favoriteView);
   hide(cookbookView);
   show(recipePoolView);
-  allRecipesDomUpdate();
+  // allRecipesDomUpdate();
+  domUpdates.renderAllRecipes(recipePool);
 });
 
 // expand individual recipe
@@ -213,15 +241,18 @@ function showRecipePool() {
   hide(pantryView);
   if (!recipePoolView.classList.contains('hidden')) {
     recipePool = recipeRepository.recipes;
-    allRecipesDomUpdate();
+    // allRecipesDomUpdate();
+    domUpdates.renderAllRecipes(recipePool);
   }
   if (!favoriteView.classList.contains('hidden')) {
     recipePool = user.favoriteRecipes;
-    favoritesDomUpdate();
+    // favoritesDomUpdate();
+    domUpdates.renderFavoriteRecipes(recipePool);
   }
   if (!cookbookView.classList.contains('hidden')) {
     recipePool = user.recipesToCook;
-    cookbookDomUpdate();
+    // cookbookDomUpdate();
+    domUpdates.renderCookbookRecipes(recipePool);
   }
 }
 
@@ -259,17 +290,20 @@ function generateAllTags() {
 function showRecipesByTag(selectedTags) {
   if (!recipePoolView.classList.contains('hidden')) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags);
-    allRecipesDomUpdate();
+    // allRecipesDomUpdate();
+    domUpdates.renderAllRecipes(recipePool);
   }
 
   if (!favoriteView.classList.contains('hidden')) {
     recipePool = user.filterRecipesByTag(user.favoriteRecipes, selectedTags);
-    favoritesDomUpdate();
+    // favoritesDomUpdate();
+    domUpdates.renderFavoriteRecipes(recipePool);
   }
 
   if (!cookbookView.classList.contains('hidden')) {
     recipePool = user.filterRecipesByTag(user.recipesToCook, selectedTags);
-    cookbookDomUpdate();
+    // cookbookDomUpdate();
+    domUpdates.renderCookbookRecipes(recipePool);
   }
 }
 
@@ -531,41 +565,41 @@ function showQueue() {
 }
 
 // update DOM
-function allRecipesDomUpdate() {
-  recipePoolView.innerHTML = '';
-  recipePool.forEach((recipe) => {
-    recipePoolView.innerHTML += `
-        <article class="recipe-card" id="${recipe.id}">
-          <img src=${recipe.image} alt="">
-          <p>${recipe.name}</p>
-        </article>
-      `;
-  });
-}
+// function allRecipesDomUpdate() {
+//   recipePoolView.innerHTML = '';
+//   recipePool.forEach((recipe) => {
+//     recipePoolView.innerHTML += `
+//         <article class="recipe-card" id="${recipe.id}">
+//           <img src=${recipe.image} alt="">
+//           <p>${recipe.name}</p>
+//         </article>
+//       `;
+//   });
+// }
 
-function favoritesDomUpdate() {
-  favoriteView.innerHTML = '';
-  recipePool.forEach((recipe) => {
-    favoriteView.innerHTML += `
-        <article class="recipe-card" id="${recipe.id}">
-          <img src=${recipe.image} alt="">
-          <p>${recipe.name}</p>
-        </article>
-      `;
-  });
-}
+// function favoritesDomUpdate() {
+//   favoriteView.innerHTML = '';
+//   recipePool.forEach((recipe) => {
+//     favoriteView.innerHTML += `
+//         <article class="recipe-card" id="${recipe.id}">
+//           <img src=${recipe.image} alt="">
+//           <p>${recipe.name}</p>
+//         </article>
+//       `;
+//   });
+// }
 
-function cookbookDomUpdate() {
-  cookbookView.innerHTML = '';
-  recipePool.forEach((recipe) => {
-    cookbookView.innerHTML += `
-        <article class="recipe-card" id="${recipe.id}">
-          <img src=${recipe.image} alt="">
-          <p>${recipe.name}</p>
-        </article>
-      `;
-  });
-}
+// function  {
+//   cookbookView.innerHTML = '';
+//   recipePool.forEach((recipe) => {
+//     cookbookView.innerHTML += `
+//         <article class="recipe-card" id="${recipe.id}">
+//           <img src=${recipe.image} alt="">
+//           <p>${recipe.name}</p>
+//         </article>
+//       `;
+//   });
+// }
 
 // utility fxns
 function show(element) {
