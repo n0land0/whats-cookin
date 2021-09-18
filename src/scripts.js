@@ -202,6 +202,7 @@ function showPantry() {
   recipeDetailView.classList.add('hidden')
   let pantry = new Pantry(user)
   let pantryForDisplay = pantry.addNamesToPantry(ingredientsData)
+  pantryContainer.innerHTML = ""
   pantryForDisplay.forEach(ingredient =>{
     pantryContainer.innerHTML += `
       <p> ${ingredient.name} Amount: ${ingredient.amount}</p>
