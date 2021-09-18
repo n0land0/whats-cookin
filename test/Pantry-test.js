@@ -238,8 +238,8 @@ describe.only("Pantry class", function () {
     )
     user1 = new User(users[0]);
     user2 = new User(notEnoughAmountUser);  
-    pantry1 = new Pantry(user1.userPantry);  
-    pantry2 = new Pantry(user2.userPantry);
+    pantry1 = new Pantry(user1);  
+    pantry2 = new Pantry(user2);
   })
 
   it("should return true if user's pantry has all ingredients and the amount to cook a recipe", () => {
