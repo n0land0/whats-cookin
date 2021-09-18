@@ -2,11 +2,13 @@
 // IMPORTS
 
 import './styles.css';
+
 // classes
 import RecipeRepository from './classes/RecipeRepository';
 import IngredientRepository from './classes/IngredientRepository';
 import User from './classes/User';
 import Pantry from './classes/Pantry';
+
 // fetch calls & data variables
 import {
   fetchUsers,
@@ -15,14 +17,17 @@ import {
   modifyPantry,
 } from './apiCalls';
 
-// SELECTORS
-// buttons
 
+// SELECTORS
+
+// buttons
 const showAllRecipeBtn = document.getElementById('show-all-recipes');
 const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
 const showFavBtn = document.getElementById('show-favorites');
 const showQueueBtn = document.getElementById('show-queue');
 const dropBtn = document.querySelector('.dropbtn');
+const showPantryBtn = document.getElementById("show-pantry"); 
+
 // modals
 const addRecipeFromCookBookModal = document.getElementById(
   'show-all-recipes-cookbook'
@@ -30,45 +35,26 @@ const addRecipeFromCookBookModal = document.getElementById(
 const addRecipeFromFavoritesModal = document.getElementById(
   'show-all-recipes-favorites'
 );
-  // search & filter
+const favoriteModal = document.getElementById('favorite-recipe-modal');
+const recipesToCookModal = document.getElementById('recipes-to-cook-modal');
+const closeSpanFavorites = document.querySelectorAll('.close')[0];
+const closeSpanQueue = document.querySelectorAll('.close')[1];
+
+// search & filter
 const recipeTagForm = document.getElementById('recipe-tag-form');
 const searchInputField = document.getElementById('search-input-field');
 const searchBtn = document.getElementById('search-button');
+
 // containers
-// const recipeContainer = document.getElementById('recipe-container');
 const poolAndSearchView = document.getElementById('pool-and-search-parent');
 const recipePoolView = document.querySelector('.recipe-pool-view');
 const favoriteView = document.querySelector('.favorite-view')
 const cookbookView = document.querySelector('.cookbook-view')
 const recipeDetailView = document.querySelector('.recipe-detail-view');
-// modals
-let favoriteModal = document.getElementById('favorite-recipe-modal');
-let recipesToCookModal = document.getElementById('recipes-to-cook-modal');
-let closeSpanFavorites = document.querySelectorAll('.close')[0];
-let closeSpanQueue = document.querySelectorAll('.close')[1];
-
-//bei start
-const showPantryBtn = document.getElementById("show-pantry"); 
-showPantryBtn.addEventListener("click", showPantry);
 const pantryView = document.querySelector('.pantry-view')
 const pantryContainer = document.getElementById("pantry-container");
+// const recipeContainer = document.getElementById('recipe-container');
 
-function showPantry() {
-  console.log("showPantry starts");
-  pantryView.classList.remove('hidden')
-  poolAndSearchView.classList.add('hidden')
-  recipeDetailView.classList.add('hidden')
-  let pantry = new Pantry(user)
-  let pantryForDisplay = pantry.addNamesToPantry(ingredientsData)
-  // console.log(pantryForDisplay);
-  
-  pantryForDisplay.forEach(ingredient =>{
-    pantryContainer.innerHTML += `
-      <p> ${ingredient.name} Amount: ${ingredient.amount}</p>
-    `
-  })
-}
-// bei finish
 
 // GLOBAL VARIABLES
 let recipeRepository;
@@ -82,15 +68,14 @@ let userData = [];
 let ingredientsData = [];
 let recipeData = [];
 
+
 // EVENTLISTENERS
+
 // page load
-
 window.addEventListener('load', getApis)
-
 
 // view switching
 showAllRecipeBtn.addEventListener('click', function () {
-
   recipePool = recipeRepository.recipes;
   showAllRecipes();
   hide(pantryView)
@@ -108,16 +93,12 @@ showQueueBtn.addEventListener("click", function () {
   hide(pantryView)
 });
 
+showPantryBtn.addEventListener("click", showPantry);
+
 // tag filtering
-
-recipeTagForm.addEventListener('click', function () {
-  console.log(event.target)
-
-  collectTags();
-});
+recipeTagForm.addEventListener('click', collectTags);
 
 // search
-
 searchBtn.addEventListener('click', function () {
 
   recipePool = [];
@@ -134,20 +115,18 @@ searchBtn.addEventListener('click', function () {
 });
 
 // expand individual recipe
-
 recipePoolView.addEventListener('click', showRecipeDetails);
 favoriteView.addEventListener('click', showRecipeDetails);
 cookbookView.addEventListener('click', showRecipeDetails);
 
 // modals
 addRecipeFromCookBookModal.addEventListener('click', function () {
-  favoriteModal.style.display = 'none'; //issue
-
+  favoriteModal.style.display = 'none';
   showAllRecipes();
 });
 
 addRecipeFromFavoritesModal.addEventListener("click", function () {
-  recipesToCookModal.style.display = "none"; //issue
+  recipesToCookModal.style.display = "none"; 
   showAllRecipes();
 });
 
@@ -164,10 +143,12 @@ window.addEventListener("click", function (event) {
     favoriteModal.style.display = "none";
   } else if (event.target == recipesToCookModal) {
     recipesToCookModal.style.display = "none";
-  } //
+  } 
 });
 
+
 // FUNCTIONS
+
 // page load - fetch calls and instantiation
 function getApis() {
   Promise.all([fetchUsers(), fetchIngredients(), fetchRecipes()]).then(allArrays => storeData(allArrays))
@@ -215,6 +196,18 @@ function generatePantry() {
   pantryInstance = new Pantry(user);
 }
 
+function showPantry() {
+  pantryView.classList.remove('hidden')
+  poolAndSearchView.classList.add('hidden')
+  recipeDetailView.classList.add('hidden')
+  let pantry = new Pantry(user)
+  let pantryForDisplay = pantry.addNamesToPantry(ingredientsData)
+  pantryForDisplay.forEach(ingredient =>{
+    pantryContainer.innerHTML += `
+      <p> ${ingredient.name} Amount: ${ingredient.amount}</p>
+    `
+  })
+}
 
 // data source switching
 function showRecipePool() {
@@ -489,9 +482,7 @@ function activateAddToRecipesToCookButton(recipeClicked) {
 }
 
 // view switching
-
 function showAllRecipes() {
-
   hide(recipeDetailView);
   show(poolAndSearchView);
   hide(favoriteView);
