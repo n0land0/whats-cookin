@@ -255,7 +255,8 @@ header {
 }
 
 .recipe-detail-container,
-.ingredient-list {
+.ingredient-list,
+#display-message2 {
   @include column-flex();
   align-items: center;
   margin-bottom: 1rem;
@@ -305,12 +306,21 @@ header {
 }
 
 #fave-button,
-#add-to-recipes-to-cook-button {
+#add-to-recipes-to-cook-button,
+#cook-button,
+#buy-ingredients {
   border: none;
   background-color: $title-font-color;
   font-family: $main-font;
   font-size: 0.9rem;
   color: white;
+}
+
+#cook-button,
+#buy-ingredients {
+  border-radius: 5px;
+  width: 90px;
+  height: 25px;
 }
 
 #fave-button:hover,
