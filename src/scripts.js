@@ -370,10 +370,27 @@ function activateCookingBtn(recipeClicked) {
   let buyIngredientsButton = document.getElementById('buy-ingredients');
 
   cookBtn.addEventListener('click', function () {
+
     if (pantryInstance.checkIfIsPossibleToCookARecipe(recipeClicked)) {
       displayMessage.innerText = 'Success! You\'ve given some oven';
+      let cookingList = recipeClicked.ingredients.map(ingredient => {
+        return {
+          id: ingredient.id,
+          amount: -1 * ingredient.quantity.amount
+        }
+      })
+      Promise.all(
+        cookingList.map(ingredient => {
+          return modifyPantry(user.userId, ingredient.id, ingredient.amount)
+        })).then( () => {
+        fetchUsers()
+          .then(users => users.find(userP => userP.id === user.userId))
+          .then(updatedUser => { 
+            user = new User(updatedUser)
+            pantryInstance = new Pantry(user)
+          })
+      })
       
-      //subtract ingredients from pantry => running POST and then GET
     } else {
       displayMessage.innerText = 'Oh no! You need more ingredients. Do you want to buy them?';
       let shoppingList = pantryInstance.determineMissingIngAmounts(recipeClicked);
@@ -389,9 +406,8 @@ function activateCookingBtn(recipeClicked) {
       })
       show(buyIngredientsButton);
       buyIngredientsButton.addEventListener('click', function() {
-        let postPromise
         Promise.all(
-          postPromise = displayList.map(ingredient => {
+          displayList.map(ingredient => {
             return modifyPantry(user.userId, ingredient.id, ingredient.amount)
           })).then( () => {
           fetchUsers()
@@ -399,13 +415,11 @@ function activateCookingBtn(recipeClicked) {
             .then(updatedUser => { 
               user = new User(updatedUser)
               pantryInstance = new Pantry(user)
-              console.log(user)
-              console.log(pantryInstance) 
             })
         })
         
       })
-      //Show a button that will buy the ingredients => POST pantry and then GET"
+      
       //Now everything disappear and the user should be able to cook the meal
     }
   })

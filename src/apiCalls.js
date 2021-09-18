@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 let userData = [];
 let ingredientsData = [];
 let recipeData = [];
@@ -12,7 +13,7 @@ function fetchUsers() {
 
 function fetchIngredients() {
   // return fetch(
-    // 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients'
+  // 'https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients'
   // )
   return fetch('http://localhost:3001/api/v1/ingredients')
     .then((returnedPromise) => returnedPromise.json())
@@ -31,17 +32,23 @@ function modifyPantry(userID, ingredientID, ingredientModification) {
   return fetch('http://localhost:3001/api/v1/users', {
     method: 'POST',
     body: JSON.stringify({
-      userID: userID,
-      ingredientID: ingredientID,
-      ingredientModification: ingredientModification
+      userID,
+      ingredientID,
+      ingredientModification
     }),
     headers: {
       "Content-Type": "application/json"
     }
   })
-  .then(response => response.json())
-  // .then(promise => console.log(promise))
-  // .then(json => `User # ${userID} has ${} units of item # ${}`)
+    .then(response => checkResponse(response))
+    .catch(error => console.warn(error))
+}
+
+function checkResponse(response) {
+  if (!response.ok) {
+    throw new Error(`Status: ${response.status} StatusText: ${response.status.text}`)
+  }
+  return response.json()
 }
 
 // export {
