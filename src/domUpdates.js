@@ -76,6 +76,52 @@ const domUpdates = {
     });
   },
 
+  renderRecipeDetails(recipeDetailView, recipeClicked, ingredients, cost) {
+    recipeDetailView.innerHTML = `
+      <article class="recipe-detail-container">
+        <h3>${recipeClicked.name}</h3>
+        <img src="${recipeClicked.image}">
+        <div class="container-fave-queue-btns">
+          <button id="fave-button">
+            <!-- <span id="fave-text">Add to Favorites</span> -->
+            <span id="fave-text">🤍</span>
+            <!-- <span id="unfave-text" class="hidden">Remove from favorites</span> -->
+            <span id="unfave-text" class="hidden">❤️</span>
+          </button>
+          <button id="add-to-recipes-to-cook-button">
+            <span id="add-to-cook-text">Add to My Cookbook</span>
+            <span id="remove-from-cook-text" class="hidden">Remove from My Cookbook</span>
+          </button>
+        </div>
+        <!-- <p>Ingredients: <span>${ingredients}</span></p> -->
+        <p id="total-cost">Total cost: <span>$${cost}</span></p>
+        <section class="ingredient-list">
+          <p>Ingredients:</p>
+        </section>
+        <button id="cook-button">GIMME OVEN!</button>
+        <p id="display-message"></p>
+        <section id="display-message2"></section>
+        <button id="buy-ingredients" class=" hidden">Buy Ingredients</button>
+      </article>
+    `;
+  },
+
+  show(element) {
+    element.classList.remove('hidden');
+  },
+
+  hide(element) {
+    element.classList.add('hidden');
+  },
+
+  toggle(element) {
+    element.classList.toggle('hidden');
+  },
+
+  resetClassList(element) {
+    element.classList = '';
+  },
+
   showAllRecipeBtn,
   showRecipeByTagBtn,
   showFavBtn,

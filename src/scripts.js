@@ -102,19 +102,19 @@ window.addEventListener('load', getApis);
 showAllRecipeBtn.addEventListener('click', function () {
   recipePool = recipeRepository.recipes;
   showAllRecipes();
-  hide(pantryView);
+  domUpdates.hide(pantryView);
 });
 
 showFavBtn.addEventListener('click', function () {
   recipePool = user.favoriteRecipes;
   showFavorite();
-  hide(pantryView);
+  domUpdates.hide(pantryView);
 });
 
 showQueueBtn.addEventListener('click', function () {
   recipePool = user.recipesToCook;
   showQueue();
-  hide(pantryView);
+  domUpdates.hide(pantryView);
 });
 
 showPantryBtn.addEventListener('click', showPantry);
@@ -129,11 +129,11 @@ searchBtn.addEventListener('click', function () {
   generateAllTags();
   searchByName();
   searchByIngredient();
-  hide(recipeDetailView);
-  show(poolAndSearchView);
-  hide(favoriteView);
-  hide(cookbookView);
-  show(recipePoolView);
+  domUpdates.hide(recipeDetailView);
+  domUpdates.show(poolAndSearchView);
+  domUpdates.hide(favoriteView);
+  domUpdates.hide(cookbookView);
+  domUpdates.show(recipePoolView);
   // allRecipesDomUpdate();
   domUpdates.renderAllRecipes(recipePool);
 });
@@ -193,7 +193,7 @@ function createUserAndRecipePool() {
   generateAllRecipes();
   generateAllIngredients();
   generatePantry();
-  hide(showRecipeByTagBtn);
+  domUpdates.hide(showRecipeByTagBtn);
   dropBtn.innerText = `Welcome, ${user.name}!`;
 }
 
@@ -235,9 +235,9 @@ function showPantry() {
 
 // data source switching
 function showRecipePool() {
-  hide(recipeDetailView);
-  show(poolAndSearchView);
-  hide(pantryView);
+  domUpdates.hide(recipeDetailView);
+  domUpdates.show(poolAndSearchView);
+  domUpdates.hide(pantryView);
   if (!recipePoolView.classList.contains('hidden')) {
     recipePool = recipeRepository.recipes;
     // allRecipesDomUpdate();
@@ -270,7 +270,7 @@ function collectTags() {
 }
 
 function generateAllTags() {
-  show(showRecipeByTagBtn);
+  domUpdates.show(showRecipeByTagBtn);
   let recipeTags = [];
   recipePool.forEach((recipe) => {
     recipeTags.push(recipe.tags);
@@ -341,37 +341,42 @@ function showRecipeDetails(event) {
   let instructions = recipeClicked.showInstructions();
   let cost = recipeClicked.calculateRecipeCostInDollars();
 
-  hide(poolAndSearchView);
-  show(recipeDetailView);
-  hide(pantryView);
-
-  recipeDetailView.innerHTML = `
-    <article class="recipe-detail-container">
-      <h3>${recipeClicked.name}</h3>
-      <img src="${recipeClicked.image}">
-      <div class="container-fave-queue-btns">
-        <button id="fave-button">
-          <!-- <span id="fave-text">Add to Favorites</span> -->
-          <span id="fave-text">🤍</span>
-          <!-- <span id="unfave-text" class="hidden">Remove from favorites</span> -->
-          <span id="unfave-text" class="hidden">❤️</span>
-        </button>
-        <button id="add-to-recipes-to-cook-button">
-          <span id="add-to-cook-text">Add to My Cookbook</span>
-          <span id="remove-from-cook-text" class="hidden">Remove from My Cookbook</span>
-        </button>
-      </div>
-      <!-- <p>Ingredients: <span>${ingredients}</span></p> -->
-      <p id="total-cost">Total cost: <span>$${cost}</span></p>
-      <section class="ingredient-list">
-        <p>Ingredients:</p>
-      </section>
-      <button id="cook-button">GIMME OVEN!</button>
-      <p id="display-message"></p>
-      <section id="display-message2"></section>
-      <button id="buy-ingredients" class=" hidden">Buy Ingredients</button>
-    </article>
-  `;
+  domUpdates.hide(poolAndSearchView);
+  domUpdates.show(recipeDetailView);
+  domUpdates.hide(pantryView);
+  domUpdates.renderRecipeDetails(
+    recipeDetailView,
+    recipeClicked,
+    ingredients,
+    cost
+  );
+  // recipeDetailView.innerHTML = `
+  //   <article class="recipe-detail-container">
+  //     <h3>${recipeClicked.name}</h3>
+  //     <img src="${recipeClicked.image}">
+  //     <div class="container-fave-queue-btns">
+  //       <button id="fave-button">
+  //         <!-- <span id="fave-text">Add to Favorites</span> -->
+  //         <span id="fave-text">🤍</span>
+  //         <!-- <span id="unfave-text" class="hidden">Remove from favorites</span> -->
+  //         <span id="unfave-text" class="hidden">❤️</span>
+  //       </button>
+  //       <button id="add-to-recipes-to-cook-button">
+  //         <span id="add-to-cook-text">Add to My Cookbook</span>
+  //         <span id="remove-from-cook-text" class="hidden">Remove from My Cookbook</span>
+  //       </button>
+  //     </div>
+  //     <!-- <p>Ingredients: <span>${ingredients}</span></p> -->
+  //     <p id="total-cost">Total cost: <span>$${cost}</span></p>
+  //     <section class="ingredient-list">
+  //       <p>Ingredients:</p>
+  //     </section>
+  //     <button id="cook-button">GIMME OVEN!</button>
+  //     <p id="display-message"></p>
+  //     <section id="display-message2"></section>
+  //     <button id="buy-ingredients" class=" hidden">Buy Ingredients</button>
+  //   </article>
+  // `;
 
   let ingredientList = document.querySelector('.ingredient-list');
 
@@ -423,7 +428,7 @@ function activateCookingBtn(recipeClicked) {
             pantryInstance = new Pantry(user);
           });
       });
-      hide(cookBtn);
+      domUpdates.hide(cookBtn);
     } else {
       displayMessage.innerText =
         'Oh no! You need more ingredients. Do you want to buy them?';
@@ -439,8 +444,8 @@ function activateCookingBtn(recipeClicked) {
       displayList.forEach((ingList) => {
         displayMessage2.innerHTML += `<p>${ingList.name}: ${ingList.amount} units</p>`;
       });
-      show(buyIngredientsButton);
-      hide(cookBtn);
+      domUpdates.show(buyIngredientsButton);
+      domUpdates.hide(cookBtn);
       buyIngredientsButton.addEventListener('click', function () {
         Promise.all(
           displayList.map((ingredient) => {
@@ -454,8 +459,8 @@ function activateCookingBtn(recipeClicked) {
               pantryInstance = new Pantry(user);
             });
         });
-        show(cookBtn);
-        hide(buyIngredientsButton);
+        domUpdates.show(cookBtn);
+        domUpdates.hide(buyIngredientsButton);
         displayMessage.innerText =
           'Now you have all the ingredients you need to give some oven!';
         displayMessage2.innerHTML = '';
@@ -472,21 +477,21 @@ function activateFaveButton(recipeClicked) {
   let unFaveText = document.getElementById('unfave-text');
 
   if (user.favoriteRecipes.includes(recipeClicked)) {
-    resetClassList(faveText);
-    resetClassList(unFaveText);
-    hide(faveText);
+    domUpdates.resetClassList(faveText);
+    domUpdates.resetClassList(unFaveText);
+    domUpdates.hide(faveText);
   }
 
   faveButton.addEventListener('click', function () {
     if (!user.favoriteRecipes.includes(recipeClicked)) {
       user.favoriteRecipes.push(recipeClicked);
-      hide(faveText);
-      show(unFaveText);
+      domUpdates.hide(faveText);
+      domUpdates.show(unFaveText);
     } else {
       let indexOfRecipeClicked = user.favoriteRecipes.indexOf(recipeClicked);
       user.favoriteRecipes.splice(indexOfRecipeClicked, 1);
-      toggle(faveText);
-      toggle(unFaveText);
+      domUpdates.toggle(faveText);
+      domUpdates.toggle(unFaveText);
     }
   });
 }
@@ -499,42 +504,42 @@ function activateAddToRecipesToCookButton(recipeClicked) {
   let removeFromCookText = document.getElementById('remove-from-cook-text');
 
   if (user.recipesToCook.includes(recipeClicked)) {
-    resetClassList(addToCookText);
-    resetClassList(removeFromCookText);
-    hide(addToCookText);
+    domUpdates.resetClassList(addToCookText);
+    domUpdates.resetClassList(removeFromCookText);
+    domUpdates.hide(addToCookText);
   }
 
   addToRecipesToCookButton.addEventListener('click', function () {
     if (!user.recipesToCook.includes(recipeClicked)) {
       user.recipesToCook.push(recipeClicked);
-      hide(addToCookText);
-      show(removeFromCookText);
+      domUpdates.hide(addToCookText);
+      domUpdates.show(removeFromCookText);
     } else {
       let indexOfRecipeClicked = user.recipesToCook.indexOf(recipeClicked);
       user.recipesToCook.splice(indexOfRecipeClicked, 1);
-      toggle(addToCookText);
-      toggle(removeFromCookText);
+      domUpdates.toggle(addToCookText);
+      domUpdates.toggle(removeFromCookText);
     }
   });
 }
 
 // view switching
 function showAllRecipes() {
-  hide(recipeDetailView);
-  show(poolAndSearchView);
-  hide(favoriteView);
-  hide(cookbookView);
-  show(recipePoolView);
+  domUpdates.hide(recipeDetailView);
+  domUpdates.show(poolAndSearchView);
+  domUpdates.hide(favoriteView);
+  domUpdates.hide(cookbookView);
+  domUpdates.show(recipePoolView);
   showRecipePool();
   generateAllTags();
 }
 
 function showFavorite() {
-  hide(recipeDetailView);
-  show(poolAndSearchView);
-  show(favoriteView);
-  hide(recipePoolView);
-  hide(cookbookView);
+  domUpdates.hide(recipeDetailView);
+  domUpdates.show(poolAndSearchView);
+  domUpdates.show(favoriteView);
+  domUpdates.hide(recipePoolView);
+  domUpdates.hide(cookbookView);
   if (!user.favoriteRecipes.length) {
     favoriteView.innerHTML = '';
     favoriteModal.style.display = 'block';
@@ -547,11 +552,11 @@ function showFavorite() {
 }
 
 function showQueue() {
-  hide(recipeDetailView);
-  show(poolAndSearchView);
-  hide(favoriteView);
-  hide(recipePoolView);
-  show(cookbookView);
+  domUpdates.hide(recipeDetailView);
+  domUpdates.show(poolAndSearchView);
+  domUpdates.hide(favoriteView);
+  domUpdates.hide(recipePoolView);
+  domUpdates.show(cookbookView);
   if (!user.recipesToCook.length) {
     cookbookView.innerHTML = '';
     recipesToCookModal.style.display = 'block';
@@ -601,18 +606,18 @@ function showQueue() {
 // }
 
 // utility fxns
-function show(element) {
-  element.classList.remove('hidden');
-}
+// function show(element) {
+//   element.classList.remove('hidden');
+// }
 
-function hide(element) {
-  element.classList.add('hidden');
-}
+// function hide(element) {
+//   element.classList.add('hidden');
+// }
 
-function toggle(element) {
-  element.classList.toggle('hidden');
-}
+// function toggle(element) {
+//   element.classList.toggle('hidden');
+// }
 
-function resetClassList(element) {
-  element.classList = '';
-}
+// function resetClassList(element) {
+//   element.classList = '';
+// }
