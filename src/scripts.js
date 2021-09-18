@@ -13,9 +13,6 @@ import {
   fetchIngredients,
   fetchRecipes,
   modifyPantry,
-  userData,
-  ingredientsData,
-  recipeData,
 } from './apiCalls';
 
 // SELECTORS
@@ -38,7 +35,7 @@ const recipeTagForm = document.getElementById('recipe-tag-form');
 const searchInputField = document.getElementById('search-input-field');
 const searchBtn = document.getElementById('search-button');
 // containers
-const recipeContainer = document.getElementById('recipe-container');
+// const recipeContainer = document.getElementById('recipe-container');
 const poolAndSearchView = document.getElementById('pool-and-search-parent');
 const recipePoolView = document.querySelector('.recipe-pool-view');
 const favoriteView = document.querySelector('.favorite-view')
@@ -81,27 +78,34 @@ let ingredientPool;
 let selectedTags;
 let user;
 let pantryInstance;
+let userData = [];
+let ingredientsData = [];
+let recipeData = [];
 
 // EVENTLISTENERS
 // page load
 
-window.addEventListener('load', getApis);
+window.addEventListener('load', getApis)
+
 
 // view switching
 showAllRecipeBtn.addEventListener('click', function () {
 
   recipePool = recipeRepository.recipes;
   showAllRecipes();
+  hide(pantryView)
 });
 
 showFavBtn.addEventListener("click", function () {
   recipePool = user.favoriteRecipes;
   showFavorite();
+  hide(pantryView)
 });
 
 showQueueBtn.addEventListener("click", function () {
   recipePool = user.recipesToCook;
   showQueue();
+  hide(pantryView)
 });
 
 // tag filtering
@@ -166,7 +170,10 @@ window.addEventListener("click", function (event) {
 // FUNCTIONS
 // page load - fetch calls and instantiation
 function getApis() {
-  Promise.all([fetchUsers(), fetchIngredients(), fetchRecipes()]).then(allArrays => storeData(allArrays));
+  Promise.all([fetchUsers(), fetchIngredients(), fetchRecipes()]).then(allArrays => storeData(allArrays))
+    .then( () => {
+      return showAllRecipes()
+    })
 }
 
 function storeData(arrays) {
@@ -213,7 +220,7 @@ function generatePantry() {
 function showRecipePool() {
   hide(recipeDetailView);
   show(poolAndSearchView);
-
+  hide(pantryView);
   if (!recipePoolView.classList.contains('hidden')) {
     recipePool = recipeRepository.recipes;
     allRecipesDomUpdate();
@@ -261,6 +268,7 @@ function generateAllTags() {
 }
 
 function showRecipesByTag(selectedTags) {
+
   if (!recipePoolView.classList.contains("hidden")) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags);
     allRecipesDomUpdate();
@@ -311,6 +319,7 @@ function showRecipeDetails(event) {
 
   hide(poolAndSearchView);
   show(recipeDetailView);
+  hide(pantryView);
 
   recipeDetailView.innerHTML = `
     <article class="recipe-detail-container">
@@ -390,7 +399,7 @@ function activateCookingBtn(recipeClicked) {
             pantryInstance = new Pantry(user)
           })
       })
-      
+      hide(cookBtn)
     } else {
       displayMessage.innerText = 'Oh no! You need more ingredients. Do you want to buy them?';
       let shoppingList = pantryInstance.determineMissingIngAmounts(recipeClicked);
@@ -405,6 +414,7 @@ function activateCookingBtn(recipeClicked) {
         displayMessage2.innerHTML += `<p>${ingList.name}: ${ingList.amount} units</p>`;
       })
       show(buyIngredientsButton);
+      hide(cookBtn)
       buyIngredientsButton.addEventListener('click', function() {
         Promise.all(
           displayList.map(ingredient => {
@@ -417,10 +427,11 @@ function activateCookingBtn(recipeClicked) {
               pantryInstance = new Pantry(user)
             })
         })
-        
+        show(cookBtn)
+        hide(buyIngredientsButton)
+        displayMessage.innerText = 'Now you have all the ingredients you need to give some oven!'
+        displayMessage2.innerHTML = '' 
       })
-      
-      //Now everything disappear and the user should be able to cook the meal
     }
   })
 }
@@ -478,8 +489,6 @@ function activateAddToRecipesToCookButton(recipeClicked) {
 }
 
 // view switching
-
-// function showAllRecipes(){
 
 function showAllRecipes() {
 
