@@ -180,11 +180,6 @@ function generatePantry() {
   pantryInstance = new Pantry(user);
 }
 
-function showPantry() {
-  let pantryForDisplay = pantryInstance.addNamesToPantry(ingredientsData);
-  domUpdates.renderPantry(pantryForDisplay);
-}
-
 // data source switching
 function showRecipePool() {
   domUpdates.hide(recipeDetailView);
@@ -319,7 +314,7 @@ function showRecipeDetails(event) {
   activateCookingBtn(recipeClicked);
 }
 
-// dynamic favorite/queue button activation
+// dynamic favorite/cookbook button activation
 function activateCookingBtn(recipeClicked) {
   let cookBtn = document.getElementById('cook-button');
   let displayMessage = document.getElementById('display-message');
@@ -402,7 +397,7 @@ function modifyPantryAPI(ingredientList) {
       });
   });
 }
-// dynamic favorite/queue button activation
+// dynamic favorite/cookbook button activation
 
 function activateFaveButton(recipeClicked) {
   let faveButton = document.getElementById('fave-button');
@@ -457,6 +452,12 @@ function activateAddToRecipesToCookButton(recipeClicked) {
 }
 
 // view switching
+
+function showPantry() {
+  let pantryForDisplay = pantryInstance.addNamesToPantry(ingredientsData);
+  domUpdates.renderPantry(pantryForDisplay);
+}
+
 function showAllRecipes() {
   domUpdates.hide(recipeDetailView);
   domUpdates.show(poolAndSearchView);

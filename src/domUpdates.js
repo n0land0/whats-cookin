@@ -5,7 +5,6 @@ const showAllRecipeBtn = document.getElementById('show-all-recipes');
 const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
 const showFavBtn = document.getElementById('show-favorites');
 const showCookbookBtn = document.getElementById('show-queue');
-// const dropBtn = document.querySelector('.dropbtn');
 const dropBtn = document.querySelector('.dropdown-button');
 const showPantryBtn = document.getElementById('show-pantry');
 
@@ -34,7 +33,6 @@ const cookbookView = document.querySelector('.cookbook-view');
 const recipeDetailView = document.querySelector('.recipe-detail-view');
 const pantryView = document.querySelector('.pantry-view');
 const pantryContainer = document.getElementById('pantry-container');
-// const recipeContainer = document.getElementById('recipe-container');
 
 const domUpdates = {
   renderAllRecipes(recipePool) {
