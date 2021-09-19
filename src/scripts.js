@@ -350,33 +350,6 @@ function showRecipeDetails(event) {
     ingredients,
     cost
   );
-  // recipeDetailView.innerHTML = `
-  //   <article class="recipe-detail-container">
-  //     <h3>${recipeClicked.name}</h3>
-  //     <img src="${recipeClicked.image}">
-  //     <div class="container-fave-queue-btns">
-  //       <button id="fave-button">
-  //         <!-- <span id="fave-text">Add to Favorites</span> -->
-  //         <span id="fave-text">🤍</span>
-  //         <!-- <span id="unfave-text" class="hidden">Remove from favorites</span> -->
-  //         <span id="unfave-text" class="hidden">❤️</span>
-  //       </button>
-  //       <button id="add-to-recipes-to-cook-button">
-  //         <span id="add-to-cook-text">Add to My Cookbook</span>
-  //         <span id="remove-from-cook-text" class="hidden">Remove from My Cookbook</span>
-  //       </button>
-  //     </div>
-  //     <!-- <p>Ingredients: <span>${ingredients}</span></p> -->
-  //     <p id="total-cost">Total cost: <span>$${cost}</span></p>
-  //     <section class="ingredient-list">
-  //       <p>Ingredients:</p>
-  //     </section>
-  //     <button id="cook-button">GIMME OVEN!</button>
-  //     <p id="display-message"></p>
-  //     <section id="display-message2"></section>
-  //     <button id="buy-ingredients" class=" hidden">Buy Ingredients</button>
-  //   </article>
-  // `;
 
   let ingredientList = document.querySelector('.ingredient-list');
 
@@ -406,7 +379,6 @@ function activateCookingBtn(recipeClicked) {
   let displayMessage = document.getElementById('display-message');
   let displayMessage2 = document.getElementById('display-message2');
   let buyIngredientsButton = document.getElementById('buy-ingredients');
-
   cookBtn.addEventListener('click', function () {
     if (pantryInstance.checkIfIsPossibleToCookARecipe(recipeClicked)) {
       displayMessage.innerText = "Success! You've given some oven";

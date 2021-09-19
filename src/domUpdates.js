@@ -77,10 +77,11 @@ const domUpdates = {
   },
 
   renderRecipeDetails(recipeDetailView, recipeClicked, ingredients, cost) {
+    console.log(recipeClicked);
     recipeDetailView.innerHTML = `
       <article class="recipe-detail-container">
         <h3>${recipeClicked.name}</h3>
-        <img src="${recipeClicked.image}">
+        <img src=${recipeClicked.image} alt="">
         <div class="container-fave-queue-btns">
           <button id="fave-button">
             <!-- <span id="fave-text">Add to Favorites</span> -->
