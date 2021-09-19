@@ -22,7 +22,7 @@ const {
   showAllRecipeBtn,
   showRecipeByTagBtn,
   showFavBtn,
-  showQueueBtn,
+  showCookbookBtn,
   dropBtn,
   showPantryBtn,
   addRecipeFromCookBookModal,
@@ -30,7 +30,7 @@ const {
   favoriteModal,
   recipesToCookModal,
   closeSpanFavorites,
-  closeSpanQueue,
+  closeSpanCookbook,
   recipeTagForm,
   searchInputField,
   searchBtn,
@@ -42,44 +42,6 @@ const {
   pantryView,
   pantryContainer,
 } = domUpdates;
-
-// SELECTORS
-
-// buttons
-// const showAllRecipeBtn = document.getElementById('show-all-recipes');
-// const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
-// const showFavBtn = document.getElementById('show-favorites');
-// const showQueueBtn = document.getElementById('show-queue');
-// // const dropBtn = document.querySelector('.dropbtn');
-// const dropBtn = document.querySelector('.dropdown-button');
-// const showPantryBtn = document.getElementById('show-pantry');
-
-// // modals
-// const addRecipeFromCookBookModal = document.getElementById(
-//   'show-all-recipes-cookbook'
-// );
-// const addRecipeFromFavoritesModal = document.getElementById(
-//   'show-all-recipes-favorites'
-// );
-// const favoriteModal = document.getElementById('favorite-recipe-modal');
-// const recipesToCookModal = document.getElementById('recipes-to-cook-modal');
-// const closeSpanFavorites = document.querySelectorAll('.close')[0];
-// const closeSpanQueue = document.querySelectorAll('.close')[1];
-
-// // search & filter
-// const recipeTagForm = document.getElementById('recipe-tag-form');
-// const searchInputField = document.getElementById('search-input-field');
-// const searchBtn = document.getElementById('search-button');
-
-// // containers
-// const poolAndSearchView = document.getElementById('pool-and-search-parent');
-// const recipePoolView = document.querySelector('.recipe-pool-view');
-// const favoriteView = document.querySelector('.favorite-view');
-// const cookbookView = document.querySelector('.cookbook-view');
-// const recipeDetailView = document.querySelector('.recipe-detail-view');
-// const pantryView = document.querySelector('.pantry-view');
-// const pantryContainer = document.getElementById('pantry-container');
-// // const recipeContainer = document.getElementById('recipe-container');
 
 // GLOBAL VARIABLES
 let recipeRepository;
@@ -111,9 +73,9 @@ showFavBtn.addEventListener('click', function () {
   domUpdates.hide(pantryView);
 });
 
-showQueueBtn.addEventListener('click', function () {
+showCookbookBtn.addEventListener('click', function () {
   recipePool = user.recipesToCook;
-  showQueue();
+  showCookbook();
   domUpdates.hide(pantryView);
 });
 
@@ -134,7 +96,6 @@ searchBtn.addEventListener('click', function () {
   domUpdates.hide(favoriteView);
   domUpdates.hide(cookbookView);
   domUpdates.show(recipePoolView);
-  // allRecipesDomUpdate();
   domUpdates.renderAllRecipes(recipePool);
 });
 
@@ -158,7 +119,7 @@ closeSpanFavorites.addEventListener('click', function () {
   favoriteModal.style.display = 'none';
 });
 
-closeSpanQueue.addEventListener('click', function () {
+closeSpanCookbook.addEventListener('click', function () {
   recipesToCookModal.style.display = 'none';
 });
 
@@ -220,17 +181,8 @@ function generatePantry() {
 }
 
 function showPantry() {
-  pantryView.classList.remove('hidden');
-  poolAndSearchView.classList.add('hidden');
-  recipeDetailView.classList.add('hidden');
-  let pantry = new Pantry(user);
-  let pantryForDisplay = pantry.addNamesToPantry(ingredientsData);
-  pantryContainer.innerHTML = '';
-  pantryForDisplay.forEach((ingredient) => {
-    pantryContainer.innerHTML += `
-      <p> ${ingredient.name} Amount: ${ingredient.amount}</p>
-    `;
-  });
+  let pantryForDisplay = pantryInstance.addNamesToPantry(ingredientsData);
+  domUpdates.renderPantry(pantryForDisplay);
 }
 
 // data source switching
@@ -240,17 +192,14 @@ function showRecipePool() {
   domUpdates.hide(pantryView);
   if (!recipePoolView.classList.contains('hidden')) {
     recipePool = recipeRepository.recipes;
-    // allRecipesDomUpdate();
     domUpdates.renderAllRecipes(recipePool);
   }
   if (!favoriteView.classList.contains('hidden')) {
     recipePool = user.favoriteRecipes;
-    // favoritesDomUpdate();
     domUpdates.renderFavoriteRecipes(recipePool);
   }
   if (!cookbookView.classList.contains('hidden')) {
     recipePool = user.recipesToCook;
-    // cookbookDomUpdate();
     domUpdates.renderCookbookRecipes(recipePool);
   }
 }
@@ -259,14 +208,14 @@ function showRecipePool() {
 function collectTags() {
   selectedTags = [];
   let checkBoxes = document.querySelectorAll('input[type=checkbox]:checked');
-  for (let i = 0; i < checkBoxes.length; i++) {
-    selectedTags.push(checkBoxes[i].value);
-  }
-  if (!selectedTags.length) {
-    showRecipePool();
-  } else {
-    showRecipesByTag(selectedTags);
-  }
+  checkBoxes.forEach((checkedBox) => {
+    selectedTags.push(checkedBox.value);
+    if (!selectedTags.length) {
+      showRecipePool();
+    } else {
+      showRecipesByTag(selectedTags);
+    }
+  });
 }
 
 function generateAllTags() {
@@ -289,19 +238,16 @@ function generateAllTags() {
 function showRecipesByTag(selectedTags) {
   if (!recipePoolView.classList.contains('hidden')) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags);
-    // allRecipesDomUpdate();
     domUpdates.renderAllRecipes(recipePool);
   }
 
   if (!favoriteView.classList.contains('hidden')) {
     recipePool = user.filterRecipesByTag(user.favoriteRecipes, selectedTags);
-    // favoritesDomUpdate();
     domUpdates.renderFavoriteRecipes(recipePool);
   }
 
   if (!cookbookView.classList.contains('hidden')) {
     recipePool = user.filterRecipesByTag(user.recipesToCook, selectedTags);
-    // cookbookDomUpdate();
     domUpdates.renderCookbookRecipes(recipePool);
   }
 }
@@ -381,66 +327,81 @@ function activateCookingBtn(recipeClicked) {
   let buyIngredientsButton = document.getElementById('buy-ingredients');
   cookBtn.addEventListener('click', function () {
     if (pantryInstance.checkIfIsPossibleToCookARecipe(recipeClicked)) {
-      displayMessage.innerText = "Success! You've given some oven";
-      let cookingList = recipeClicked.ingredients.map((ingredient) => {
-        return {
-          id: ingredient.id,
-          amount: -1 * ingredient.quantity.amount,
-        };
-      });
-      Promise.all(
-        cookingList.map((ingredient) => {
-          return modifyPantry(user.userId, ingredient.id, ingredient.amount);
-        })
-      ).then(() => {
-        fetchUsers()
-          .then((users) => users.find((userP) => userP.id === user.userId))
-          .then((updatedUser) => {
-            user = new User(updatedUser);
-            pantryInstance = new Pantry(user);
-          });
-      });
-      domUpdates.hide(cookBtn);
+      executeHappyPath(recipeClicked, displayMessage, cookBtn);
     } else {
-      displayMessage.innerText =
-        'Oh no! You need more ingredients. Do you want to buy them?';
-      let shoppingList =
-        pantryInstance.determineMissingIngAmounts(recipeClicked);
-      let displayList = shoppingList.map((ingredient) => {
-        return {
-          id: ingredient.id,
-          name: ingredientPool.find((ing) => ing.id === ingredient.id).name,
-          amount: ingredient.missingAmount,
-        };
-      });
-      displayList.forEach((ingList) => {
-        displayMessage2.innerHTML += `<p>${ingList.name}: ${ingList.amount} units</p>`;
-      });
-      domUpdates.show(buyIngredientsButton);
-      domUpdates.hide(cookBtn);
-      buyIngredientsButton.addEventListener('click', function () {
-        Promise.all(
-          displayList.map((ingredient) => {
-            return modifyPantry(user.userId, ingredient.id, ingredient.amount);
-          })
-        ).then(() => {
-          fetchUsers()
-            .then((users) => users.find((userP) => userP.id === user.userId))
-            .then((updatedUser) => {
-              user = new User(updatedUser);
-              pantryInstance = new Pantry(user);
-            });
-        });
-        domUpdates.show(cookBtn);
-        domUpdates.hide(buyIngredientsButton);
-        displayMessage.innerText =
-          'Now you have all the ingredients you need to give some oven!';
-        displayMessage2.innerHTML = '';
-      });
+      executeSadPath(
+        recipeClicked,
+        displayMessage2,
+        displayMessage,
+        buyIngredientsButton,
+        cookBtn
+      );
     }
   });
 }
 
+function executeHappyPath(recipeClicked, displayMessage, cookBtn) {
+  displayMessage.innerText = "Success! You've given some oven";
+  domUpdates.hide(cookBtn);
+  let cookingList = recipeClicked.ingredients.map((ingredient) => {
+    return {
+      id: ingredient.id,
+      amount: -1 * ingredient.quantity.amount,
+    };
+  });
+  modifyPantryAPI(cookingList);
+}
+
+function executeSadPath(
+  recipeClicked,
+  displayMessage2,
+  displayMessage,
+  buyIngredientsButton,
+  cookBtn
+) {
+  displayMessage.innerText =
+    'Oh no! You need more ingredients. Do you want to buy them?';
+  let shoppingList = pantryInstance.determineMissingIngAmounts(recipeClicked);
+  let displayList = shoppingList.map((ingredient) => {
+    return {
+      id: ingredient.id,
+      name: ingredientPool.find((ing) => ing.id === ingredient.id).name,
+      amount: ingredient.missingAmount,
+    };
+  });
+  displayList.forEach((ingList) => {
+    displayMessage2.innerHTML += `<p>${ingList.name}: ${ingList.amount} units</p>`;
+  });
+  domUpdates.show(buyIngredientsButton);
+  domUpdates.hide(cookBtn);
+  buyIngredientsButton.addEventListener('click', function () {
+    modifyPantryAPI(displayList);
+    domUpdates.show(cookBtn);
+    domUpdates.hide(buyIngredientsButton);
+    displayMessage.innerText =
+      'Now you have all the ingredients you need to give some oven!';
+    displayMessage2.innerHTML = '';
+  });
+}
+
+function modifyPantryAPI(ingredientList) {
+  Promise.all(
+    ingredientList.map((ingredient) => {
+      return modifyPantry(user.userId, ingredient.id, ingredient.amount);
+    })
+  ).then(() => {
+    fetchUsers()
+      .then((users) => users.find((userP) => userP.id === user.userId))
+      .then((updatedUser) => {
+        let favorites = user.favoriteRecipes;
+        let cookbook = user.recipesToCook;
+        user = new User(updatedUser);
+        user.favoriteRecipes = favorites;
+        user.recipesToCook = cookbook;
+        pantryInstance = new Pantry(user);
+      });
+  });
+}
 // dynamic favorite/queue button activation
 
 function activateFaveButton(recipeClicked) {
@@ -523,7 +484,7 @@ function showFavorite() {
   }
 }
 
-function showQueue() {
+function showCookbook() {
   domUpdates.hide(recipeDetailView);
   domUpdates.show(poolAndSearchView);
   domUpdates.hide(favoriteView);
@@ -539,57 +500,3 @@ function showQueue() {
     generateAllTags();
   }
 }
-
-// update DOM
-// function allRecipesDomUpdate() {
-//   recipePoolView.innerHTML = '';
-//   recipePool.forEach((recipe) => {
-//     recipePoolView.innerHTML += `
-//         <article class="recipe-card" id="${recipe.id}">
-//           <img src=${recipe.image} alt="">
-//           <p>${recipe.name}</p>
-//         </article>
-//       `;
-//   });
-// }
-
-// function favoritesDomUpdate() {
-//   favoriteView.innerHTML = '';
-//   recipePool.forEach((recipe) => {
-//     favoriteView.innerHTML += `
-//         <article class="recipe-card" id="${recipe.id}">
-//           <img src=${recipe.image} alt="">
-//           <p>${recipe.name}</p>
-//         </article>
-//       `;
-//   });
-// }
-
-// function  {
-//   cookbookView.innerHTML = '';
-//   recipePool.forEach((recipe) => {
-//     cookbookView.innerHTML += `
-//         <article class="recipe-card" id="${recipe.id}">
-//           <img src=${recipe.image} alt="">
-//           <p>${recipe.name}</p>
-//         </article>
-//       `;
-//   });
-// }
-
-// utility fxns
-// function show(element) {
-//   element.classList.remove('hidden');
-// }
-
-// function hide(element) {
-//   element.classList.add('hidden');
-// }
-
-// function toggle(element) {
-//   element.classList.toggle('hidden');
-// }
-
-// function resetClassList(element) {
-//   element.classList = '';
-// }
