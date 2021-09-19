@@ -71,7 +71,7 @@ const domUpdates = {
     });
   },
 
-  renderRecipeDetails(recipeDetailView, recipeClicked, ingredients, cost) {
+  renderRecipeDetails(recipeDetailView, recipeClicked, cost) {
     recipeDetailView.innerHTML = `
       <article class="recipe-detail-container">
         <h3>${recipeClicked.name}</h3>

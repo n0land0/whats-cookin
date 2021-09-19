@@ -1,5 +1,5 @@
 // @import "reset";
-@import "variables";
+@import 'variables';
 
 /* ENTIRE SITE */
 html {
@@ -21,7 +21,7 @@ body {
 }
 
 button:hover,
-input[type="checkbox"]:hover {
+input[type='checkbox']:hover {
   cursor: pointer;
 }
 
@@ -319,8 +319,8 @@ header {
 #cook-button,
 #buy-ingredients {
   border-radius: 5px;
-  width: 90px;
-  height: 25px;
+  width: 250px;
+  height: 45px;
 }
 
 #fave-button:hover,
@@ -348,7 +348,7 @@ header {
 
 #show-recipe-by-tag,
 #search-recipes {
-  font-family: "Handlee", cursive;
+  font-family: 'Handlee', cursive;
 }
 
 #show-recipe-by-tag {
@@ -370,7 +370,7 @@ header {
   padding-bottom: 0.5rem;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   margin: 0.5rem 0;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
 }

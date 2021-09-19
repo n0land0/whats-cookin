@@ -139,7 +139,12 @@ function getApis() {
     .then((allArrays) => storeData(allArrays))
     .then(() => {
       return showAllRecipes();
-    });
+    })
+    .catch((error) => displayErrorMessage(error, recipePoolView));
+}
+
+function displayErrorMessage(error, container) {
+  container.innerHTML = `<h2> We are sorry, we are unable to give you oven at the moment. </h2>`;
 }
 
 function storeData(arrays) {
@@ -394,7 +399,8 @@ function modifyPantryAPI(ingredientList) {
         user.favoriteRecipes = favorites;
         user.recipesToCook = cookbook;
         pantryInstance = new Pantry(user);
-      });
+      })
+      .catch((error) => displayErrorMessage(error, recipeDetailView));
   });
 }
 // dynamic favorite/cookbook button activation
