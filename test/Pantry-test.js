@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
-import { assert } from "chai";
-import Pantry from "../src/classes/Pantry";
-import users from "../src/data/users";
-import Recipe from "../src/classes/Recipe";
-import User from "../src/classes/User";
+import { assert } from 'chai';
+import Pantry from '../src/classes/Pantry';
+import users from '../src/data/users';
+import Recipe from '../src/classes/Recipe';
+import User from '../src/classes/User';
 
-describe.only("Pantry class", function () {
+describe('Pantry class', function () {
   let recipe1, recipe2, user1, user2, pantry1, pantry2;
   let trueCase = {
     id: 412309,
@@ -24,7 +24,7 @@ describe.only("Pantry class", function () {
           amount: 2,
           unit: 'cups',
         },
-      }
+      },
     ],
     instructions: [
       {
@@ -217,7 +217,7 @@ describe.only("Pantry class", function () {
         amount: 2,
       },
     ],
-  }
+  };
 
   beforeEach(function () {
     recipe1 = new Recipe(
@@ -227,7 +227,7 @@ describe.only("Pantry class", function () {
       trueCase.instructions,
       trueCase.name,
       trueCase.tags
-    )
+    );
     recipe2 = new Recipe(
       missingIngCase.id,
       missingIngCase.image,
@@ -235,32 +235,32 @@ describe.only("Pantry class", function () {
       missingIngCase.instructions,
       missingIngCase.name,
       missingIngCase.tags
-    )
+    );
     user1 = new User(users[0]);
-    user2 = new User(notEnoughAmountUser);  
-    pantry1 = new Pantry(user1);  
+    user2 = new User(notEnoughAmountUser);
+    pantry1 = new Pantry(user1);
     pantry2 = new Pantry(user2);
-  })
+  });
 
   it("should return true if user's pantry has all ingredients and the amount to cook a recipe", () => {
     assert.equal(pantry1.checkIfIsPossibleToCookARecipe(recipe1), true);
-  })
+  });
 
   it("should return false if the ingredient isn't on the pantry", () => {
     assert.equal(pantry1.checkIfIsPossibleToCookARecipe(recipe2), false);
-  })
+  });
 
   it("should return false if there isn't enough of the ingredient", () => {
     assert.equal(pantry2.checkIfIsPossibleToCookARecipe(recipe1), false);
-  })
+  });
 
-  it("should return an array of missing ingredients with amount", () => {
+  it('should return an array of missing ingredients with amount', () => {
     let result = pantry1.determineMissingIngAmounts(recipe2);
-    assert.deepEqual(result, [{id: 6168, missingAmount: 8}]);
-  })
+    assert.deepEqual(result, [{ id: 6168, missingAmount: 8 }]);
+  });
 
-  it("should return an array with the missing amount of existent ingredient", () => {
+  it('should return an array with the missing amount of existent ingredient', () => {
     let result = pantry2.determineMissingIngAmounts(recipe1);
-    assert.deepEqual(result, [{id: 1002030, missingAmount: 3}]);
-  })
-})
+    assert.deepEqual(result, [{ id: 1002030, missingAmount: 3 }]);
+  });
+});
