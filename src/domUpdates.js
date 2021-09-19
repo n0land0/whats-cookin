@@ -4,8 +4,7 @@
 const showAllRecipeBtn = document.getElementById('show-all-recipes');
 const showRecipeByTagBtn = document.getElementById('show-recipe-by-tag');
 const showFavBtn = document.getElementById('show-favorites');
-const showQueueBtn = document.getElementById('show-queue');
-// const dropBtn = document.querySelector('.dropbtn');
+const showCookbookBtn = document.getElementById('show-queue');
 const dropBtn = document.querySelector('.dropdown-button');
 const showPantryBtn = document.getElementById('show-pantry');
 
@@ -19,7 +18,7 @@ const addRecipeFromFavoritesModal = document.getElementById(
 const favoriteModal = document.getElementById('favorite-recipe-modal');
 const recipesToCookModal = document.getElementById('recipes-to-cook-modal');
 const closeSpanFavorites = document.querySelectorAll('.close')[0];
-const closeSpanQueue = document.querySelectorAll('.close')[1];
+const closeSpanCookbook = document.querySelectorAll('.close')[1];
 
 // search & filter
 const recipeTagForm = document.getElementById('recipe-tag-form');
@@ -34,10 +33,8 @@ const cookbookView = document.querySelector('.cookbook-view');
 const recipeDetailView = document.querySelector('.recipe-detail-view');
 const pantryView = document.querySelector('.pantry-view');
 const pantryContainer = document.getElementById('pantry-container');
-// const recipeContainer = document.getElementById('recipe-container');
 
 const domUpdates = {
-  // allRecipesDomUpdate() {
   renderAllRecipes(recipePool) {
     recipePoolView.innerHTML = '';
     recipePool.forEach((recipe) => {
@@ -50,7 +47,6 @@ const domUpdates = {
     });
   },
 
-  // favoritesDomUpdate() {
   renderFavoriteRecipes(recipePool) {
     favoriteView.innerHTML = '';
     recipePool.forEach((recipe) => {
@@ -63,7 +59,6 @@ const domUpdates = {
     });
   },
 
-  // cookbookDomUpdate() {
   renderCookbookRecipes(recipePool) {
     cookbookView.innerHTML = '';
     recipePool.forEach((recipe) => {
@@ -77,16 +72,13 @@ const domUpdates = {
   },
 
   renderRecipeDetails(recipeDetailView, recipeClicked, ingredients, cost) {
-    console.log(recipeClicked);
     recipeDetailView.innerHTML = `
       <article class="recipe-detail-container">
         <h3>${recipeClicked.name}</h3>
         <img src=${recipeClicked.image} alt="">
         <div class="container-fave-queue-btns">
           <button id="fave-button">
-            <!-- <span id="fave-text">Add to Favorites</span> -->
             <span id="fave-text">🤍</span>
-            <!-- <span id="unfave-text" class="hidden">Remove from favorites</span> -->
             <span id="unfave-text" class="hidden">❤️</span>
           </button>
           <button id="add-to-recipes-to-cook-button">
@@ -94,7 +86,6 @@ const domUpdates = {
             <span id="remove-from-cook-text" class="hidden">Remove from My Cookbook</span>
           </button>
         </div>
-        <!-- <p>Ingredients: <span>${ingredients}</span></p> -->
         <p id="total-cost">Total cost: <span>$${cost}</span></p>
         <section class="ingredient-list">
           <p>Ingredients:</p>
@@ -105,6 +96,18 @@ const domUpdates = {
         <button id="buy-ingredients" class=" hidden">Buy Ingredients</button>
       </article>
     `;
+  },
+
+  renderPantry(pantryForDisplay) {
+    pantryView.classList.remove('hidden');
+    poolAndSearchView.classList.add('hidden');
+    recipeDetailView.classList.add('hidden');
+    pantryContainer.innerHTML = '';
+    pantryForDisplay.forEach((ingredient) => {
+      pantryContainer.innerHTML += `
+        <p> ${ingredient.name} Amount: ${ingredient.amount}</p>
+      `;
+    });
   },
 
   show(element) {
@@ -126,7 +129,7 @@ const domUpdates = {
   showAllRecipeBtn,
   showRecipeByTagBtn,
   showFavBtn,
-  showQueueBtn,
+  showCookbookBtn,
   dropBtn,
   showPantryBtn,
   addRecipeFromCookBookModal,
@@ -134,7 +137,7 @@ const domUpdates = {
   favoriteModal,
   recipesToCookModal,
   closeSpanFavorites,
-  closeSpanQueue,
+  closeSpanCookbook,
   recipeTagForm,
   searchInputField,
   searchBtn,
