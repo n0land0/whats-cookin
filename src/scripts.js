@@ -306,7 +306,6 @@ function showRecipeDetails(event) {
   domUpdates.renderRecipeDetails(
     recipeDetailView,
     recipeClicked,
-    ingredients,
     cost
   );
   let ingredientList = document.querySelector('.ingredient-list');
