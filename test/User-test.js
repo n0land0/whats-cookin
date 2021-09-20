@@ -1,14 +1,14 @@
-import { assert } from "chai";
+import { assert } from 'chai';
 
-import User from "../src/classes/User";
-import Recipe from "../src/classes/Recipe";
-import Ingredient from "../src/classes/Ingredient";
+import User from '../src/classes/User';
+import Recipe from '../src/classes/Recipe';
+import Ingredient from '../src/classes/Ingredient';
 
-import recipeData from "../src/data/recipes";
-import usersData from "../src/data/users";
-import ingredientsData from "../src/data/ingredients";
+import recipeData from '../src/data/recipes';
+import usersData from '../src/data/users';
+import ingredientsData from '../src/data/ingredients';
 
-describe("User", () => {
+describe('User', () => {
   let user;
   let recipe1;
   let recipe2;
@@ -33,70 +33,56 @@ describe("User", () => {
       recipeData[1].name,
       recipeData[1].tags
     );
-    wheatFlour = new Ingredient(20081, "wheat flour", 142);
-    appleCider = new Ingredient(1009016, "apple cider", 468);
-    apple = new Ingredient(9003, "apple", 207);
+    wheatFlour = new Ingredient(20081, 'wheat flour', 142);
+    appleCider = new Ingredient(1009016, 'apple cider', 468);
+    apple = new Ingredient(9003, 'apple', 207);
     user.addToFavorites(recipe1);
     user.addToFavorites(recipe2);
   });
 
-  it("Should be a function", () => {
+  it('Should be a function', () => {
     assert.isFunction(User);
   });
 
-  it("Should be an instance of User", () => {
+  it('Should be an instance of User', () => {
     assert.instanceOf(user, User);
   });
 
-  it("Should allow a user to favorite recipes", () => {
+  it('Should allow a user to favorite recipes', () => {
     assert.deepEqual(user.favoriteRecipes[0], recipe1);
   });
 
-  it("Should allow a user to unfavorite recipes", () => {
+  it('Should allow a user to unfavorite recipes', () => {
     user.removeFromFavorites(recipe1);
 
     assert.deepEqual(user.favoriteRecipes[0], recipe2);
   });
 
-  it("Should allow a user to designate recipes to cook", () => {
+  it('Should allow a user to designate recipes to cook', () => {
     user.addToRecipesToCook(recipe2);
 
     assert.deepEqual(user.recipesToCook[0], recipe2);
   });
 
-  
-  it("Should allow a user to filter favorite recipes by one tag", () => {
-    let tags = ["antipasti"];
-    let filteredRecipes = user.filterRecipesByTag(user.favoriteRecipes,tags)
+  it('Should allow a user to filter favorite recipes by one tag', () => {
+    let tags = ['antipasti'];
+    let filteredRecipes = user.filterRecipesByTag(user.favoriteRecipes, tags);
     assert.deepEqual(filteredRecipes[0], recipe1);
   });
 
-  it("Should allow a user to filter favorite recipes by multiple tags", () => {
-    let tags = ["snack", "dinner"];
+  it('Should allow a user to filter favorite recipes by multiple tags', () => {
+    let tags = ['snack', 'dinner'];
     let filteredRecipes = user.filterRecipesByTag(user.favoriteRecipes, tags);
     assert.deepEqual(filteredRecipes[0], recipe1);
     assert.deepEqual(filteredRecipes[1], recipe2);
   });
 
-  it("Should allow a user to filter recipes by name", () => {
-    let name1 = "chocolate chip";
+  it('Should allow a user to filter recipes by name', () => {
+    let name1 = 'chocolate chip';
     let result1 = user.filterRecipesByName(user.favoriteRecipes, name1);
-    let name2 = "Apple Cider";
+    let name2 = 'Apple Cider';
     let result2 = user.filterRecipesByName(user.favoriteRecipes, name2);
     assert.deepEqual(result1, [recipe1]);
     assert.deepEqual(result2, [recipe2]);
   });
-
-  // it("Should allow a user to filter recipes by one ingredient", () => {
-  //   let glutens = user.filterRecipesByIngredient(user.favoriteRecipes, [wheatFlour.id]);
-  //   assert.equal(glutens[0].ingredients[0].id, wheatFlour.id);
-  //   assert.equal(glutens.length, 1);
-  // });
-
-  // it("Should allow a user to filter favorite recipes by multiple ingredients", () => {
-  //   let appleys = user.filterRecipesByIngredient([appleCider.id, apple.id]);
-
-  //   assert.equal(appleys[0].ingredients[0].id, appleCider.id);
-  //   assert.equal(appleys[0].ingredients[1].id, apple.id);
-  // });
 });

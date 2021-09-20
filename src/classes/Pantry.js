@@ -29,10 +29,10 @@ class Pantry {
         (pantryIng) => pantryIng.ingredient === ingredient.id
       );
       if (findResult) {
-        let amountGap = findResult.amount - ingredient.quantity.amount;
-        if (amountGap < 0) {
+        let amountDifference = findResult.amount - ingredient.quantity.amount;
+        if (amountDifference < 0) {
           missingIng.id = ingredient.id;
-          missingIng.missingAmount = -1 * amountGap;
+          missingIng.missingAmount = -1 * amountDifference;
           acc.push(missingIng);
         }
       } else {
@@ -49,7 +49,7 @@ class Pantry {
   addNamesToPantry(ingredientData) {
     let newPantry = this.pantryShelf.map((ingredient) => {
       let foundIng = ingredientData.find(
-        (ele) => ele.id === ingredient.ingredient
+        (userIngredient) => userIngredient.id === ingredient.ingredient
       );
       let capitalizedName =
         foundIng.name.charAt(0).toUpperCase() + foundIng.name.slice(1);
