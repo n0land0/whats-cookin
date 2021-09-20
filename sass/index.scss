@@ -189,6 +189,13 @@ header {
   transform: scale(1.0025);
   cursor: pointer;
 }
+.thumbnail:hover {
+  position: relative;
+  width: 225px;
+  height: auto;
+  display: block;
+  z-index: 999;
+}
 
 #show-all-recipes {
   border: none;
