@@ -39,9 +39,9 @@ const domUpdates = {
     recipePoolView.innerHTML = '';
     recipePool.forEach((recipe) => {
       recipePoolView.innerHTML += `
-          <article class="recipe-card" id="${recipe.id}">
-            <img src=${recipe.image} alt="">
-            <p>${recipe.name}</p>
+          <article tabindex="0" class="recipe-card" id="${recipe.id}">
+            <img src=${recipe.image} alt="" id="${recipe.id}">
+            <p id="${recipe.id}">${recipe.name}</p>
           </article>
         `;
     });
@@ -51,9 +51,9 @@ const domUpdates = {
     favoriteView.innerHTML = '';
     recipePool.forEach((recipe) => {
       favoriteView.innerHTML += `
-          <article class="recipe-card" id="${recipe.id}">
-            <img src=${recipe.image} alt="">
-            <p>${recipe.name}</p>
+          <article tabindex="0" class="recipe-card" id="${recipe.id}">
+            <img src=${recipe.image} alt="" id="${recipe.id}">
+            <p id="${recipe.id}">${recipe.name}</p>
           </article>
         `;
     });
@@ -63,9 +63,9 @@ const domUpdates = {
     cookbookView.innerHTML = '';
     recipePool.forEach((recipe) => {
       cookbookView.innerHTML += `
-          <article class="recipe-card" id="${recipe.id}">
-            <img src=${recipe.image} alt="">
-            <p>${recipe.name}</p>
+          <article tabindex="0" class="recipe-card" id="${recipe.id}">
+            <img src=${recipe.image} alt="" id="${recipe.id}">
+            <p id="${recipe.id}">${recipe.name}</p>
           </article>
         `;
     });

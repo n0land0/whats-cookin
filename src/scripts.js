@@ -10,12 +10,7 @@ import User from './classes/User';
 import Pantry from './classes/Pantry';
 
 // fetch calls & data variables
-import {
-  fetchUsers,
-  fetchIngredients,
-  fetchRecipes,
-  modifyPantry,
-} from './apiCalls';
+import { fetchData, modifyPantry } from './apiCalls';
 import domUpdates from './domUpdates';
 
 const {
@@ -101,8 +96,23 @@ searchBtn.addEventListener('click', function () {
 
 // expand individual recipe
 recipePoolView.addEventListener('click', showRecipeDetails);
+recipePoolView.addEventListener('keyup', function (event) {
+  if (event.keyCode === 13) {
+    showRecipeDetails(event);
+  }
+});
 favoriteView.addEventListener('click', showRecipeDetails);
+favoriteView.addEventListener('keyup', function (event) {
+  if (event.keyCode === 13) {
+    showRecipeDetails(event);
+  }
+});
 cookbookView.addEventListener('click', showRecipeDetails);
+cookbookView.addEventListener('keyup', function (event) {
+  if (event.keyCode === 13) {
+    showRecipeDetails(event);
+  }
+});
 
 // modals
 addRecipeFromCookBookModal.addEventListener('click', function () {
@@ -135,7 +145,11 @@ window.addEventListener('click', function (event) {
 
 // page load - fetch calls and instantiation
 function getApis() {
-  Promise.all([fetchUsers(), fetchIngredients(), fetchRecipes()])
+  Promise.all([
+    fetchData('users'),
+    fetchData('ingredients'),
+    fetchData('recipes'),
+  ])
     .then((allArrays) => storeData(allArrays))
     .then(() => {
       return showAllRecipes();
@@ -240,12 +254,10 @@ function showRecipesByTag(selectedTags) {
     recipePool = recipeRepository.returnRecipesByTag(selectedTags);
     domUpdates.renderAllRecipes(recipePool);
   }
-
   if (!favoriteView.classList.contains('hidden')) {
     recipePool = user.filterRecipesByTag(user.favoriteRecipes, selectedTags);
     domUpdates.renderFavoriteRecipes(recipePool);
   }
-
   if (!cookbookView.classList.contains('hidden')) {
     recipePool = user.filterRecipesByTag(user.recipesToCook, selectedTags);
     domUpdates.renderCookbookRecipes(recipePool);
@@ -258,6 +270,7 @@ function searchByName() {
   if (searchInputField.value) {
     recipePool = recipeRepository.returnRecipesByName(searchInputField.value);
   }
+  generateAllTags();
 }
 
 function searchByIngredient() {
@@ -272,12 +285,13 @@ function searchByIngredient() {
       recipePool.push(recipe);
     }
   });
+  generateAllTags();
 }
 
 // expand individual recipe on click
 function showRecipeDetails(event) {
-  let recipeId = event.target.parentNode.id;
-  let recipeClicked = recipePool.find((ele) => ele.id == recipeId);
+  let recipeId = parseInt(event.target.id);
+  let recipeClicked = recipePool.find((ele) => ele.id === recipeId);
   let ingredients = recipeClicked.ingredients.map(
     (ingredient, index) =>
       `${ingredient.quantity.amount} ${ingredient.quantity.unit} ${
@@ -286,7 +300,6 @@ function showRecipeDetails(event) {
   );
   let instructions = recipeClicked.showInstructions();
   let cost = recipeClicked.calculateRecipeCostInDollars();
-
   domUpdates.hide(poolAndSearchView);
   domUpdates.show(recipeDetailView);
   domUpdates.hide(pantryView);
@@ -296,15 +309,12 @@ function showRecipeDetails(event) {
     ingredients,
     cost
   );
-
   let ingredientList = document.querySelector('.ingredient-list');
-
   ingredients.forEach((ingredient) => {
     ingredientList.innerHTML += `
       <p>${ingredient}</p>
     `;
   });
-
   instructions.forEach((ele) => {
     let key = Object.keys(ele).toString();
     let instruction = Object.values(ele).toString();
@@ -313,7 +323,6 @@ function showRecipeDetails(event) {
     <p>${instruction}</p>
     `;
   });
-
   activateFaveButton(recipeClicked);
   activateAddToRecipesToCookButton(recipeClicked);
   activateCookingBtn(recipeClicked);
@@ -390,7 +399,7 @@ function modifyPantryAPI(ingredientList) {
       return modifyPantry(user.userId, ingredient.id, ingredient.amount);
     })
   ).then(() => {
-    fetchUsers()
+    fetchData('users')
       .then((users) => users.find((userP) => userP.id === user.userId))
       .then((updatedUser) => {
         let favorites = user.favoriteRecipes;
@@ -409,13 +418,11 @@ function activateFaveButton(recipeClicked) {
   let faveButton = document.getElementById('fave-button');
   let faveText = document.getElementById('fave-text');
   let unFaveText = document.getElementById('unfave-text');
-
   if (user.favoriteRecipes.includes(recipeClicked)) {
     domUpdates.resetClassList(faveText);
     domUpdates.resetClassList(unFaveText);
     domUpdates.hide(faveText);
   }
-
   faveButton.addEventListener('click', function () {
     if (!user.favoriteRecipes.includes(recipeClicked)) {
       user.favoriteRecipes.push(recipeClicked);
@@ -436,13 +443,11 @@ function activateAddToRecipesToCookButton(recipeClicked) {
   );
   let addToCookText = document.getElementById('add-to-cook-text');
   let removeFromCookText = document.getElementById('remove-from-cook-text');
-
   if (user.recipesToCook.includes(recipeClicked)) {
     domUpdates.resetClassList(addToCookText);
     domUpdates.resetClassList(removeFromCookText);
     domUpdates.hide(addToCookText);
   }
-
   addToRecipesToCookButton.addEventListener('click', function () {
     if (!user.recipesToCook.includes(recipeClicked)) {
       user.recipesToCook.push(recipeClicked);

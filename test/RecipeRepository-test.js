@@ -5,7 +5,7 @@ import Recipe from '../src/classes/Recipe';
 import Ingredient from '../src/classes/Ingredient';
 import recipeData from '../src/data/recipes';
 
-describe.only('RecipeRepository', () => {
+describe('RecipeRepository', () => {
   let recipeRepository;
 
   beforeEach(function () {
